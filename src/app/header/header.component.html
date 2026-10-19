@@ -1,6 +1,9 @@
 <header>
   <div class="header-container">
-    <span class="brand">Macrova</span>
+    <div class="brand-container">
+      <img src="macrova-icon.svg" alt="" />
+      <span class="brand">Macrova</span>
+    </div>
     @if (isLogin) {
       <div>
         <button class="login-btn" [routerLink]="'/signup'">Sign Up</button>
@@ -19,7 +22,7 @@
             {{ endpoint }}
           </button>
         }
-        <div style="position: relative;">
+        <div style="position: relative">
           <button class="profile-icon" (click)="expandProfile()">
             {{ initial() }}
           </button>

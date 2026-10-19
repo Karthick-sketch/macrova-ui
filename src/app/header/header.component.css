@@ -18,6 +18,17 @@ header {
   width: 100%;
 }
 
+.brand-container {
+  display: flex;
+  align-items: normal;
+  gap: var(--space-sm);
+}
+
+.brand-container img {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
 .brand {
   font-size: var(--font-size-lg);
   font-weight: 700;
@@ -42,7 +53,9 @@ nav > button {
   border: none;
   border-radius: var(--radius-md);
   text-transform: capitalize;
-  transition: color 0.15s, background-color 0.15s;
+  transition:
+    color 0.15s,
+    background-color 0.15s;
 }
 
 nav > button:hover {
