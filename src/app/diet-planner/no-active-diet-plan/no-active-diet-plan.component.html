@@ -1,26 +1,21 @@
-<div class="no-diet-plan-container">
-  <img src="no-diet-plan.png" alt="no active diet plan" />
-  <h3>No Active Diet Plan</h3>
-  <p class="mt-0">You don't have an active diet plan.</p>
-  <p class="mt-0">
-    Continue with the past plan or create one to start tracking your meals and
-    progress.
-  </p>
-  @if (pastPlan) {
-    <div class="past-plan-container">
-      <div class="plan-detail">
-        <div class="plan-title">{{ pastPlan.title }}</div>
-        <p class="sub-text">
-          Plan: {{ getPlan(pastPlan.plan) }} | Weight: {{ pastPlan.weight }}kg |
-          Target Weight: {{ pastPlan.targetWeight }}kg | Duration:
-          {{ pastPlan.duration }} days
-        </p>
-      </div>
+<div class="no-plan-wrapper">
+  <img class="no-plan-img" src="no-diet-plan.png" alt="No active diet plan" />
+  <h2>No Active Diet Plan</h2>
+  <p>You don't have an active diet plan.</p>
+  <p>Continue with a past plan or create one to start tracking your meals and progress.</p>
 
-      <p>Do you want to continue with this diet plan?</p>
-      <div class="past-plan-btn-container">
+  @if (pastPlan) {
+    <div class="past-plan-card">
+      <div class="past-plan-title">{{ pastPlan.title }}</div>
+      <p class="past-plan-meta">
+        {{ getPlan(pastPlan.plan) }} &nbsp;·&nbsp;
+        {{ pastPlan.weight }}kg → {{ pastPlan.targetWeight }}kg &nbsp;·&nbsp;
+        {{ pastPlan.duration }} days
+      </p>
+      <p>Would you like to continue with this plan?</p>
+      <div class="plan-actions">
         <button (click)="continuePlan()" class="primary-btn">
-          Continue with this plan
+          Continue this plan
         </button>
         <button [routerLink]="'/diet-plan-form'" class="special-btn">
           Create new plan
@@ -28,7 +23,7 @@
       </div>
     </div>
   } @else {
-    <div>
+    <div class="no-plan-actions">
       <button [routerLink]="'/diet-plan-form'" class="primary-btn">
         Create new plan
       </button>

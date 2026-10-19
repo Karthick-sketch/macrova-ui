@@ -1,124 +1,164 @@
 <app-toast></app-toast>
-<section>
-  @if (dietPlanId) {
-    <h2>Update Your Diet Plan</h2>
-  } @else {
-    <h2>Create Your Diet Plan</h2>
-  }
-  <div>
-    <p>Title <span class="red-star">*</span></p>
-    <input
-      type="text"
-      class="input-field"
-      placeholder="Describe the diet plan's name or goal"
-      [(ngModel)]="dietPlanDTO.title"
-    />
-  </div>
-  <div class="multi-field">
-    <p>Plan <span class="red-star">*</span></p>
-    @for (plan of plans; track $index) {
-      <button
-        [class.selected]="plan.value === selected.plan"
-        (click)="selectDietPlan(plan.value)"
-      >
-        {{ plan.key }}
-      </button>
+<div class="form-container">
+  <div class="page-header">
+    @if (dietPlanId) {
+      <h2>Update Diet Plan</h2>
+    } @else {
+      <h2>Create Diet Plan</h2>
     }
   </div>
-  <div>
-    <p>
-      Age <span class="red-star">* </span>
-      <span class="field-info">(Age requirement: 18-65 years)</span>
-    </p>
-    <input
-      type="number"
-      class="input-field"
-      placeholder="Enter your age in years"
-      [(ngModel)]="dietPlanDTO.age"
-    />
+
+  <div class="form-card">
+    <!-- Title -->
+    <div class="field-group">
+      <p>Title <span class="red-star">*</span></p>
+      <input
+        type="text"
+        class="input-field"
+        placeholder="Describe the diet plan's name or goal"
+        [(ngModel)]="dietPlanDTO.title"
+      />
+    </div>
+
+    <div class="field-divider"></div>
+
+    <!-- Plan Type -->
+    <div class="field-group">
+      <p>Plan <span class="red-star">*</span></p>
+      <div class="toggle-group">
+        @for (plan of plans; track $index) {
+          <button
+            [class.selected]="plan.value === selected.plan"
+            (click)="selectDietPlan(plan.value)"
+          >
+            {{ plan.key }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Age -->
+    <div class="field-group">
+      <p>
+        Age <span class="red-star">*</span>
+        <span class="field-info">(18–65 years)</span>
+      </p>
+      <input
+        type="number"
+        class="input-field"
+        placeholder="Enter your age in years"
+        [(ngModel)]="dietPlanDTO.age"
+      />
+    </div>
+
+    <!-- Gender -->
+    <div class="field-group">
+      <p>Gender <span class="red-star">*</span></p>
+      <div class="toggle-group">
+        @for (gender of genders; track $index) {
+          <button
+            [class.selected]="gender.value === selected.gender"
+            (click)="selectGender(gender.value)"
+          >
+            {{ gender.key }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Height -->
+    <div class="field-group">
+      <p>
+        Height <span class="red-star">*</span>
+        <span class="field-info">(140–210 cm)</span>
+      </p>
+      <input
+        type="number"
+        class="input-field"
+        placeholder="Enter your height in centimeters"
+        [(ngModel)]="dietPlanDTO.height"
+      />
+    </div>
+
+    <!-- Weight -->
+    <div class="field-group">
+      <p>
+        Weight <span class="red-star">*</span>
+        <span class="field-info">(40–180 kg)</span>
+      </p>
+      <input
+        type="number"
+        class="input-field"
+        placeholder="Enter your current weight"
+        [(ngModel)]="dietPlanDTO.weight"
+      />
+    </div>
+
+    <div class="field-divider"></div>
+
+    <!-- Goal -->
+    <div class="field-group">
+      <p>Goal <span class="red-star">*</span></p>
+      <div class="toggle-group">
+        @for (goal of goals; track $index) {
+          <button
+            [class.selected]="goal.value === selected.goal"
+            (click)="selectGoal(goal.value)"
+          >
+            {{ goal.key }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Activity -->
+    <div class="field-group">
+      <p>Activity Level <span class="red-star">*</span></p>
+      <div class="toggle-group">
+        @for (activity of activities; track $index) {
+          <button
+            [class.selected]="activity.value === selected.activity"
+            (click)="selectActivity(activity.value)"
+          >
+            {{ activity.key }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Target Weight -->
+    <div class="field-group">
+      <p>Target Weight <span class="red-star">*</span></p>
+      <input
+        type="number"
+        class="input-field"
+        [placeholder]="getTargetWeightPlaceholder()"
+        [(ngModel)]="dietPlanDTO.targetWeight"
+      />
+    </div>
+
+    <!-- Duration -->
+    <div class="field-group">
+      <p>Duration <span class="red-star">*</span></p>
+      <input
+        type="number"
+        class="input-field"
+        placeholder="Number of days to achieve the goal"
+        [(ngModel)]="dietPlanDTO.duration"
+      />
+    </div>
+
+    <!-- Submit -->
+    <div class="form-footer">
+      @if (dietPlanId) {
+        <button class="submit-btn" (click)="updateDietPlan()">
+          Update Diet Plan
+        </button>
+      } @else {
+        <button class="submit-btn" (click)="createDietPlan()">
+          Create Diet Plan
+        </button>
+      }
+    </div>
   </div>
-  <div class="multi-field">
-    <p>Gender <span class="red-star">*</span></p>
-    @for (gender of genders; track $index) {
-      <button
-        [class.selected]="gender.value === selected.gender"
-        (click)="selectGender(gender.value)"
-      >
-        {{ gender.key }}
-      </button>
-    }
-  </div>
-  <div>
-    <p>
-      Height <span class="red-star">* </span>
-      <span class="field-info">(Height requirement: 140-210cm)</span>
-    </p>
-    <input
-      type="number"
-      class="input-field"
-      placeholder="Enter your height in centimeters"
-      [(ngModel)]="dietPlanDTO.height"
-    />
-  </div>
-  <div>
-    <p>
-      Weight <span class="red-star">* </span>
-      <span class="field-info">(Weight requirement: 40-180kg)</span>
-    </p>
-    <input
-      type="number"
-      class="input-field"
-      placeholder="Enter your current weight"
-      [(ngModel)]="dietPlanDTO.weight"
-    />
-  </div>
-  <div class="multi-field">
-    <p>Goal <span class="red-star">*</span></p>
-    @for (goal of goals; track $index) {
-      <button
-        [class.selected]="goal.value === selected.goal"
-        (click)="selectGoal(goal.value)"
-      >
-        {{ goal.key }}
-      </button>
-    }
-  </div>
-  <div class="multi-field">
-    <p>Activity <span class="red-star">*</span></p>
-    @for (activity of activities; track $index) {
-      <button
-        [class.selected]="activity.value === selected.activity"
-        (click)="selectActivity(activity.value)"
-      >
-        {{ activity.key }}
-      </button>
-    }
-  </div>
-  <div>
-    <p>Target Weight <span class="red-star">*</span></p>
-    <input
-      type="number"
-      class="input-field"
-      [placeholder]="getTargetWeightPlaceholder()"
-      [(ngModel)]="dietPlanDTO.targetWeight"
-    />
-  </div>
-  <div>
-    <p>Duration <span class="red-star">*</span></p>
-    <input
-      type="number"
-      class="input-field"
-      placeholder="Number of days to achieve the goal"
-      [(ngModel)]="dietPlanDTO.duration"
-    />
-  </div>
-  @if (dietPlanId) {
-    <button class="primary-btn" (click)="updateDietPlan()">
-      Update Diet Plan
-    </button>
-  } @else {
-    <button class="primary-btn" (click)="createDietPlan()">
-      Create Diet Plan
-    </button>
-  }
-</section>
+</div>

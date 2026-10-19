@@ -1,13 +1,19 @@
-<section>
-  <div>
+<div class="list-container">
+  <div class="page-header">
     <h2>Diet Plans History</h2>
     <p class="sub-text">View your past diet plans and track your progress.</p>
   </div>
-  <div class="diet-plans-list">
+
+  <div class="plans-list">
     @for (dietPlan of dietPlans; track dietPlan.id) {
-      <div class="diet-plan">
-        <div class="plan-detail">
-          <div class="plan-title">{{ dietPlan.title }}</div>
+      <div class="diet-plan-item">
+        <div class="plan-info">
+          <div class="plan-title">
+            {{ dietPlan.title }}
+            <span [class]="dietPlan.active ? 'status-badge active' : 'status-badge inactive'">
+              {{ dietPlan.active ? 'Active' : 'Inactive' }}
+            </span>
+          </div>
           <ng-container
             *ngTemplateOutlet="
               planDetails;
@@ -21,15 +27,15 @@
             "
           ></ng-container>
         </div>
-        <button [routerLink]="'/history/' + dietPlan.id">
+        <button class="nav-btn" [routerLink]="'/history/' + dietPlan.id">
           <img src="right.svg" alt="View Plan" />
         </button>
       </div>
     } @empty {
-      <p>No available Diet plans.</p>
+      <div class="empty-state">No diet plans found.</div>
     }
   </div>
-</section>
+</div>
 
 <ng-template
   #planDetails
@@ -39,9 +45,7 @@
   let-duration="duration"
   let-status="status"
 >
-  <p class="sub-text">
-    Plan: {{ getPlan(plan) }} | Weight: {{ weight }}kg | Target Weight:
-    {{ targetWeight }}kg | Duration: {{ duration }} days | Status:
-    {{ getStatus(status) }}
+  <p class="plan-meta">
+    {{ getPlan(plan) }} &nbsp;·&nbsp; {{ weight }}kg → {{ targetWeight }}kg &nbsp;·&nbsp; {{ duration }} days
   </p>
 </ng-template>

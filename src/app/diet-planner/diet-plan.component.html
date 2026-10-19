@@ -1,12 +1,13 @@
 @if (dietPlan && dietPlanTrack) {
   <div class="macros-log-container">
-    <div>
+    <!-- Page Header -->
+    <div class="page-header">
       <h2>Today's Macronutrients Log</h2>
-      <p class="sub-text">
-        Track your macronutrient intake by meal for a balance diet.
-      </p>
+      <p>Track your macronutrient intake by meal for a balanced diet.</p>
     </div>
-    <section>
+
+    <!-- Daily Summary -->
+    <div class="section-card">
       <h3>Daily Summary</h3>
       <div class="daily-summary-container">
         <div>
@@ -32,112 +33,82 @@
           </button>
         </div>
       </div>
-      <p>
-        Calories {{ dietPlanTrack.intake.taken }} /
-        {{ dietPlanTrack.intake.total }}
+
+      <p class="calorie-label">
+        Calories &nbsp; <strong>{{ dietPlanTrack.intake.taken }}</strong> / {{ dietPlanTrack.intake.total }} kcal
       </p>
+
       @if (dietPlanTrack.intake.taken > dietPlanTrack.tdee) {
-        <div class="outer-bar">
+        <div class="outer-bar" style="height:1rem;">
           <div class="inner-bar-danger">
-            <span>•</span>
-            <span>•</span>
-            <span>•</span>
+            <span>{{ dietPlanTrack.intake.total }}</span>
+            <span>{{ dietPlanTrack.tdee }}</span>
+            <span>{{ dietPlanTrack.intake.taken }}</span>
           </div>
-        </div>
-        <div class="bar-value-danger">
-          <span>{{ dietPlanTrack.intake.total }}</span>
-          <span>{{ dietPlanTrack.tdee }}</span>
-          <span>{{ dietPlanTrack.intake.taken }}</span>
         </div>
       } @else if (dietPlanTrack.intake.taken > dietPlanTrack.intake.total) {
-        <div class="outer-bar">
+        <div class="outer-bar" style="height:1rem;">
           <div class="inner-bar-warning">
-            <div class="value-warning-center">•</div>
-            <div class="value-warning-right">•</div>
-          </div>
-        </div>
-        <div class="bar-value-warning">
-          <div class="value-warning-center">
-            {{ dietPlanTrack.intake.total }}
-          </div>
-          <div class="value-warning-right">
-            {{ dietPlanTrack.intake.taken }}
+            <span style="position:absolute;left:50%;transform:translateX(-50%)">{{ dietPlanTrack.intake.total }}</span>
+            <span style="margin-left:auto">{{ dietPlanTrack.intake.taken }}</span>
           </div>
         </div>
       } @else {
-        <div class="outer-bar secondary-bg-color">
+        <div class="outer-bar">
           <div
-            class="inner-bar-normal primary-bg-color"
+            class="inner-bar-normal"
             [style.width.%]="kcalPercentage"
-          >
-            -
-          </div>
+          ></div>
         </div>
       }
-    </section>
-    <section>
+    </div>
+
+    <!-- Intake by Meal -->
+    <div class="section-card">
       <h3>Intake</h3>
       <ng-container
-        *ngTemplateOutlet="
-          macrosTrack;
-          context: { category: 'Breakfast', macros: meals.breakfast }
-        "
+        *ngTemplateOutlet="macrosTrack; context: { category: 'Breakfast', macros: meals.breakfast }"
       ></ng-container>
       <ng-container
-        *ngTemplateOutlet="
-          macrosTrack;
-          context: { category: 'Lunch', macros: meals.lunch }
-        "
+        *ngTemplateOutlet="macrosTrack; context: { category: 'Lunch', macros: meals.lunch }"
       ></ng-container>
       <ng-container
-        *ngTemplateOutlet="
-          macrosTrack;
-          context: { category: 'Snack', macros: meals.snack }
-        "
+        *ngTemplateOutlet="macrosTrack; context: { category: 'Snack', macros: meals.snack }"
       ></ng-container>
       <ng-container
-        *ngTemplateOutlet="
-          macrosTrack;
-          context: { category: 'Dinner', macros: meals.dinner }
-        "
+        *ngTemplateOutlet="macrosTrack; context: { category: 'Dinner', macros: meals.dinner }"
       ></ng-container>
-    </section>
+    </div>
   </div>
 }
 
 <ng-template #macrosTrack let-category="category" let-macros="macros">
-  <div class="meal">
-    <b>{{ category }}</b>
-  </div>
-  <div class="macros">
-    <div>
-      <p>
-        Proteins <span>(Required {{ macros.protein.total }}g)</span>
-      </p>
-      <input
-        type="number"
-        class="input-field"
-        [(ngModel)]="macros.protein.taken"
-      />
+  <div class="meal-card">
+    <div class="meal-header">{{ category }}</div>
+    <div class="macros-grid">
+      <div>
+        <p>Proteins <span>(Required {{ macros.protein.total }}g)</span></p>
+        <input
+          type="number"
+          class="input-field"
+          [(ngModel)]="macros.protein.taken"
+        />
+      </div>
+      <div>
+        <p>Carbohydrates <span>(Required {{ macros.carbs.total }}g)</span></p>
+        <input
+          type="number"
+          class="input-field"
+          [(ngModel)]="macros.carbs.taken"
+        />
+      </div>
+      <div>
+        <p>Fat <span>(Required {{ macros.fat.total }}g)</span></p>
+        <input type="number" class="input-field" [(ngModel)]="macros.fat.taken" />
+      </div>
     </div>
-    <div>
-      <p>
-        Carbohydrates <span>(Required {{ macros.carbs.total }}g)</span>
-      </p>
-      <input
-        type="number"
-        class="input-field"
-        [(ngModel)]="macros.carbs.taken"
-      />
+    <div class="btn-container">
+      <button (click)="updateKcal(category, macros)">Update</button>
     </div>
-    <div>
-      <p>
-        Fat <span>(Required {{ macros.fat.total }}g)</span>
-      </p>
-      <input type="number" class="input-field" [(ngModel)]="macros.fat.taken" />
-    </div>
-  </div>
-  <div class="btn-container">
-    <button (click)="updateKcal(category, macros)">Update</button>
   </div>
 </ng-template>

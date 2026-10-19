@@ -1,62 +1,121 @@
-section {
-  max-width: 60rem;
-  margin: auto;
+/* ── Dashboard ─────────────────────────────────────── */
+.dashboard {
+  max-width: 52rem;
+  margin: 0 auto;
 }
 
-h2 {
+.dashboard-header {
+  margin-bottom: var(--space-lg);
+}
+
+.dashboard-header h2 {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  color: var(--color-text);
   text-transform: capitalize;
+  margin-bottom: var(--space-xs);
 }
 
-.progress-bar {
-  margin-bottom: 1rem;
+/* ── Progress Bar ──────────────────────────────────── */
+.progress-section {
+  margin-bottom: var(--space-lg);
+  padding: var(--space-md) var(--space-lg);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
 }
 
-.progress-bar div:first-child {
+.progress-label {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 0.3rem;
-  font-size: 0.85rem;
+  align-items: center;
+  margin-bottom: var(--space-sm);
+}
+
+.progress-label span {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.progress-label .progress-pct {
+  color: var(--color-primary);
+  font-weight: 600;
 }
 
 .outer-bar {
   width: 100%;
-  background-color: #e8eef2;
-  border-radius: 10px;
+  height: 0.55rem;
+  background-color: var(--color-input-bg);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
 }
 
 .inner-bar-normal {
+  height: 100%;
+  background-color: var(--color-primary);
+  border-radius: var(--radius-pill);
+  transition: width 0.4s ease;
   color: transparent;
-  background-color: #4591df;
-  border-radius: 10px;
+  font-size: 0;
 }
 
-.metrics-data-container {
-  margin-top: 1rem;
-  padding: 1rem 1rem 1rem;
-  background-color: #e8eef2;
-  border-radius: 0.5rem;
+/* ── Metrics Grid ──────────────────────────────────── */
+.metrics-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
 }
 
-.metrics-data-container p:first-child {
-  margin-top: 0;
-  margin-bottom: 0.5rem;
-  font-size: 0.8rem;
+.metric-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md) var(--space-lg);
 }
 
-.metrics-data-container p:last-child {
+.metric-card .metric-label {
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0 0 var(--space-xs) 0;
+}
+
+.metric-card .metric-value {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--color-text);
   margin: 0;
 }
 
-.metrics-container {
-  display: flex;
-  gap: 1rem;
+.metric-card.accent {
+  border-left: 3px solid var(--color-primary);
 }
 
-.metrics-container .metrics-data-container {
-  flex: 1;
+/* ── Weight Track Section ──────────────────────────── */
+.weight-section {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md) var(--space-lg);
+}
+
+.weight-section h3 {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  margin-bottom: var(--space-md);
 }
 
 .weight-track-container {
-  width: 70%;
-  margin: 1rem auto 0 auto;
+  width: 100%;
+}
+
+/* ── Responsive ────────────────────────────────────── */
+@media (max-width: 640px) {
+  .metrics-row {
+    grid-template-columns: 1fr 1fr;
+  }
 }

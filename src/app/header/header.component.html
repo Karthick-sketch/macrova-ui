@@ -1,6 +1,6 @@
 <header>
   <div class="header-container">
-    <b>Macrova</b>
+    <span class="brand">Macrova</span>
     @if (isLogin) {
       <div>
         <button class="login-btn" [routerLink]="'/signup'">Sign Up</button>
@@ -19,14 +19,13 @@
             {{ endpoint }}
           </button>
         }
-        <div>
+        <div style="position: relative;">
           <button class="profile-icon" (click)="expandProfile()">
             {{ initial() }}
           </button>
           @if (isProfileExpanded) {
             <div class="profile-container">
               <button>Edit profile</button>
-              <br />
               <button class="sign-out" (click)="signOut()">Sign Out</button>
             </div>
           }

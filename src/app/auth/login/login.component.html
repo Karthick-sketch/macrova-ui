@@ -1,14 +1,17 @@
 <app-toast></app-toast>
-<div class="signup-container">
-  <h2>Login to your Account</h2>
-  <div class="field-container">
-    <input type="text" placeholder="Username" [(ngModel)]="user.username" />
-  </div>
-  <div class="field-container">
-    <input type="password" placeholder="Password" [(ngModel)]="user.password" />
-  </div>
-  <button type="submit" class="signup-btn" (click)="submit()">Login</button>
-  <div class="login-link">
-    New to Macrova? <a routerLink="/signup">Sign Up here</a>
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <h1>Welcome back</h1>
+    <p class="auth-subtitle">Log in to your Macrova account</p>
+    <div class="field-group">
+      <input type="text" placeholder="Username" [(ngModel)]="user.username" />
+    </div>
+    <div class="field-group">
+      <input type="password" placeholder="Password" [(ngModel)]="user.password" />
+    </div>
+    <button type="submit" class="submit-btn" (click)="submit()">Log In</button>
+    <div class="auth-link">
+      New to Macrova? <a routerLink="/signup">Sign up here</a>
+    </div>
   </div>
 </div>

@@ -1,64 +1,131 @@
+/* ── Header ────────────────────────────────────────── */
 header {
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid #dcdada;
-}
-
-nav {
-  width: 25%;
-  display: flex;
-  justify-content: space-between;
-}
-
-nav > button {
-  text-transform: capitalize;
-}
-
-.active {
-  font-weight: bold;
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .header-container {
-  width: 100%;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 var(--space-xl);
+  height: 3.5rem;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  width: 100%;
 }
 
+.brand {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-primary);
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+
+/* ── Nav links ─────────────────────────────────────── */
+nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+nav > button {
+  padding: 0.4rem 0.85rem;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text-muted);
+  background: none;
+  border: none;
+  border-radius: var(--radius-md);
+  text-transform: capitalize;
+  transition: color 0.15s, background-color 0.15s;
+}
+
+nav > button:hover {
+  color: var(--color-text);
+  background-color: var(--color-primary-light);
+}
+
+nav > button.active {
+  color: var(--color-primary);
+  background-color: var(--color-primary-light);
+  font-weight: 600;
+}
+
+/* ── Auth button (login / signup shown on auth pages) ── */
 .login-btn {
-  padding: 0.5rem 1rem;
-  color: white;
-  background-color: #4591df;
-  border-radius: 14px;
+  padding: 0.45rem 1rem;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-primary);
+  background-color: var(--color-primary-light);
+  border: 1px solid var(--color-primary-mid);
+  border-radius: var(--radius-md);
+  transition: background-color 0.15s;
 }
 
+.login-btn:hover {
+  background-color: var(--color-primary-mid);
+}
+
+/* ── Profile icon & dropdown ───────────────────────── */
 .profile-icon {
-  padding: 0.5rem 0.75rem;
-  font-size: 1.2rem;
-  color: white;
-  background-color: #4591df;
+  width: 2.1rem;
+  height: 2.1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+  background-color: var(--color-primary);
   border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: var(--space-sm);
+  transition: background-color 0.15s;
+}
+
+.profile-icon:hover {
+  background-color: var(--color-primary-dark);
 }
 
 .profile-container {
   position: absolute;
-  top: 3.25rem;
-  right: 0.25rem;
-  text-align: center;
-  background-color: white;
-  border: 1px solid #dcdada;
-  border-radius: 0.45rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  top: 3.75rem;
+  right: var(--space-xl);
+  min-width: 10rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
 }
 
 .profile-container button {
-  padding: 0.75rem 2rem;
-  border-bottom: 1px solid #dadada;
+  display: block;
+  width: 100%;
+  padding: 0.65rem var(--space-md);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  text-align: left;
+  color: var(--color-text);
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--color-border);
+  transition: background-color 0.15s;
 }
 
 .profile-container button:last-child {
-  border: none;
+  border-bottom: none;
+}
+
+.profile-container button:hover {
+  background-color: var(--color-input-bg);
 }
 
 .sign-out {
-  color: #ea0000;
+  color: var(--color-danger) !important;
 }

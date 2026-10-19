@@ -1,38 +1,94 @@
+/* ── Diet Plan Track Overview (Read-only) ──────────── */
 .macros-log-container {
-  max-width: 60rem;
-  margin: auto;
+  max-width: 52rem;
+  margin: 0 auto;
+}
+
+.page-header {
+  margin-bottom: var(--space-lg);
+}
+
+.page-header h2 {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  margin-bottom: var(--space-xs);
+}
+
+.section-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md) var(--space-lg);
+  margin-bottom: var(--space-md);
+}
+
+.section-card h3 {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* ── Progress Bars ─────────────────────────────────── */
+.calorie-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-sm);
 }
 
 .outer-bar {
   width: 100%;
-  border-radius: 10px;
+  height: 0.6rem;
+  background-color: var(--color-input-bg);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+  margin-bottom: var(--space-xs);
 }
 
 .inner-bar-normal {
+  height: 100%;
+  background-color: var(--color-primary);
+  border-radius: var(--radius-pill);
   color: transparent;
-  border-radius: 10px;
+  font-size: 0;
 }
 
 .inner-bar-warning {
+  height: 100%;
   width: 100%;
-  color: white;
-  background-color: #ffcc00;
-  border-radius: 10px;
+  background-color: var(--color-warning);
+  border-radius: var(--radius-pill);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  color: #fff;
+  font-size: var(--font-size-xs);
+  padding: 0 var(--space-xs);
 }
 
 .inner-bar-danger {
-  color: white;
+  height: 100%;
   width: 100%;
-  background-color: red;
-  border-radius: 10px;
-}
-
-.inner-bar-warning,
-.bar-value-warning {
+  background-color: var(--color-danger);
+  border-radius: var(--radius-pill);
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  color: #fff;
+  font-size: var(--font-size-xs);
+  padding: 0 var(--space-xs);
+}
+
+.bar-value-warning,
+.bar-value-danger {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  margin-top: var(--space-xs);
   position: relative;
-  width: 100%;
 }
 
 .value-warning-center {
@@ -45,28 +101,48 @@
   margin-left: auto;
 }
 
-.inner-bar-danger,
-.bar-value-danger {
-  display: flex;
-  justify-content: space-between;
+/* ── Meal Cards ────────────────────────────────────── */
+.meal-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md) var(--space-lg);
+  margin-bottom: var(--space-md);
 }
 
-.inner-bar-warning div:last-child {
-  padding-right: 0.25rem;
+.meal-header {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--color-text);
+  padding-bottom: var(--space-sm);
+  margin-bottom: var(--space-md);
+  border-bottom: 1px solid var(--color-border);
 }
 
-.inner-bar-danger span:first-child {
-  padding-left: 0.25rem;
+.macros-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
 }
 
-.inner-bar-danger span:last-child {
-  padding-right: 0.25rem;
+.macros-grid > div > p {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  margin-bottom: var(--space-xs);
+  color: var(--color-text-muted);
 }
 
-.macros span {
-  font-size: 0.8rem;
+.macros-grid > div > p span {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-light);
 }
 
-.meal {
-  margin-top: 1rem;
+.macros-grid .input-field {
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  .macros-grid {
+    grid-template-columns: 1fr;
+  }
 }

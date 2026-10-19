@@ -1,83 +1,76 @@
-<section>
-  <div>
+<div class="ai-section">
+  <div class="page-header">
     <h2>AI Food Suggestions</h2>
     <p class="sub-text">
-      AI-powered food suggestions tailored by meal type, dietary preference, and
-      global cuisine.
+      AI-powered food suggestions tailored by meal type, dietary preference, and global cuisine.
     </p>
   </div>
-  <div class="filter-container">
-    <div class="meal-filter">
-      @for (filter of filters.mealFilters; track $index) {
-        <button
-          [class.selected]="filter === selected.mealFilter"
-          (click)="addMealFilter(filter)"
-        >
-          {{ filter }}
-        </button>
-      }
+
+  <!-- Filters -->
+  <div class="filters-card">
+    <div class="filter-group">
+      <div class="filter-label">Meal</div>
+      <div class="btn-group">
+        @for (filter of filters.mealFilters; track $index) {
+          <button
+            [class.selected]="filter === selected.mealFilter"
+            (click)="addMealFilter(filter)"
+          >
+            {{ filter }}
+          </button>
+        }
+      </div>
     </div>
-    <div class="food-filter">
-      @for (filter of filters.foodFilters; track $index) {
-        <button
-          [class.selected]="filter === selected.foodFilter"
-          (click)="addFoodFilter(filter)"
-        >
-          {{ filter }}
-        </button>
-      }
+
+    <div class="filter-group">
+      <div class="filter-label">Diet</div>
+      <div class="btn-group">
+        @for (filter of filters.foodFilters; track $index) {
+          <button
+            [class.selected]="filter === selected.foodFilter"
+            (click)="addFoodFilter(filter)"
+          >
+            {{ filter }}
+          </button>
+        }
+      </div>
     </div>
-    <div class="cuisine-filter">
-      @for (filter of filters.cuisineFilters; track $index) {
-        <button
-          [class.selected]="filter === selected.cuisineFilter"
-          (click)="addCuisineFilter(filter)"
-        >
-          {{ filter }}
-        </button>
-      }
+
+    <div class="filter-group">
+      <div class="filter-label">Cuisine</div>
+      <div class="btn-group">
+        @for (filter of filters.cuisineFilters; track $index) {
+          <button
+            [class.selected]="filter === selected.cuisineFilter"
+            (click)="addCuisineFilter(filter)"
+          >
+            {{ filter }}
+          </button>
+        }
+      </div>
     </div>
   </div>
-  <button class="suggest-btn" (click)="suggest()">Suggest Food</button>
+
+  <button class="suggest-btn" (click)="suggest()">Get Suggestions</button>
 
   @if (isLoading) {
-    <div class="loader">
-      <div class="line"></div>
-    </div>
+    <div class="loader"></div>
   } @else if (isError) {
     <div class="err-msg">Something went wrong. Please try again.</div>
   } @else {
-    @for (suggestFood of aiFoodSuggests; track $index) {
-      <div class="food-suggest">
-        <p>
-          <b>{{ $index + 1 }}) {{ suggestFood.name }}</b>
-        </p>
-        <p class="sub-text">{{ suggestFood.description }}</p>
-        <div class="macronutrients">
-          <p>
-            Calories
-            <span class="sub-text">~{{ suggestFood.calories.total }}</span>
-          </p>
-          <p>
-            Protein
-            <span class="sub-text"
-              >~{{ suggestFood.macronutrients.protein.total }}g</span
-            >
-          </p>
-          <p>
-            Carbs
-            <span class="sub-text"
-              >~{{ suggestFood.macronutrients.carbs.total }}g</span
-            >
-          </p>
-          <p>
-            Fat
-            <span class="sub-text"
-              >~{{ suggestFood.macronutrients.fat.total }}g</span
-            >
-          </p>
+    <div class="results-list">
+      @for (suggestFood of aiFoodSuggests; track $index) {
+        <div class="food-card">
+          <p class="food-name">{{ $index + 1 }}. {{ suggestFood.name }}</p>
+          <p class="food-desc">{{ suggestFood.description }}</p>
+          <div class="macros-row">
+            <span class="macro-item">Calories <strong>~{{ suggestFood.calories.total }}</strong></span>
+            <span class="macro-item">Protein <strong>~{{ suggestFood.macronutrients.protein.total }}g</strong></span>
+            <span class="macro-item">Carbs <strong>~{{ suggestFood.macronutrients.carbs.total }}g</strong></span>
+            <span class="macro-item">Fat <strong>~{{ suggestFood.macronutrients.fat.total }}g</strong></span>
+          </div>
         </div>
-      </div>
-    }
+      }
+    </div>
   }
-</section>
+</div>

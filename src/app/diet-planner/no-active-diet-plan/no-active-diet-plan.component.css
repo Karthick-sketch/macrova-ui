@@ -1,24 +1,64 @@
-.no-diet-plan-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 2rem;
+/* ── No Active Diet Plan ────────────────────────────── */
+.no-plan-wrapper {
+  max-width: 36rem;
+  margin: var(--space-2xl) auto;
+  text-align: center;
 }
 
-.past-plan-btn-container {
-  display: flex;
-  gap: 1rem;
+.no-plan-img {
+  width: 10rem;
+  height: auto;
+  opacity: 0.7;
+  margin-bottom: var(--space-lg);
 }
 
-.past-plan-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 1rem;
+.no-plan-wrapper h2 {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  margin-bottom: var(--space-sm);
 }
 
-.past-plan-container > .plan-detail {
-  border: 1px solid gray;
-  border-radius: 8px;
-  padding: 1rem;
+.no-plan-wrapper p {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-xs);
+}
+
+/* ── Past Plan Card ────────────────────────────────── */
+.past-plan-card {
+  margin: var(--space-lg) auto 0;
+  padding: var(--space-lg);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  text-align: left;
+}
+
+.past-plan-title {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: var(--space-xs);
+}
+
+.past-plan-meta {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  margin: 0 0 var(--space-md) 0;
+}
+
+.past-plan-card > p {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-md);
+}
+
+.plan-actions {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.no-plan-actions {
+  margin-top: var(--space-lg);
 }
