@@ -1,0 +1,125 @@
+/* ── Diet Plan Form ─────────────────────────────────── */
+.form-container {
+  max-width: 38rem;
+  margin: 0 auto;
+}
+
+.page-header {
+  margin-bottom: var(--space-lg);
+}
+
+.page-header h2 {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  margin-bottom: var(--space-xs);
+}
+
+.form-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+}
+
+/* ── Field Groups ──────────────────────────────────── */
+.field-group {
+  margin-bottom: var(--space-md);
+}
+
+.field-group > p,
+.field-label {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text);
+  margin: 0 0 var(--space-xs) 0;
+}
+
+.input-field {
+  width: 100% !important;
+}
+
+/* ── Toggle Button Groups ──────────────────────────── */
+.toggle-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-top: var(--space-xs);
+}
+
+.toggle-group button {
+  padding: 0.45rem 1rem;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  font-family: inherit;
+  color: var(--color-text-muted);
+  background-color: var(--color-input-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.toggle-group button:hover {
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+  border-color: var(--color-primary-mid);
+}
+
+.toggle-group button.selected {
+  color: #fff;
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+/* ── Required Star / Info ──────────────────────────── */
+.red-star {
+  color: var(--color-danger);
+  font-size: var(--font-size-xs);
+  margin-left: 2px;
+}
+
+.field-info {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-light);
+  margin-left: var(--space-xs);
+}
+
+/* ── Divider ───────────────────────────────────────── */
+.field-divider {
+  height: 1px;
+  background-color: var(--color-border);
+  margin: var(--space-md) 0;
+}
+
+/* ── Form Submit ───────────────────────────────────── */
+.form-footer {
+  margin-top: var(--space-lg);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-border);
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 0.7rem;
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  font-family: inherit;
+  color: #fff;
+  background-color: var(--color-primary);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.submit-btn:hover {
+  background-color: var(--color-primary-dark);
+}
+
+/* ── Validation Error ──────────────────────────────── */
+.invalid-field {
+  margin-top: var(--space-sm);
+  font-size: var(--font-size-sm);
+  color: var(--color-danger);
+  text-align: center;
+}

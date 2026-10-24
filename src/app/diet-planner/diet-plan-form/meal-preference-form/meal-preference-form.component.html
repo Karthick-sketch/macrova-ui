@@ -1,0 +1,51 @@
+<div class="form-container">
+  <div class="page-header">
+    <h2>Meal Preferences</h2>
+  </div>
+
+  <div class="form-card">
+    <!-- Meal Preference -->
+    <div class="field-group">
+      <p>Meal Preference <span class="red-star">*</span></p>
+      <input
+        type="text"
+        class="input-field"
+        placeholder="Describe the diet plan's name or goal"
+        [(ngModel)]="dietPlanDTO.title"
+      />
+    </div>
+
+    <!-- Number of Meals -->
+    <div class="field-group">
+      <p>How many meals per day? <span class="red-star">*</span></p>
+      <div class="toggle-group">
+        @for (plan of plans; track $index) {
+          <button
+            [class.selected]="plan.value === selected.plan"
+            (click)="selectDietPlan(plan.value)"
+          >
+            {{ plan.key }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Evening Snack -->
+    <div class="field-group">
+      <p>Do you prefer an evening snack? <span class="red-star">*</span></p>
+      <input
+        type="number"
+        class="input-field"
+        placeholder="Enter your age in years"
+        [(ngModel)]="dietPlanDTO.age"
+      />
+    </div>
+
+    <!-- Submit -->
+    <div class="form-footer">
+      <button class="submit-btn" (click)="createDietPlan()">
+        Preview My Plan &rarr;
+      </button>
+    </div>
+  </div>
+</div>

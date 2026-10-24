@@ -1,20 +1,25 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DietPlanService } from '../diet-plan-service';
 import { DietPlanDTO } from '../dto/diet-plan.dto';
-import { Plan } from '../enum/plan.enum';
-import { Gender } from '../enum/gender.enum';
-import { Goal } from '../enum/goal.enum';
-import { Activity } from '../enum/activity.enum';
-import { DropdownModel } from '../../shared/model/dropdown.model';
 import { ToastComponent } from '../../toast/toast.component';
+import { BodyMetricsFormComponent } from './body-metrics-form/body-metrics-form.component';
+import { CreatePlanStage } from '../enum/create-plan-stage';
+import { DietPlanPreviewFormComponent } from './diet-plan-preview-form/diet-plan-preview-form.component';
+import { DietPlanSelectionFormComponent } from './diet-plan-selection-form/diet-plan-selection-form.component';
+import { MealPreferenceFormComponent } from './meal-preference-form/meal-preference-form.component';
 
 @Component({
   selector: 'app-diet-plan-form',
   templateUrl: './diet-plan-form.component.html',
   styleUrl: './diet-plan-form.component.css',
-  imports: [FormsModule, ToastComponent],
+  imports: [
+    ToastComponent,
+    BodyMetricsFormComponent,
+    DietPlanPreviewFormComponent,
+    DietPlanSelectionFormComponent,
+    MealPreferenceFormComponent,
+  ],
 })
 export class DietPlanFormComponent implements OnInit {
   @ViewChild(ToastComponent) toast!: ToastComponent;
@@ -22,32 +27,8 @@ export class DietPlanFormComponent implements OnInit {
   dietPlanDTO!: DietPlanDTO;
   dietPlanId: string | null = null;
 
-  plans = [
-    new DropdownModel('Weight Loss', Plan.WEIGHT_LOSS),
-    new DropdownModel('Weight Gain', Plan.WEIGHT_GAIN),
-  ];
-  genders = [
-    new DropdownModel('Male', Gender.MALE),
-    new DropdownModel('Female', Gender.FEMALE),
-  ];
-  goals = [
-    new DropdownModel('Mild', Goal.MILD),
-    new DropdownModel('Moderate', Goal.MODERATE),
-    new DropdownModel('Aggressive', Goal.AGGRESSIVE),
-  ];
-  activities = [
-    new DropdownModel('Sedentary', Activity.SEDENTARY),
-    new DropdownModel('Light', Activity.LIGHT),
-    new DropdownModel('Moderate', Activity.MODERATE),
-    new DropdownModel('Hard', Activity.HARD),
-    new DropdownModel('Athlete', Activity.ATHLETE),
-  ];
-  selected = {
-    plan: Plan.WEIGHT_LOSS,
-    gender: Gender.MALE,
-    goal: Goal.MILD,
-    activity: Activity.SEDENTARY,
-  };
+  planStage = CreatePlanStage;
+  currentStage: CreatePlanStage = CreatePlanStage.BODY_METRICS;
 
   constructor(
     private router: Router,
@@ -68,10 +49,7 @@ export class DietPlanFormComponent implements OnInit {
         this.dietPlanService.getDietPlanById(this.dietPlanId).subscribe({
           next: (dietPlanDTO: DietPlanDTO) => {
             this.dietPlanDTO = dietPlanDTO;
-            this.selected.plan = this.dietPlanDTO.plan;
-            this.selected.gender = this.dietPlanDTO.gender;
-            this.selected.goal = this.dietPlanDTO.goal;
-            this.selected.activity = this.dietPlanDTO.activity;
+            // TODO: update current stage based on which form is not submitted
           },
           error: ({ status, error }) => {
             if (status === 404) {
@@ -81,127 +59,5 @@ export class DietPlanFormComponent implements OnInit {
         });
       }
     });
-  }
-
-  createDietPlan() {
-    this.mapSelected();
-    if (this.validateFields()) {
-      this.dietPlanService.createDietPlan(this.dietPlanDTO).subscribe({
-        next: () => {
-          this.router.navigate(['/']);
-        },
-        error: ({ status, error }) => {
-          if (status === 400) {
-            this.toast.showError(error.error[0]);
-          }
-        },
-      });
-    }
-  }
-
-  updateDietPlan() {
-    this.mapSelected();
-    if (this.validateFields()) {
-      this.dietPlanService.updateDietPlan(this.dietPlanDTO).subscribe({
-        next: () => {
-          this.router.navigate(['/']);
-        },
-        error: ({ status, error }) => {
-          if (status === 400) {
-            this.toast.showError(error.error[0]);
-          }
-        },
-      });
-    }
-  }
-
-  private validateFields() {
-    if (!this.dietPlanDTO.title) {
-      this.toast.showError('Title is empty');
-      return false;
-    }
-    const age = this.dietPlanDTO.age;
-    if (!age || age < 18 || age > 65) {
-      this.toast.showError('Age requirement: 18-65');
-      return false;
-    }
-    const height = this.dietPlanDTO.height;
-    if (!height || height < 140 || height > 210) {
-      this.toast.showError('Height requirement: 140-210cm');
-      return false;
-    }
-    const weight = this.dietPlanDTO.weight;
-    if (!weight || weight < 40 || weight > 180) {
-      this.toast.showError('Weight requirement: 40-180kg');
-      return false;
-    }
-    if (!this.validateTargetWeight(this.dietPlanDTO.targetWeight)) {
-      return false;
-    }
-    const duration = this.dietPlanDTO.duration;
-    if (!duration || duration < 14 || duration > 730) {
-      this.toast.showError('Duration requirement: 14-730 days');
-      return false;
-    }
-    return true;
-  }
-
-  private validateTargetWeight(targetWeight: number) {
-    if (!targetWeight) {
-      this.toast.showError('Target Weight is empty');
-      return false;
-    } else if (this.dietPlanDTO.plan === Plan.WEIGHT_LOSS) {
-      if (targetWeight >= this.dietPlanDTO.weight) {
-        this.toast.showError('Target weight must be less than current weight');
-        return false;
-      } else if (targetWeight < 40) {
-        this.toast.showError(
-          'Target weight must be greater than or equal to 40kg',
-        );
-        return false;
-      }
-    } else if (this.dietPlanDTO.plan === Plan.WEIGHT_GAIN) {
-      if (targetWeight <= this.dietPlanDTO.weight) {
-        this.toast.showError(
-          'Target weight must be greater than current weight',
-        );
-        return false;
-      } else if (targetWeight > 110) {
-        this.toast.showError(
-          'Target weight must be less than or equal to 110kg',
-        );
-        return false;
-      }
-    }
-    return true;
-  }
-
-  private mapSelected() {
-    this.dietPlanDTO.plan = this.selected.plan;
-    this.dietPlanDTO.gender = this.selected.gender;
-    this.dietPlanDTO.goal = this.selected.goal;
-    this.dietPlanDTO.activity = this.selected.activity;
-  }
-
-  selectDietPlan(plan: Plan) {
-    this.selected.plan = plan;
-  }
-
-  selectGender(gender: Gender) {
-    this.selected.gender = gender;
-  }
-
-  selectGoal(goal: Goal) {
-    this.selected.goal = goal;
-  }
-
-  selectActivity(activity: Activity) {
-    this.selected.activity = activity;
-  }
-
-  getTargetWeightPlaceholder() {
-    let plan =
-      this.selected.plan === Plan.WEIGHT_LOSS ? 'weight loss' : 'weight gain';
-    return `Target ${plan} in kilograms`;
   }
 }

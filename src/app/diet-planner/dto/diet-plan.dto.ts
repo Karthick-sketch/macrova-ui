@@ -16,3 +16,14 @@ export class DietPlanDTO {
   duration!: number;
   activity!: Activity;
 }
+
+export interface BodyMetricsDTO {
+  title: string;
+  plan: Plan;
+  gender: Gender;
+  age: number;
+  height: number;
+  weight: number;
+  targetWeight: number;
+  activity: Activity;
+}

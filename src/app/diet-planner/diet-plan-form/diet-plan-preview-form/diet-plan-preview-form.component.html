@@ -1,0 +1,33 @@
+<div class="form-container">
+  <div class="page-header">
+    @if (dietPlanId) {
+      <h2>Update Diet Plan</h2>
+    } @else {
+      <h2>Create Diet Plan</h2>
+    }
+  </div>
+
+  <div class="form-card">
+    <div class="field-group">
+      <p>Daily Calories 2,100 kcal</p>
+    </div>
+    <div class="field-group">
+      <p>Diet Type High Protein</p>
+    </div>
+    <div class="field-group">
+      <p>Meals 3 per day</p>
+    </div>
+    <div class="field-group">
+      <p>Snack 1 per day</p>
+    </div>
+    <div class="field-group">
+      <p>Duration 60 days</p>
+    </div>
+    <!-- Submit -->
+    <div class="form-footer">
+      <button class="submit-btn" (click)="createDietPlan()">
+        Generate My Diet Plan
+      </button>
+    </div>
+  </div>
+</div>

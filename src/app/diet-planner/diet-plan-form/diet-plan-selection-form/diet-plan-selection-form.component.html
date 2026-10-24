@@ -1,0 +1,44 @@
+<div class="form-container">
+  <div class="page-header">
+    @if (dietPlanId) {
+      <h2>Update Diet Plan</h2>
+    } @else {
+      <h2>Create Diet Plan</h2>
+    }
+  </div>
+
+  <div class="form-card">
+    <!-- Goal -->
+    <div class="field-group">
+      <p>Goal <span class="red-star">*</span></p>
+      <div class="toggle-group">
+        @for (goal of goals; track $index) {
+          <button
+            [class.selected]="goal.value === selected.goal"
+            (click)="selectGoal(goal.value)"
+          >
+            {{ goal.key }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Duration -->
+    <div class="field-group">
+      <p>Duration <span class="red-star">*</span></p>
+      <input
+        type="number"
+        class="input-field"
+        placeholder="Number of days to achieve the goal"
+        [(ngModel)]="dietPlanDTO.duration"
+      />
+    </div>
+
+    <!-- Submit -->
+    <div class="form-footer">
+      <button class="submit-btn" (click)="createDietPlan()">
+        Proceed to Diet Preferences &rarr;
+      </button>
+    </div>
+  </div>
+</div>

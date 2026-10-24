@@ -1,0 +1,123 @@
+<div class="form-container">
+  <div class="page-header">
+    <h2>Create Diet Plan</h2>
+  </div>
+
+  <div class="form-card">
+    <!-- Title -->
+    <div class="field-group">
+      <p>Title <span class="red-star">*</span></p>
+      <input
+        type="text"
+        class="input-field"
+        placeholder="Describe the diet plan's name or goal"
+        [(ngModel)]="bodyMetrics.title"
+      />
+    </div>
+
+    <!-- Plan Type -->
+    <div class="field-group">
+      <p>Plan <span class="red-star">*</span></p>
+      <div class="toggle-group">
+        @for (plan of plans; track $index) {
+          <button
+            [class.selected]="plan.value === selected.plan"
+            (click)="selectDietPlan(plan.value)"
+          >
+            {{ plan.key }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Age -->
+    <div class="field-group">
+      <p>
+        Age <span class="red-star">*</span>
+        <span class="field-info">(18–65 years)</span>
+      </p>
+      <input
+        type="number"
+        class="input-field"
+        placeholder="Enter your age in years"
+        [(ngModel)]="bodyMetrics.age"
+      />
+    </div>
+
+    <!-- Gender -->
+    <div class="field-group">
+      <p>Gender <span class="red-star">*</span></p>
+      <div class="toggle-group">
+        @for (gender of genders; track $index) {
+          <button
+            [class.selected]="gender.value === selected.gender"
+            (click)="selectGender(gender.value)"
+          >
+            {{ gender.key }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Height -->
+    <div class="field-group">
+      <p>
+        Height <span class="red-star">*</span>
+        <span class="field-info">(140–210 cm)</span>
+      </p>
+      <input
+        type="number"
+        class="input-field"
+        placeholder="Enter your height in centimeters"
+        [(ngModel)]="bodyMetrics.height"
+      />
+    </div>
+
+    <!-- Weight -->
+    <div class="field-group">
+      <p>
+        Weight <span class="red-star">*</span>
+        <span class="field-info">(40–180 kg)</span>
+      </p>
+      <input
+        type="number"
+        class="input-field"
+        placeholder="Enter your current weight"
+        [(ngModel)]="bodyMetrics.weight"
+      />
+    </div>
+
+    <!-- Target Weight -->
+    <div class="field-group">
+      <p>Target Weight <span class="red-star">*</span></p>
+      <input
+        type="number"
+        class="input-field"
+        placeholder="Target weight in kilograms"
+        [(ngModel)]="bodyMetrics.targetWeight"
+      />
+    </div>
+
+    <!-- Activity -->
+    <div class="field-group">
+      <p>Activity Level <span class="red-star">*</span></p>
+      <div class="toggle-group">
+        @for (activity of activities; track $index) {
+          <button
+            [class.selected]="activity.value === selected.activity"
+            (click)="selectActivity(activity.value)"
+          >
+            {{ activity.key }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Submit -->
+    <div class="form-footer">
+      <button class="submit-btn" (click)="calculateCalories()">
+        Calculate My Calories &rarr;
+      </button>
+    </div>
+  </div>
+</div>
