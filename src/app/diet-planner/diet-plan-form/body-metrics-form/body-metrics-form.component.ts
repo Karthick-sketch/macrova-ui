@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, output, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DietPlanService } from '../../diet-plan-service';
-import { BodyMetricsDTO } from '../../dto/diet-plan.dto';
+import { BodyMetricsDTO, TdeeDTO } from '../../dto/diet-plan.dto';
 import { Plan } from '../../enum/plan.enum';
 import { Gender } from '../../enum/gender.enum';
 import { Activity } from '../../enum/activity.enum';
@@ -17,6 +17,8 @@ import { ToastComponent } from '../../../toast/toast.component';
 })
 export class BodyMetricsFormComponent implements OnInit {
   @ViewChild(ToastComponent) toast!: ToastComponent;
+
+  tdee = output<number>();
 
   bodyMetrics = {} as BodyMetricsDTO;
   dietPlanId: string | null = null;
@@ -77,8 +79,10 @@ export class BodyMetricsFormComponent implements OnInit {
   calculateCalories() {
     this.mapSelected();
     if (this.validateFields()) {
-      this.dietPlanService.calculateCalories(this.bodyMetrics).subscribe({
-        next: () => {},
+      this.dietPlanService.calculateTDEE(this.bodyMetrics).subscribe({
+        next: (tdeeDTO: TdeeDTO) => {
+          this.tdee.emit(tdeeDTO.tdee);
+        },
         error: ({ status, error }) => {
           if (status === 400) {
             this.toast.showError(error.error[0]);

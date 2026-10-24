@@ -8,6 +8,12 @@
   </div>
 
   <div class="form-card">
+    <!-- TDEE -->
+    <div>
+      <p>Your daily energy needs</p>
+      <span>~{{ tdee() | number }}kcal</span>
+    </div>
+
     <!-- Goal -->
     <div class="field-group">
       <p>Goal <span class="red-star">*</span></p>

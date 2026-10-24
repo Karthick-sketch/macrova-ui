@@ -27,3 +27,7 @@ export interface BodyMetricsDTO {
   targetWeight: number;
   activity: Activity;
 }
+
+export interface TdeeDTO {
+  tdee: number;
+}

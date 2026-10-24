@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import { DietPlanService } from '../diet-plan-service';
 import { DietPlanDTO } from '../dto/diet-plan.dto';
 import { ToastComponent } from '../../toast/toast.component';
+import { PlanStatus } from '../enum/plan-status';
 import { BodyMetricsFormComponent } from './body-metrics-form/body-metrics-form.component';
-import { CreatePlanStage } from '../enum/create-plan-stage';
 import { DietPlanPreviewFormComponent } from './diet-plan-preview-form/diet-plan-preview-form.component';
 import { DietPlanSelectionFormComponent } from './diet-plan-selection-form/diet-plan-selection-form.component';
 import { MealPreferenceFormComponent } from './meal-preference-form/meal-preference-form.component';
@@ -24,11 +24,13 @@ import { MealPreferenceFormComponent } from './meal-preference-form/meal-prefere
 export class DietPlanFormComponent implements OnInit {
   @ViewChild(ToastComponent) toast!: ToastComponent;
 
+  tdee: number = 0;
+
   dietPlanDTO!: DietPlanDTO;
   dietPlanId: string | null = null;
 
-  planStage = CreatePlanStage;
-  currentStage: CreatePlanStage = CreatePlanStage.BODY_METRICS;
+  planStatus = PlanStatus;
+  currentPlanStatus: PlanStatus = PlanStatus.BODY_METRICS;
 
   constructor(
     private router: Router,
@@ -59,5 +61,10 @@ export class DietPlanFormComponent implements OnInit {
         });
       }
     });
+  }
+
+  onTdeeReceived($event: number) {
+    this.tdee = $event;
+    this.currentPlanStatus = PlanStatus.PLAN_SELECTION;
   }
 }

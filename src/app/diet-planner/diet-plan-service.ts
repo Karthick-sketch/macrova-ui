@@ -4,7 +4,7 @@ import { DietPlanModel } from './model/diet-plan.model';
 import { DietPlanTrackModel } from './model/diet-plan-track.model';
 import { MetricsModel } from './model/metrics.model';
 import { DietPlanOverviewModel } from './model/diet-plan-overview.model';
-import { BodyMetricsDTO, DietPlanDTO } from './dto/diet-plan.dto';
+import { BodyMetricsDTO, DietPlanDTO, TdeeDTO } from './dto/diet-plan.dto';
 import { MacrosDTO } from './dto/macros.dto';
 import { DietPlanHistoryDTO } from './dto/diet-plan-history.dto';
 
@@ -36,11 +36,8 @@ export class DietPlanService {
     return this.http.get<DietPlanDTO>(`${this.basePath}/${dietPlanId}`);
   }
 
-  calculateCalories(bodyMetricsDTO: BodyMetricsDTO) {
-    return this.http.post<number>(
-      `${this.basePath}/body-metrics`,
-      bodyMetricsDTO,
-    );
+  calculateTDEE(bodyMetricsDTO: BodyMetricsDTO) {
+    return this.http.post<TdeeDTO>(`${this.basePath}/tdee`, bodyMetricsDTO);
   }
 
   createDietPlan(dietPlanDTO: DietPlanDTO) {

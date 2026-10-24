@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, input, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DietPlanService } from '../../diet-plan-service';
@@ -9,15 +9,18 @@ import { Goal } from '../../enum/goal.enum';
 import { Activity } from '../../enum/activity.enum';
 import { DropdownModel } from '../../../shared/model/dropdown.model';
 import { ToastComponent } from '../../../toast/toast.component';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-diet-plan-selection-form',
   templateUrl: './diet-plan-selection-form.component.html',
   styleUrl: './diet-plan-selection-form.component.css',
-  imports: [FormsModule, ToastComponent],
+  imports: [FormsModule, ToastComponent, DecimalPipe],
 })
 export class DietPlanSelectionFormComponent implements OnInit {
   @ViewChild(ToastComponent) toast!: ToastComponent;
+
+  tdee = input.required<number>();
 
   dietPlanDTO!: DietPlanDTO;
   dietPlanId: string | null = null;

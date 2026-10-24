@@ -1,4 +1,4 @@
-export enum CreatePlanStage {
+export enum PlanStatus {
   BODY_METRICS = 'BODY_METRICS',
   PLAN_SELECTION = 'PLAN_SELECTION',
   MEAL_PREFERENCE = 'MEAL_PREFERENCE',
