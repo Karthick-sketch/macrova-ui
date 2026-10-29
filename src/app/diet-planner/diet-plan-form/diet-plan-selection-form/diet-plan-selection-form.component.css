@@ -4,6 +4,32 @@
   margin: 0 auto;
 }
 
+.tdee-wrapper {
+  margin-bottom: var(--space-lg);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+}
+
+.weight-details-arrow {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+
+.tdee-container>p:last-child {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.weight-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-xs);
+}
+
 .page-header {
   margin-bottom: var(--space-lg);
 }
@@ -26,7 +52,7 @@
   margin-bottom: var(--space-md);
 }
 
-.field-group > p,
+.field-group>p,
 .field-label {
   font-size: var(--font-size-sm);
   font-weight: 500;

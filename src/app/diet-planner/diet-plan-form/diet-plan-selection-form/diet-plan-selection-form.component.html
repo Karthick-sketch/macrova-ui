@@ -1,17 +1,30 @@
 <div class="form-container">
   <div class="page-header">
-    @if (dietPlanId) {
-      <h2>Update Diet Plan</h2>
-    } @else {
-      <h2>Create Diet Plan</h2>
-    }
+    <h2>Create Diet Plan</h2>
   </div>
 
   <div class="form-card">
-    <!-- TDEE -->
-    <div>
-      <p>Your daily energy needs</p>
-      <span>~{{ tdee() | number }}kcal</span>
+    <div class="tdee-wrapper">
+      <!-- TDEE -->
+      <div class="tdee-container">
+        <p>Your Daily Energy Needs</p>
+        <p>~{{ tdee() | number }}kcal</p>
+      </div>
+
+      <hr />
+
+      <!-- Weight Details -->
+      <div class="weight-details">
+        <div>
+          <p>Current Weight</p>
+          <p><strong>{{ 75 | number }}kg</strong></p>
+        </div>
+        <div class="weight-details-arrow">&rarr;</div>
+        <div>
+          <p>Target Weight</p>
+          <p><strong>{{ 70 | number }}kg</strong></p>
+        </div>
+      </div>
     </div>
 
     <!-- Goal -->
@@ -19,12 +32,9 @@
       <p>Goal <span class="red-star">*</span></p>
       <div class="toggle-group">
         @for (goal of goals; track $index) {
-          <button
-            [class.selected]="goal.value === selected.goal"
-            (click)="selectGoal(goal.value)"
-          >
-            {{ goal.key }}
-          </button>
+        <button [class.selected]="goal.value === selected.goal" (click)="selectGoal(goal.value)">
+          {{ goal.key }}
+        </button>
         }
       </div>
     </div>
@@ -32,12 +42,8 @@
     <!-- Duration -->
     <div class="field-group">
       <p>Duration <span class="red-star">*</span></p>
-      <input
-        type="number"
-        class="input-field"
-        placeholder="Number of days to achieve the goal"
-        [(ngModel)]="dietPlanDTO.duration"
-      />
+      <input type="number" class="input-field" placeholder="Number of days to achieve the goal"
+        [(ngModel)]="dietPlanDTO.duration" />
     </div>
 
     <!-- Submit -->
