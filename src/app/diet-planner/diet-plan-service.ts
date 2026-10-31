@@ -4,7 +4,7 @@ import { DietPlanModel } from './model/diet-plan.model';
 import { DietPlanTrackModel } from './model/diet-plan-track.model';
 import { MetricsModel } from './model/metrics.model';
 import { DietPlanOverviewModel } from './model/diet-plan-overview.model';
-import { BodyMetricsDTO, DietPlanDTO, TdeeDTO } from './dto/diet-plan.dto';
+import { BodyMetricsRequest, BodyMetricsResponse, DietPlanDTO } from './dto/diet-plan.dto';
 import { MacrosDTO } from './dto/macros.dto';
 import { DietPlanHistoryDTO } from './dto/diet-plan-history.dto';
 
@@ -14,7 +14,7 @@ import { DietPlanHistoryDTO } from './dto/diet-plan-history.dto';
 export class DietPlanService {
   basePath = '/diet-plan';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   isDietPlanReachedDuration() {
     return this.http.get<boolean>(`${this.basePath}/status`);
@@ -36,8 +36,8 @@ export class DietPlanService {
     return this.http.get<DietPlanDTO>(`${this.basePath}/${dietPlanId}`);
   }
 
-  calculateTDEE(bodyMetricsDTO: BodyMetricsDTO) {
-    return this.http.post<TdeeDTO>(`${this.basePath}/tdee`, bodyMetricsDTO);
+  calculateTDEE(bodyMetricsDTO: BodyMetricsRequest) {
+    return this.http.post<BodyMetricsResponse>(`${this.basePath}/tdee`, bodyMetricsDTO);
   }
 
   createDietPlan(dietPlanDTO: DietPlanDTO) {

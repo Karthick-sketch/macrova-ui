@@ -1,0 +1,81 @@
+<div class="form-container">
+  <div class="page-header">
+    <h2>Create Diet Plan</h2>
+  </div>
+
+  <div class="form-card">
+    <div class="tdee-wrapper">
+      <!-- TDEE -->
+      <div class="tdee-container">
+        <p>Your Daily Energy Needs</p>
+        <p>~{{ tdee() | number }}kcal</p>
+      </div>
+
+      <hr />
+
+      <!-- Weight Details -->
+      <div class="weight-details">
+        <div>
+          <p>Current Weight</p>
+          <p><strong>{{ 75 | number }}kg</strong></p>
+        </div>
+        <div class="weight-details-arrow">&rarr;</div>
+        <div>
+          <p>Target Weight</p>
+          <p><strong>{{ 70 | number }}kg</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Goal -->
+    <div class="field-group">
+      <p>Goal <span class="red-star">*</span></p>
+      <div class="goal-card" [class.selected-goal]="selectedGoal.goal === Goal.MILD" (click)="selectGoal(Goal.MILD)">
+        <div class="goal-title goal-mild">
+          <span>Mild</span>
+          <span>Easier to sustain</span>
+        </div>
+        <p class="sub-text">A smaller calorie deficit. Suitable for users who prefer a gradual approach.</p>
+        <p><strong>~10% deficit</strong></p>
+      </div>
+      <div class="goal-card" [class.selected-goal]="selectedGoal.goal === Goal.MODERATE"
+        (click)="selectGoal(Goal.MODERATE)">
+        <div class="goal-title goal-moderate">
+          <span>Moderate</span>
+          <span>Recommended default</span>
+        </div>
+        <p class="sub-text">A balanced approach to weight loss while supporting energy and workout recovery.</p>
+        <p><strong>~20% deficit</strong></p>
+      </div>
+      <div class="goal-card" [class.selected-goal]="selectedGoal.goal === Goal.AGGRESSIVE"
+        (click)="selectGoal(Goal.AGGRESSIVE)">
+        <div class="goal-title goal-aggressive">
+          <span>Aggressive</span>
+          <span>More restrictive</span>
+        </div>
+        <p class="sub-text">A larger deficit. Requires additional safety checks and should not be suitable for
+          everyone.</p>
+        <p><strong>~25% deficit</strong></p>
+      </div>
+    </div>
+
+    <!-- Duration -->
+    <div class="field-group">
+      <p>Duration <span class="red-star">*</span></p>
+      <div class="toggle-group">
+        @for (duration of durations; track $index) {
+        <button [class.selected]="duration === selectedGoal.duration" (click)="selectDuration(duration)">
+          {{ duration }} Days
+        </button>
+        }
+      </div>
+    </div>
+
+    <!-- Submit -->
+    <div class="form-footer">
+      <button class="submit-btn" (click)="submit()">
+        Proceed to Diet Preferences &rarr;
+      </button>
+    </div>
+  </div>
+</div>

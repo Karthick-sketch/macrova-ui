@@ -4,28 +4,33 @@
   </div>
 
   <div class="form-card">
-    <!-- Meal Preference -->
+    <!-- Macronutrients Preference -->
+    <div class="field-group">
+      <p>Macronutrients Preference <span class="red-star">*</span></p>
+      <div>
+        <span>Balanced</span>
+        <span>High Protein</span>
+        <span>Low Carb</span>
+        <span>Low Fat</span>
+        <span>Custom</span>
+      </div>
+    </div>
+
     <div class="field-group">
       <p>Meal Preference <span class="red-star">*</span></p>
-      <input
-        type="text"
-        class="input-field"
-        placeholder="Describe the diet plan's name or goal"
-        [(ngModel)]="dietPlanDTO.title"
-      />
+      <div>
+        @for (mealType of mealTypes; track $index) {
+        <span (click)="selectMealType(mealType.key)">{{ mealType.value }}</span>
+        }
+      </div>
     </div>
 
     <!-- Number of Meals -->
     <div class="field-group">
       <p>How many meals per day? <span class="red-star">*</span></p>
       <div class="toggle-group">
-        @for (plan of plans; track $index) {
-          <button
-            [class.selected]="plan.value === selected.plan"
-            (click)="selectDietPlan(plan.value)"
-          >
-            {{ plan.key }}
-          </button>
+        @for (mealCount of mealCounts; track $index) {
+        <span (click)="selectNumberOfMeals(mealCount)">{{ mealCount }}</span>
         }
       </div>
     </div>
@@ -33,17 +38,15 @@
     <!-- Evening Snack -->
     <div class="field-group">
       <p>Do you prefer an evening snack? <span class="red-star">*</span></p>
-      <input
-        type="number"
-        class="input-field"
-        placeholder="Enter your age in years"
-        [(ngModel)]="dietPlanDTO.age"
-      />
+      <div class="toggle-group">
+        <button (click)="selectSnack(true)">Yes</button>
+        <button (click)="selectSnack(false)">No</button>
+      </div>
     </div>
 
     <!-- Submit -->
     <div class="form-footer">
-      <button class="submit-btn" (click)="createDietPlan()">
+      <button class="submit-btn" (click)="submitMealPreferences()">
         Preview My Plan &rarr;
       </button>
     </div>

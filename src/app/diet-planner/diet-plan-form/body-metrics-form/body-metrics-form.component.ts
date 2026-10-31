@@ -1,8 +1,8 @@
-import { Component, OnInit, output, ViewChild } from '@angular/core';
+import { Component, OnInit, output, ViewChild, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DietPlanService } from '../../diet-plan-service';
-import { BodyMetricsDTO, TdeeDTO } from '../../dto/diet-plan.dto';
+import { BodyMetricsRequest, BodyMetricsResponse, DietPlanDTO } from '../../dto/diet-plan.dto';
 import { Plan } from '../../enum/plan.enum';
 import { Gender } from '../../enum/gender.enum';
 import { Activity } from '../../enum/activity.enum';
@@ -18,10 +18,7 @@ import { ToastComponent } from '../../../toast/toast.component';
 export class BodyMetricsFormComponent implements OnInit {
   @ViewChild(ToastComponent) toast!: ToastComponent;
 
-  tdee = output<number>();
-
-  bodyMetrics = {} as BodyMetricsDTO;
-  dietPlanId: string | null = null;
+  bmr = output<BodyMetricsResponse>();
 
   plans = [
     new DropdownModel('Weight Loss', Plan.WEIGHT_LOSS),
@@ -38,9 +35,16 @@ export class BodyMetricsFormComponent implements OnInit {
     new DropdownModel('Hard', Activity.HARD),
     new DropdownModel('Athlete', Activity.ATHLETE),
   ];
-  selected = {
+
+  dietPlanId: string | null = null;
+  bodyMetrics: BodyMetricsRequest = {
+    title: '',
     plan: Plan.WEIGHT_LOSS,
+    age: 0,
     gender: Gender.MALE,
+    height: 0,
+    weight: 0,
+    targetWeight: 0,
     activity: Activity.SEDENTARY,
   };
 
@@ -60,11 +64,8 @@ export class BodyMetricsFormComponent implements OnInit {
         this.router.navigate(['/']);
       } else if (this.dietPlanId) {
         this.dietPlanService.getDietPlanById(this.dietPlanId).subscribe({
-          next: (bodyMetricsDTO: BodyMetricsDTO) => {
-            this.bodyMetrics = bodyMetricsDTO;
-            this.selected.plan = this.bodyMetrics.plan;
-            this.selected.gender = this.bodyMetrics.gender;
-            this.selected.activity = this.bodyMetrics.activity;
+          next: (request: BodyMetricsRequest) => {
+            this.bodyMetrics = request;
           },
           error: ({ status, error }) => {
             if (status === 404) {
@@ -77,11 +78,10 @@ export class BodyMetricsFormComponent implements OnInit {
   }
 
   calculateCalories() {
-    this.mapSelected();
     if (this.validateFields()) {
       this.dietPlanService.calculateTDEE(this.bodyMetrics).subscribe({
-        next: (tdeeDTO: TdeeDTO) => {
-          this.tdee.emit(tdeeDTO.tdee);
+        next: (res: BodyMetricsResponse) => {
+          this.bmr.emit(res);
         },
         error: ({ status, error }) => {
           if (status === 400) {
@@ -164,21 +164,15 @@ export class BodyMetricsFormComponent implements OnInit {
     return true;
   }
 
-  private mapSelected() {
-    this.bodyMetrics.plan = this.selected.plan;
-    this.bodyMetrics.gender = this.selected.gender;
-    this.bodyMetrics.activity = this.selected.activity;
-  }
-
   selectDietPlan(plan: Plan) {
-    this.selected.plan = plan;
+    this.bodyMetrics.plan = plan;
   }
 
   selectGender(gender: Gender) {
-    this.selected.gender = gender;
+    this.bodyMetrics.gender = gender;
   }
 
   selectActivity(activity: Activity) {
-    this.selected.activity = activity;
+    this.bodyMetrics.activity = activity;
   }
 }

@@ -1,14 +1,13 @@
 <app-toast></app-toast>
 <div class="form-container">
   @if (currentPlanStatus === planStatus.BODY_METRICS) {
-    <app-body-metrics-form
-      (tdee)="onTdeeReceived($event)"
-    ></app-body-metrics-form>
+  <app-body-metrics-form (bmr)="onBmrReceived($event)"></app-body-metrics-form>
   } @else if (currentPlanStatus === planStatus.PLAN_SELECTION) {
-    <app-diet-plan-selection-form [tdee]="tdee"></app-diet-plan-selection-form>
+  <app-goal-selection-form [tdee]="tdee" (goalSectionEvent)="onGoalSelected($event)"></app-goal-selection-form>
   } @else if (currentPlanStatus === planStatus.MEAL_PREFERENCE) {
-    <app-meal-preference-form></app-meal-preference-form>
+  <app-meal-preference-form (mealPreferenceEvent)="onMealPreference($event)"></app-meal-preference-form>
   } @else if (currentPlanStatus === planStatus.PREVIEW) {
-    <app-diet-plan-preview-form></app-diet-plan-preview-form>
+  <!-- <app-diet-plan-preview-form [dietPlanDTO]="dietPlanDTO"></app-diet-plan-preview-form> -->
+  <app-diet-plan-preview-form></app-diet-plan-preview-form>
   }
 </div>

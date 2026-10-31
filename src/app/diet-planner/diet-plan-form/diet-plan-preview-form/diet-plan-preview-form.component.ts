@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, input, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DietPlanService } from '../../diet-plan-service';
@@ -53,7 +53,6 @@ export class DietPlanPreviewFormComponent implements OnInit {
     private router: Router,
     private dietPlanService: DietPlanService,
   ) {
-    this.dietPlanDTO = new DietPlanDTO();
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras.state) {
       this.dietPlanId = navigation.extras.state['pastPlanId'];

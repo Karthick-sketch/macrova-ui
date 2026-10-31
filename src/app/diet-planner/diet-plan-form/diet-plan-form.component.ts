@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { DietPlanService } from '../diet-plan-service';
-import { DietPlanDTO } from '../dto/diet-plan.dto';
+import { BodyMetricsResponse, DietPlanDTO, GoalSectionRequest, MealPreferenceRequest } from '../dto/diet-plan.dto';
 import { ToastComponent } from '../../toast/toast.component';
 import { PlanStatus } from '../enum/plan-status';
 import { BodyMetricsFormComponent } from './body-metrics-form/body-metrics-form.component';
 import { DietPlanPreviewFormComponent } from './diet-plan-preview-form/diet-plan-preview-form.component';
-import { DietPlanSelectionFormComponent } from './diet-plan-selection-form/diet-plan-selection-form.component';
+import { GoalSelectionFormComponent } from './goal-selection-form/goal-selection-form.component';
 import { MealPreferenceFormComponent } from './meal-preference-form/meal-preference-form.component';
 
 @Component({
@@ -17,16 +17,16 @@ import { MealPreferenceFormComponent } from './meal-preference-form/meal-prefere
     ToastComponent,
     BodyMetricsFormComponent,
     DietPlanPreviewFormComponent,
-    DietPlanSelectionFormComponent,
+    GoalSelectionFormComponent,
     MealPreferenceFormComponent,
   ],
 })
 export class DietPlanFormComponent implements OnInit {
   @ViewChild(ToastComponent) toast!: ToastComponent;
 
-  tdee: number = 0;
+  tdee = 0;
 
-  dietPlanDTO!: DietPlanDTO;
+  dietPlanDTO = {} as DietPlanDTO;
   dietPlanId: string | null = null;
 
   planStatus = PlanStatus;
@@ -36,7 +36,6 @@ export class DietPlanFormComponent implements OnInit {
     private router: Router,
     private dietPlanService: DietPlanService,
   ) {
-    this.dietPlanDTO = new DietPlanDTO();
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras.state) {
       this.dietPlanId = navigation.extras.state['pastPlanId'];
@@ -63,8 +62,29 @@ export class DietPlanFormComponent implements OnInit {
     });
   }
 
-  onTdeeReceived($event: number) {
-    this.tdee = $event;
+  onBmrReceived($event: BodyMetricsResponse) {
+    this.dietPlanDTO.title = $event.title;
+    this.dietPlanDTO.age = $event.age;
+    this.dietPlanDTO.gender = $event.gender;
+    this.dietPlanDTO.height = $event.height;
+    this.dietPlanDTO.weight = $event.weight;
+    this.dietPlanDTO.targetWeight = $event.targetWeight;
+    this.dietPlanDTO.activity = $event.activity;
+    this.tdee = $event.tdee;
     this.currentPlanStatus = PlanStatus.PLAN_SELECTION;
+  }
+
+  onGoalSelected($event: GoalSectionRequest) {
+    this.dietPlanDTO.goal = $event.goal;
+    this.dietPlanDTO.duration = $event.duration;
+    this.currentPlanStatus = PlanStatus.MEAL_PREFERENCE;
+  }
+
+  onMealPreference($event: MealPreferenceRequest) {
+    this.dietPlanDTO.macronutrientPreference = $event.macronutrientPreference;
+    this.dietPlanDTO.mealPreference = $event.mealPreference;
+    this.dietPlanDTO.numberOfMeals = $event.numberOfMeals;
+    this.dietPlanDTO.eveningSnack = $event.eveningSnack;
+    this.currentPlanStatus = PlanStatus.PREVIEW;
   }
 }

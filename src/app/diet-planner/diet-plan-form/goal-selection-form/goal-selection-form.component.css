@@ -30,6 +30,47 @@
   padding: var(--space-xs);
 }
 
+.goal-card {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xs) var(--space-sm);
+  margin-bottom: var(--space-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.goal-title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.goal-title>span:last-child {
+  font-size: var(--font-size-sm);
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  padding: 0 var(--space-sm);
+}
+
+.goal-mild>span:last-child {
+  color: var(--color-goal-mild-text);
+  background-color: var(--color-goal-mild-bg);
+}
+
+.goal-moderate>span:last-child {
+  color: var(--color-goal-moderate-text);
+  background-color: var(--color-goal-moderate-bg);
+}
+
+.goal-aggressive>span:last-child {
+  color: var(--color-goal-aggressive-text);
+  background-color: var(--color-goal-aggressive-bg);
+}
+
+.selected-goal {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary-light);
+}
+
 .page-header {
   margin-bottom: var(--space-lg);
 }

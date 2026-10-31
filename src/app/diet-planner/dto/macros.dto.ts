@@ -5,3 +5,9 @@ export class MacrosDTO {
   fat!: CaloriesDTO;
   carbs!: CaloriesDTO;
 }
+
+export interface MacrosRequest {
+  protein: number;
+  fat: number;
+  carbs: number;
+}
