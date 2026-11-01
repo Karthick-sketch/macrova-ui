@@ -7,43 +7,44 @@
     <!-- Macronutrients Preference -->
     <div class="field-group">
       <p>Macronutrients Preference <span class="red-star">*</span></p>
-      <div>
-        <span>Balanced</span>
-        <span>High Protein</span>
-        <span>Low Carb</span>
-        <span>Low Fat</span>
-        <span>Custom</span>
+      <div class="macro-tab-container">
+        @for (type of macroPreferenceTypes; track $index) {
+        <button class="macro-tab" [class.macro-tab-selected]="mealPreference().type === type.key"
+          (click)="changeType(type.key)">{{type.value}}</button>
+        }
       </div>
-      <div>
-        <div>
-          <p>Calorie Deficit</p>
-          <p>{{ calorieEstimation().calorieDeficit | number }}kcal</p>
+      <div class="macro-tab-body">
+        <div class="macro-calories-info">
+          <div>
+            <p>Calorie Deficit</p>
+            <p>~{{ calorieEstimation().calorieDeficit | number }}kcal</p>
+          </div>
+          <div>
+            <p>Maintenance Calories</p>
+            <p>~{{ calorieEstimation().tdee | number }}kcal</p>
+          </div>
         </div>
         <div>
-          <p>Maintenance Calories</p>
-          <p>{{ calorieEstimation().tdee | number }}kcal</p>
-        </div>
-      </div>
-      <div>
-        <div>
-          <p>Protein</p>
-          <input type="range" #proteinInput [min]="macrosPreference().protein.minimum"
-            [max]="macrosPreference().protein.maximum" [value]="macrosPreference().protein.recommended"
-            (input)="setProteinPreference(proteinInput.value)" />
-          <p>{{macrosPreference().protein.recommended}}g</p>
-        </div>
-        <div>
-          <p>Carbohydrates</p>
-          <input type="range" #carbsInput [min]="macrosPreference().carbs.minimum"
-            [max]="macrosPreference().carbs.maximum" [value]="macrosPreference().carbs.recommended"
-            (input)="setCarbsPreference(carbsInput.value)" />
-          <p>{{macrosPreference().carbs.recommended}}g</p>
-        </div>
-        <div>
-          <p>Fats</p>
-          <input type="range" #fatInput [min]="macrosPreference().fat.minimum" [max]="macrosPreference().fat.maximum"
-            [value]="macrosPreference().fat.recommended" (input)="setFatPreference(fatInput.value)" />
-          <p>{{macrosPreference().fat.recommended}}g</p>
+          <div class="macro-info">
+            <p>Protein</p>
+            <input type="range" #proteinInput [min]="macrosPreference().protein.minimum"
+              [max]="macrosPreference().protein.maximum" [value]="macrosPreference().protein.recommended"
+              (input)="setProteinPreference(proteinInput.value)" />
+            <p>{{macrosPreference().protein.recommended}}g</p>
+          </div>
+          <div class="macro-info">
+            <p>Carbohydrates</p>
+            <input type="range" #carbsInput [min]="macrosPreference().carbs.minimum"
+              [max]="macrosPreference().carbs.maximum" [value]="macrosPreference().carbs.recommended"
+              (input)="setCarbsPreference(carbsInput.value)" />
+            <p>{{macrosPreference().carbs.recommended}}g</p>
+          </div>
+          <div class="macro-info">
+            <p>Fats</p>
+            <input type="range" #fatInput [min]="macrosPreference().fat.minimum" [max]="macrosPreference().fat.maximum"
+              [value]="macrosPreference().fat.recommended" (input)="setFatPreference(fatInput.value)" />
+            <p>{{macrosPreference().fat.recommended}}g</p>
+          </div>
         </div>
       </div>
     </div>

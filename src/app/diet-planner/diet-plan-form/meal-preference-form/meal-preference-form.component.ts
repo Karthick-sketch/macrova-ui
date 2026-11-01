@@ -1,4 +1,4 @@
-import { Component, computed, input, OnInit, output, Signal, ViewChild } from '@angular/core';
+import { Component, computed, input, OnInit, output, signal, Signal, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
@@ -22,6 +22,15 @@ export class MealPreferenceFormComponent implements OnInit {
 
   mealPreferenceEvent = output<MealPreferenceRequest>();
 
+  macroPreferenceTypes: DropdownModel[] = [
+    new DropdownModel('balanced', 'Balanced'),
+    new DropdownModel('high-protein', 'High Protein'),
+    new DropdownModel('low-carb', 'Low Carb'),
+    new DropdownModel('low-fat', 'Low Fat'),
+    new DropdownModel('custom', 'Custom'),
+  ];
+  macroPreferenceType = signal<string>('balanced');
+
   mealTypes: DropdownModel[] = [
     new DropdownModel('non-vegetarian', 'Non-Vegetarian'),
     new DropdownModel('vegetarian', 'Vegetarian'),
@@ -43,22 +52,50 @@ export class MealPreferenceFormComponent implements OnInit {
     }
   }
 
-  get mealPreference(): Signal<MealPreferenceRequest> {
-    return computed(() => ({
-      calorieEstimation: this.calorieEstimation(),
-      mealType: 'non-vegetarian',
-      numberOfMeals: 3,
-      eveningSnack: true,
-    }));
-  }
+  mealPreference = computed<MealPreferenceRequest>(() => ({
+    type: this.macroPreferenceType(),
+    calorieEstimation: this.calorieEstimation(),
+    mealType: 'non-vegetarian',
+    numberOfMeals: 3,
+    eveningSnack: true,
+  }));
 
-  get macrosPreference(): Signal<MacrosPreference> {
-    return computed(() => ({
-      protein: this.calorieEstimation().custom.protein,
-      carbs: this.calorieEstimation().custom.carbs,
-      fat: this.calorieEstimation().custom.fat,
-    }));
-  }
+  macrosPreference = computed<MacrosPreference>(() => {
+    const est = this.calorieEstimation();
+    const type = this.macroPreferenceType();
+
+    if (type === "high-protein") {
+      return {
+        protein: est.highProtein.protein,
+        carbs: est.highProtein.carbs,
+        fat: est.highProtein.fat,
+      }
+    } else if (type === "low-carb") {
+      return {
+        protein: est.lowCarb.protein,
+        carbs: est.lowCarb.carbs,
+        fat: est.lowCarb.fat,
+      }
+    } else if (type === "low-fat") {
+      return {
+        protein: est.lowFat.protein,
+        carbs: est.lowFat.carbs,
+        fat: est.lowFat.fat,
+      }
+    } else if (type === "custom") {
+      return {
+        protein: est.custom.protein,
+        carbs: est.custom.carbs,
+        fat: est.custom.fat,
+      }
+    }
+
+    return {
+      protein: est.balanced.protein,
+      carbs: est.balanced.carbs,
+      fat: est.balanced.fat,
+    }
+  });
 
   ngOnInit() {
     this.dietPlanService.isThereAnyActivePlans().subscribe((value) => {
@@ -77,6 +114,11 @@ export class MealPreferenceFormComponent implements OnInit {
         });
       }
     });
+  }
+
+  changeType(key: string) {
+    this.mealPreference().type = key;
+    this.macroPreferenceType.set(key);
   }
 
   setProteinPreference(value: string) {

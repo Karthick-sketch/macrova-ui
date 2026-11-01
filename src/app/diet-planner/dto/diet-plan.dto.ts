@@ -52,6 +52,7 @@ export interface GoalSectionRequest {
 }
 
 export interface MealPreferenceRequest {
+  type: string;
   calorieEstimation: CalorieEstimationDTO;
   mealType: string;
   numberOfMeals: number;

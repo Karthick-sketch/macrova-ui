@@ -34,24 +34,24 @@ export class DietPlanFormComponent implements OnInit {
         fat: { minimum: 50, maximum: 100, recommended: 75 },
       },
       highProtein: {
-        protein: { minimum: 100, maximum: 200, recommended: 140 },
-        carbs: { minimum: 200, maximum: 300, recommended: 250 },
-        fat: { minimum: 50, maximum: 100, recommended: 75 },
+        protein: { minimum: 100, maximum: 200, recommended: 170 },
+        carbs: { minimum: 200, maximum: 300, recommended: 200 },
+        fat: { minimum: 50, maximum: 100, recommended: 60 },
       },
       lowCarb: {
-        protein: { minimum: 100, maximum: 200, recommended: 140 },
-        carbs: { minimum: 200, maximum: 300, recommended: 250 },
+        protein: { minimum: 100, maximum: 200, recommended: 190 },
+        carbs: { minimum: 200, maximum: 300, recommended: 100 },
         fat: { minimum: 50, maximum: 100, recommended: 75 },
       },
       lowFat: {
-        protein: { minimum: 100, maximum: 200, recommended: 140 },
+        protein: { minimum: 100, maximum: 200, recommended: 180 },
         carbs: { minimum: 200, maximum: 300, recommended: 250 },
-        fat: { minimum: 50, maximum: 100, recommended: 75 },
+        fat: { minimum: 50, maximum: 100, recommended: 50 },
       },
       custom: {
-        protein: { minimum: 100, maximum: 200, recommended: 140 },
-        carbs: { minimum: 200, maximum: 300, recommended: 250 },
-        fat: { minimum: 50, maximum: 100, recommended: 75 },
+        protein: { minimum: 100, maximum: 200, recommended: 150 },
+        carbs: { minimum: 200, maximum: 300, recommended: 200 },
+        fat: { minimum: 50, maximum: 100, recommended: 70 },
       },
     };
 
