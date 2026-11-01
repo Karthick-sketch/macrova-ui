@@ -7,7 +7,7 @@ import { Plan } from '../../enum/plan.enum';
 import { Gender } from '../../enum/gender.enum';
 import { Goal } from '../../enum/goal.enum';
 import { Activity } from '../../enum/activity.enum';
-import { DropdownModel } from '../../../shared/model/dropdown.model';
+import { Option } from '../../../shared/model/option.model';
 import { ToastComponent } from '../../../toast/toast.component';
 
 @Component({
@@ -23,24 +23,24 @@ export class DietPlanPreviewFormComponent implements OnInit {
   dietPlanId: string | null = null;
 
   plans = [
-    new DropdownModel('Weight Loss', Plan.WEIGHT_LOSS),
-    new DropdownModel('Weight Gain', Plan.WEIGHT_GAIN),
+    new Option('Weight Loss', Plan.WEIGHT_LOSS),
+    new Option('Weight Gain', Plan.WEIGHT_GAIN),
   ];
   genders = [
-    new DropdownModel('Male', Gender.MALE),
-    new DropdownModel('Female', Gender.FEMALE),
+    new Option('Male', Gender.MALE),
+    new Option('Female', Gender.FEMALE),
   ];
   goals = [
-    new DropdownModel('Mild', Goal.MILD),
-    new DropdownModel('Moderate', Goal.MODERATE),
-    new DropdownModel('Aggressive', Goal.AGGRESSIVE),
+    new Option('Mild', Goal.MILD),
+    new Option('Moderate', Goal.MODERATE),
+    new Option('Aggressive', Goal.AGGRESSIVE),
   ];
   activities = [
-    new DropdownModel('Sedentary', Activity.SEDENTARY),
-    new DropdownModel('Light', Activity.LIGHT),
-    new DropdownModel('Moderate', Activity.MODERATE),
-    new DropdownModel('Hard', Activity.HARD),
-    new DropdownModel('Athlete', Activity.ATHLETE),
+    new Option('Sedentary', Activity.SEDENTARY),
+    new Option('Light', Activity.LIGHT),
+    new Option('Moderate', Activity.MODERATE),
+    new Option('Hard', Activity.HARD),
+    new Option('Athlete', Activity.ATHLETE),
   ];
   selected = {
     plan: Plan.WEIGHT_LOSS,

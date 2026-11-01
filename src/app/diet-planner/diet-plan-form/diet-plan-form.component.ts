@@ -1,14 +1,22 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { DietPlanService } from '../diet-plan-service';
-import { BodyMetricsResponse, DietPlanDTO, GoalSectionRequest, MealPreferenceRequest } from '../dto/diet-plan.dto';
-import { ToastComponent } from '../../toast/toast.component';
-import { PlanStatus } from '../enum/plan-status';
 import { BodyMetricsFormComponent } from './body-metrics-form/body-metrics-form.component';
 import { DietPlanPreviewFormComponent } from './diet-plan-preview-form/diet-plan-preview-form.component';
 import { GoalSelectionFormComponent } from './goal-selection-form/goal-selection-form.component';
 import { MealPreferenceFormComponent } from './meal-preference-form/meal-preference-form.component';
-import { CalorieEstimationDTO } from '../dto/calories.dto';
+import { ToastComponent } from '../../toast/toast.component';
+import { PlanStatus } from '../enum/plan-status';
+import type {
+  BodyMetricsResponse,
+  DietPlanDTO,
+  GoalSectionRequest,
+  MealPreferenceRequest,
+} from '../dto/diet-plan.dto';
+import type {
+  CalorieEstimationDTO,
+  CalorieEstimationRequest,
+} from '../dto/calories.dto';
 
 @Component({
   selector: 'app-diet-plan-form',
@@ -25,41 +33,13 @@ import { CalorieEstimationDTO } from '../dto/calories.dto';
 export class DietPlanFormComponent implements OnInit {
   @ViewChild(ToastComponent) toast!: ToastComponent;
 
-  calorieEstimation: CalorieEstimationDTO =
-    {
-      tdee: 2500, calorieDeficit: 2000,
-      balanced: {
-        protein: { minimum: 100, maximum: 200, recommended: 140 },
-        carbs: { minimum: 200, maximum: 300, recommended: 250 },
-        fat: { minimum: 50, maximum: 100, recommended: 75 },
-      },
-      highProtein: {
-        protein: { minimum: 100, maximum: 200, recommended: 170 },
-        carbs: { minimum: 200, maximum: 300, recommended: 200 },
-        fat: { minimum: 50, maximum: 100, recommended: 60 },
-      },
-      lowCarb: {
-        protein: { minimum: 100, maximum: 200, recommended: 190 },
-        carbs: { minimum: 200, maximum: 300, recommended: 100 },
-        fat: { minimum: 50, maximum: 100, recommended: 75 },
-      },
-      lowFat: {
-        protein: { minimum: 100, maximum: 200, recommended: 180 },
-        carbs: { minimum: 200, maximum: 300, recommended: 250 },
-        fat: { minimum: 50, maximum: 100, recommended: 50 },
-      },
-      custom: {
-        protein: { minimum: 100, maximum: 200, recommended: 150 },
-        carbs: { minimum: 200, maximum: 300, recommended: 200 },
-        fat: { minimum: 50, maximum: 100, recommended: 70 },
-      },
-    };
-
   dietPlanDTO = {} as DietPlanDTO;
   dietPlanId: string | null = null;
 
   planStatus = PlanStatus;
   currentPlanStatus: PlanStatus = PlanStatus.BODY_METRICS;
+
+  calorieEstimation = {} as CalorieEstimationDTO;
 
   constructor(
     private router: Router,
@@ -99,7 +79,7 @@ export class DietPlanFormComponent implements OnInit {
     this.dietPlanDTO.weight = $event.weight;
     this.dietPlanDTO.targetWeight = $event.targetWeight;
     this.dietPlanDTO.activity = $event.activity;
-    this.calorieEstimation = $event.calorieEstimation;
+    this.calorieEstimation.tdee = $event.tdee;
     this.currentPlanStatus = PlanStatus.PLAN_SELECTION;
   }
 
@@ -107,6 +87,22 @@ export class DietPlanFormComponent implements OnInit {
     this.dietPlanDTO.goal = $event.goal;
     this.dietPlanDTO.duration = $event.duration;
     this.currentPlanStatus = PlanStatus.MEAL_PREFERENCE;
+
+    const estimationRequest: CalorieEstimationRequest = {
+      tdee: this.calorieEstimation.tdee,
+      goal: $event.goal,
+      duration: $event.duration,
+    };
+    this.dietPlanService.estimateCalories(estimationRequest).subscribe({
+      next: (calorieEstimation: CalorieEstimationDTO) => {
+        this.calorieEstimation = calorieEstimation;
+      },
+      error: ({ status, error }) => {
+        if (status === 404) {
+          this.toast.showError(error.error[0]);
+        }
+      },
+    });
   }
 
   onMealPreference($event: MealPreferenceRequest) {
@@ -114,7 +110,7 @@ export class DietPlanFormComponent implements OnInit {
       protein: $event.calorieEstimation.custom.protein.recommended,
       carbs: $event.calorieEstimation.custom.carbs.recommended,
       fat: $event.calorieEstimation.custom.fat.recommended,
-    }
+    };
     this.dietPlanDTO.mealType = $event.mealType;
     this.dietPlanDTO.numberOfMeals = $event.numberOfMeals;
     this.dietPlanDTO.eveningSnack = $event.eveningSnack;

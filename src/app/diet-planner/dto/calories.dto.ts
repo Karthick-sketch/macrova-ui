@@ -1,4 +1,5 @@
-import { MacrosPreference } from "./macros.dto";
+import { Goal } from '../enum/goal.enum';
+import { MacrosPreference } from './macros.dto';
 
 export class CaloriesDTO {
   taken!: number;
@@ -13,4 +14,10 @@ export interface CalorieEstimationDTO {
   lowCarb: MacrosPreference;
   lowFat: MacrosPreference;
   custom: MacrosPreference;
+}
+
+export interface CalorieEstimationRequest {
+  tdee: number;
+  goal: Goal;
+  duration: number;
 }

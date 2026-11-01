@@ -9,8 +9,8 @@
       <p>Macronutrients Preference <span class="red-star">*</span></p>
       <div class="macro-tab-container">
         @for (type of macroPreferenceTypes; track $index) {
-        <button class="macro-tab" [class.macro-tab-selected]="mealPreference().type === type.key"
-          (click)="changeType(type.key)">{{type.value}}</button>
+        <button class="macro-tab" [class.macro-tab-selected]="mealPreference().type === type.label"
+          (click)="changeType(type.label)">{{type.value}}</button>
         }
       </div>
       <div class="macro-tab-body">
@@ -53,7 +53,8 @@
       <p>Meal Preference <span class="red-star">*</span></p>
       <div class="toggle-group">
         @for (mealType of mealTypes; track $index) {
-        <button [class.selected]="mealType.key === mealPreference().mealType" (click)="selectMealType(mealType.key)">{{
+        <button [class.selected]="mealType.label === mealPreference().mealType"
+          (click)="selectMealType(mealType.label)">{{
           mealType.value }}</button>
         }
       </div>

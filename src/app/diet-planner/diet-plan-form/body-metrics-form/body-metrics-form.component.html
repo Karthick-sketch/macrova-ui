@@ -17,7 +17,7 @@
       <div class="toggle-group">
         @for (plan of plans; track $index) {
         <button [class.selected]="plan.value === bodyMetrics.plan" (click)="selectDietPlan(plan.value)">
-          {{ plan.key }}
+          {{ plan.label }}
         </button>
         }
       </div>
@@ -38,7 +38,7 @@
       <div class="toggle-group">
         @for (gender of genders; track $index) {
         <button [class.selected]="gender.value === bodyMetrics.gender" (click)="selectGender(gender.value)">
-          {{ gender.key }}
+          {{ gender.label }}
         </button>
         }
       </div>
@@ -77,7 +77,7 @@
       <div class="toggle-group">
         @for (activity of activities; track $index) {
         <button [class.selected]="activity.value === bodyMetrics.activity" (click)="selectActivity(activity.value)">
-          {{ activity.key }}
+          {{ activity.label }}
         </button>
         }
       </div>

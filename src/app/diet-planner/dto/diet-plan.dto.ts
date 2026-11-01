@@ -43,7 +43,7 @@ export interface BodyMetricsResponse {
   weight: number;
   targetWeight: number;
   activity: Activity;
-  calorieEstimation: CalorieEstimationDTO;
+  tdee: number;
 }
 
 export interface GoalSectionRequest {

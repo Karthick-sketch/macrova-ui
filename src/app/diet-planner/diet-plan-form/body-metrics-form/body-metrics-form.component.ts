@@ -1,13 +1,16 @@
-import { Component, OnInit, output, ViewChild, input } from '@angular/core';
+import { Component, OnInit, output, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastComponent } from '../../../toast/toast.component';
 import { DietPlanService } from '../../diet-plan-service';
-import { BodyMetricsRequest, BodyMetricsResponse, DietPlanDTO } from '../../dto/diet-plan.dto';
 import { Plan } from '../../enum/plan.enum';
 import { Gender } from '../../enum/gender.enum';
 import { Activity } from '../../enum/activity.enum';
-import { DropdownModel } from '../../../shared/model/dropdown.model';
-import { ToastComponent } from '../../../toast/toast.component';
+import { Option } from '../../../shared/model/option.model';
+import type {
+  BodyMetricsRequest,
+  BodyMetricsResponse,
+} from '../../dto/diet-plan.dto';
 
 @Component({
   selector: 'app-body-metrics-form',
@@ -21,22 +24,21 @@ export class BodyMetricsFormComponent implements OnInit {
   bmr = output<BodyMetricsResponse>();
 
   plans = [
-    new DropdownModel('Weight Loss', Plan.WEIGHT_LOSS),
-    new DropdownModel('Weight Gain', Plan.WEIGHT_GAIN),
+    new Option('Weight Loss', Plan.WEIGHT_LOSS),
+    new Option('Weight Gain', Plan.WEIGHT_GAIN),
   ];
   genders = [
-    new DropdownModel('Male', Gender.MALE),
-    new DropdownModel('Female', Gender.FEMALE),
+    new Option('Male', Gender.MALE),
+    new Option('Female', Gender.FEMALE),
   ];
   activities = [
-    new DropdownModel('Sedentary', Activity.SEDENTARY),
-    new DropdownModel('Light', Activity.LIGHT),
-    new DropdownModel('Moderate', Activity.MODERATE),
-    new DropdownModel('Hard', Activity.HARD),
-    new DropdownModel('Athlete', Activity.ATHLETE),
+    new Option('Sedentary', Activity.SEDENTARY),
+    new Option('Light', Activity.LIGHT),
+    new Option('Moderate', Activity.MODERATE),
+    new Option('Hard', Activity.HARD),
+    new Option('Athlete', Activity.ATHLETE),
   ];
 
-  dietPlanId: string | null = null;
   bodyMetrics: BodyMetricsRequest = {
     title: '',
     plan: Plan.WEIGHT_LOSS,
@@ -51,28 +53,12 @@ export class BodyMetricsFormComponent implements OnInit {
   constructor(
     private router: Router,
     private dietPlanService: DietPlanService,
-  ) {
-    const navigation = this.router.getCurrentNavigation();
-    if (navigation?.extras.state) {
-      this.dietPlanId = navigation.extras.state['pastPlanId'];
-    }
-  }
+  ) {}
 
   ngOnInit() {
     this.dietPlanService.isThereAnyActivePlans().subscribe((value) => {
       if (value) {
         this.router.navigate(['/']);
-      } else if (this.dietPlanId) {
-        this.dietPlanService.getDietPlanById(this.dietPlanId).subscribe({
-          next: (request: BodyMetricsRequest) => {
-            this.bodyMetrics = request;
-          },
-          error: ({ status, error }) => {
-            if (status === 404) {
-              this.toast.showError(error.error[0]);
-            }
-          },
-        });
       }
     });
   }
@@ -91,22 +77,6 @@ export class BodyMetricsFormComponent implements OnInit {
       });
     }
   }
-
-  // updateDietPlan() {
-  //   this.mapSelected();
-  //   if (this.validateFields()) {
-  //     this.dietPlanService.updateDietPlan(this.bodyMetrics).subscribe({
-  //       next: () => {
-  //         this.router.navigate(['/']);
-  //       },
-  //       error: ({ status, error }) => {
-  //         if (status === 400) {
-  //           this.toast.showError(error.error[0]);
-  //         }
-  //       },
-  //     });
-  //   }
-  // }
 
   private validateFields() {
     if (!this.bodyMetrics.title) {

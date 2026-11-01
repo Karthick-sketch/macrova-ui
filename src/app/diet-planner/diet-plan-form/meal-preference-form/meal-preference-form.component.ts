@@ -1,11 +1,17 @@
-import { Component, computed, input, OnInit, output, signal, Signal, ViewChild } from '@angular/core';
+import {
+  Component,
+  computed,
+  input,
+  OnInit,
+  output,
+  signal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
 import { DietPlanService } from '../../diet-plan-service';
-import { ToastComponent } from '../../../toast/toast.component';
-import { DropdownModel } from '../../../shared/model/dropdown.model';
-import type { DietPlanDTO, MealPreferenceRequest } from '../../dto/diet-plan.dto';
+import { Option } from '../../../shared/model/option.model';
+import type { MealPreferenceRequest } from '../../dto/diet-plan.dto';
 import type { MacrosPreference } from '../../dto/macros.dto';
 import type { CalorieEstimationDTO } from '../../dto/calories.dto';
 
@@ -13,44 +19,35 @@ import type { CalorieEstimationDTO } from '../../dto/calories.dto';
   selector: 'app-meal-preference-form',
   templateUrl: './meal-preference-form.component.html',
   styleUrl: './meal-preference-form.component.css',
-  imports: [FormsModule, DecimalPipe, ToastComponent],
+  imports: [FormsModule, DecimalPipe],
 })
 export class MealPreferenceFormComponent implements OnInit {
-  @ViewChild(ToastComponent) toast!: ToastComponent;
-
   calorieEstimation = input.required<CalorieEstimationDTO>();
 
   mealPreferenceEvent = output<MealPreferenceRequest>();
 
-  macroPreferenceTypes: DropdownModel[] = [
-    new DropdownModel('balanced', 'Balanced'),
-    new DropdownModel('high-protein', 'High Protein'),
-    new DropdownModel('low-carb', 'Low Carb'),
-    new DropdownModel('low-fat', 'Low Fat'),
-    new DropdownModel('custom', 'Custom'),
-  ];
   macroPreferenceType = signal<string>('balanced');
 
-  mealTypes: DropdownModel[] = [
-    new DropdownModel('non-vegetarian', 'Non-Vegetarian'),
-    new DropdownModel('vegetarian', 'Vegetarian'),
-    new DropdownModel('eggetarian', 'Eggetarian'),
-    new DropdownModel('vegan', 'Vegan'),
+  macroPreferenceTypes: Option[] = [
+    new Option('balanced', 'Balanced'),
+    new Option('balanced', 'Balanced'),
+    new Option('highProtein', 'High Protein'),
+    new Option('lowCarb', 'Low Carb'),
+    new Option('lowFat', 'Low Fat'),
+    new Option('custom', 'Custom'),
+  ];
+  mealTypes: Option[] = [
+    new Option('nonVegetarian', 'Non-Vegetarian'),
+    new Option('vegetarian', 'Vegetarian'),
+    new Option('eggetarian', 'Eggetarian'),
+    new Option('vegan', 'Vegan'),
   ];
   mealCounts: number[] = [2, 3, 4, 5];
-
-  dietPlanId: string | null = null;
 
   constructor(
     private router: Router,
     private dietPlanService: DietPlanService,
-  ) {
-    // this.dietPlanDTO = new DietPlanDTO();
-    const navigation = this.router.getCurrentNavigation();
-    if (navigation?.extras.state) {
-      this.dietPlanId = navigation.extras.state['pastPlanId'];
-    }
-  }
+  ) {}
 
   mealPreference = computed<MealPreferenceRequest>(() => ({
     type: this.macroPreferenceType(),
@@ -64,54 +61,33 @@ export class MealPreferenceFormComponent implements OnInit {
     const est = this.calorieEstimation();
     const type = this.macroPreferenceType();
 
-    if (type === "high-protein") {
+    const targetMacros = est[type as keyof CalorieEstimationDTO];
+
+    // Check if targetMacros exists AND is an object (not a primitive number)
+    if (
+      targetMacros &&
+      typeof targetMacros === 'object' &&
+      'protein' in targetMacros
+    ) {
       return {
-        protein: est.highProtein.protein,
-        carbs: est.highProtein.carbs,
-        fat: est.highProtein.fat,
-      }
-    } else if (type === "low-carb") {
-      return {
-        protein: est.lowCarb.protein,
-        carbs: est.lowCarb.carbs,
-        fat: est.lowCarb.fat,
-      }
-    } else if (type === "low-fat") {
-      return {
-        protein: est.lowFat.protein,
-        carbs: est.lowFat.carbs,
-        fat: est.lowFat.fat,
-      }
-    } else if (type === "custom") {
-      return {
-        protein: est.custom.protein,
-        carbs: est.custom.carbs,
-        fat: est.custom.fat,
-      }
+        protein: targetMacros.protein,
+        carbs: targetMacros.carbs,
+        fat: targetMacros.fat,
+      };
     }
 
+    // Fallback if 'type' points to a primitive property or doesn't exist
     return {
-      protein: est.balanced.protein,
-      carbs: est.balanced.carbs,
-      fat: est.balanced.fat,
-    }
+      protein: { minimum: 0, maximum: 0, recommended: 0 },
+      carbs: { minimum: 0, maximum: 0, recommended: 0 },
+      fat: { minimum: 0, maximum: 0, recommended: 0 },
+    };
   });
 
   ngOnInit() {
     this.dietPlanService.isThereAnyActivePlans().subscribe((value) => {
       if (value) {
         this.router.navigate(['/']);
-      } else if (this.dietPlanId) {
-        this.dietPlanService.getDietPlanById(this.dietPlanId).subscribe({
-          next: (dietPlanDTO: DietPlanDTO) => {
-            // this.dietPlanDTO = dietPlanDTO;
-          },
-          error: ({ status, error }) => {
-            if (status === 404) {
-              this.toast.showError(error.error[0]);
-            }
-          },
-        });
       }
     });
   }
@@ -122,15 +98,18 @@ export class MealPreferenceFormComponent implements OnInit {
   }
 
   setProteinPreference(value: string) {
-    this.mealPreference().calorieEstimation.custom.protein.recommended = Number(value);
+    this.mealPreference().calorieEstimation.custom.protein.recommended =
+      Number(value);
   }
 
   setCarbsPreference(value: string) {
-    this.mealPreference().calorieEstimation.custom.carbs.recommended = Number(value);
+    this.mealPreference().calorieEstimation.custom.carbs.recommended =
+      Number(value);
   }
 
   setFatPreference(value: string) {
-    this.mealPreference().calorieEstimation.custom.fat.recommended = Number(value);
+    this.mealPreference().calorieEstimation.custom.fat.recommended =
+      Number(value);
   }
 
   submitMealPreferences() {
@@ -148,17 +127,4 @@ export class MealPreferenceFormComponent implements OnInit {
   selectNumberOfMeals(numberOfMeals: number) {
     this.mealPreference().numberOfMeals = numberOfMeals;
   }
-
-  // updateDietPlan() {
-  //   this.dietPlanService.updateDietPlan(this.dietPlanDTO).subscribe({
-  //     next: () => {
-  //       this.router.navigate(['/']);
-  //     },
-  //     error: ({ status, error }) => {
-  //       if (status === 400) {
-  //         this.toast.showError(error.error[0]);
-  //       }
-  //     },
-  //   });
-  // }
 }
