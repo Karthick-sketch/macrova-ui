@@ -1,20 +1,24 @@
-import { Component, OnInit, output, ViewChild } from '@angular/core';
+import { Component, computed, input, OnInit, output, Signal, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { DecimalPipe } from '@angular/common';
 import { DietPlanService } from '../../diet-plan-service';
-import type { DietPlanDTO, MealPreferenceRequest } from '../../dto/diet-plan.dto';
 import { ToastComponent } from '../../../toast/toast.component';
-import { MacrosRequest } from '../../dto/macros.dto';
 import { DropdownModel } from '../../../shared/model/dropdown.model';
+import type { DietPlanDTO, MealPreferenceRequest } from '../../dto/diet-plan.dto';
+import type { MacrosPreference } from '../../dto/macros.dto';
+import type { CalorieEstimationDTO } from '../../dto/calories.dto';
 
 @Component({
   selector: 'app-meal-preference-form',
   templateUrl: './meal-preference-form.component.html',
   styleUrl: './meal-preference-form.component.css',
-  imports: [FormsModule, ToastComponent],
+  imports: [FormsModule, DecimalPipe, ToastComponent],
 })
 export class MealPreferenceFormComponent implements OnInit {
   @ViewChild(ToastComponent) toast!: ToastComponent;
+
+  calorieEstimation = input.required<CalorieEstimationDTO>();
 
   mealPreferenceEvent = output<MealPreferenceRequest>();
 
@@ -25,14 +29,6 @@ export class MealPreferenceFormComponent implements OnInit {
     new DropdownModel('vegan', 'Vegan'),
   ];
   mealCounts: number[] = [2, 3, 4, 5];
-  macros: MacrosRequest = { protein: 0, fat: 0, carbs: 0 }
-
-  mealPreference: MealPreferenceRequest = {
-    macronutrientPreference: this.macros,
-    mealPreference: 'non-vegetarian',
-    numberOfMeals: 3,
-    eveningSnack: false,
-  };
 
   dietPlanId: string | null = null;
 
@@ -45,6 +41,23 @@ export class MealPreferenceFormComponent implements OnInit {
     if (navigation?.extras.state) {
       this.dietPlanId = navigation.extras.state['pastPlanId'];
     }
+  }
+
+  get mealPreference(): Signal<MealPreferenceRequest> {
+    return computed(() => ({
+      calorieEstimation: this.calorieEstimation(),
+      mealType: 'non-vegetarian',
+      numberOfMeals: 3,
+      eveningSnack: true,
+    }));
+  }
+
+  get macrosPreference(): Signal<MacrosPreference> {
+    return computed(() => ({
+      protein: this.calorieEstimation().custom.protein,
+      carbs: this.calorieEstimation().custom.carbs,
+      fat: this.calorieEstimation().custom.fat,
+    }));
   }
 
   ngOnInit() {
@@ -66,24 +79,32 @@ export class MealPreferenceFormComponent implements OnInit {
     });
   }
 
+  setProteinPreference(value: string) {
+    this.mealPreference().calorieEstimation.custom.protein.recommended = Number(value);
+  }
+
+  setCarbsPreference(value: string) {
+    this.mealPreference().calorieEstimation.custom.carbs.recommended = Number(value);
+  }
+
+  setFatPreference(value: string) {
+    this.mealPreference().calorieEstimation.custom.fat.recommended = Number(value);
+  }
+
   submitMealPreferences() {
-    this.mealPreferenceEvent.emit(this.mealPreference);
+    this.mealPreferenceEvent.emit(this.mealPreference());
   }
 
   selectSnack(snack: boolean) {
-    this.mealPreference.eveningSnack = snack;
+    this.mealPreference().eveningSnack = snack;
   }
 
   selectMealType(mealType: string) {
-    this.mealPreference.mealPreference = mealType;
+    this.mealPreference().mealType = mealType;
   }
 
   selectNumberOfMeals(numberOfMeals: number) {
-    this.mealPreference.numberOfMeals = numberOfMeals;
-  }
-
-  selectMacronutrientPreference(macronutrientPreference: MacrosRequest) {
-    this.mealPreference.macronutrientPreference = macronutrientPreference;
+    this.mealPreference().numberOfMeals = numberOfMeals;
   }
 
   // updateDietPlan() {

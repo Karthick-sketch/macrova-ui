@@ -3,6 +3,7 @@ import { Goal } from '../enum/goal.enum';
 import { Activity } from '../enum/activity.enum';
 import { Plan } from '../enum/plan.enum';
 import { MacrosRequest } from './macros.dto';
+import { CalorieEstimationDTO } from './calories.dto';
 
 export interface DietPlanDTO {
   id: string;
@@ -17,7 +18,7 @@ export interface DietPlanDTO {
   duration: number;
   activity: Activity;
   macronutrientPreference: MacrosRequest;
-  mealPreference: string;
+  mealType: string;
   numberOfMeals: number;
   eveningSnack: boolean;
 }
@@ -42,7 +43,7 @@ export interface BodyMetricsResponse {
   weight: number;
   targetWeight: number;
   activity: Activity;
-  tdee: number;
+  calorieEstimation: CalorieEstimationDTO;
 }
 
 export interface GoalSectionRequest {
@@ -51,8 +52,8 @@ export interface GoalSectionRequest {
 }
 
 export interface MealPreferenceRequest {
-  macronutrientPreference: MacrosRequest;
-  mealPreference: string;
+  calorieEstimation: CalorieEstimationDTO;
+  mealType: string;
   numberOfMeals: number;
   eveningSnack: boolean;
 }
