@@ -68,7 +68,7 @@
       <div class="preview-item">
         <span class="item-label">Target Calories</span>
         <span class="item-value highlight"
-          >{{ dietPlan().deficit | number }} kcal/day</span
+          >{{ dietPlan().targetCalories | number }} kcal/day</span
         >
       </div>
     </div>
@@ -86,7 +86,7 @@
       </div>
       <div class="preview-item">
         <span class="item-label">Meals per Day</span>
-        <span class="item-value">{{ dietPlan().numberOfMeals }}</span>
+        <span class="item-value">{{ dietPlan().mealCount }}</span>
       </div>
       <div class="preview-item">
         <span class="item-label">Evening Snack</span>
@@ -96,24 +96,24 @@
       </div>
     </div>
     <!-- Macros -->
-    @if (dietPlan().macronutrientPreference) {
+    @if (dietPlan().macroPreference) {
       <div class="macro-summary">
         <div class="macro-chip">
           <span class="macro-chip-label">Protein</span>
           <span class="macro-chip-value"
-            >{{ dietPlan().macronutrientPreference.protein }}g</span
+            >{{ dietPlan().macroPreference.protein }}g</span
           >
         </div>
         <div class="macro-chip">
           <span class="macro-chip-label">Carbs</span>
           <span class="macro-chip-value"
-            >{{ dietPlan().macronutrientPreference.carbs }}g</span
+            >{{ dietPlan().macroPreference.carbs }}g</span
           >
         </div>
         <div class="macro-chip">
           <span class="macro-chip-label">Fats</span>
           <span class="macro-chip-value"
-            >{{ dietPlan().macronutrientPreference.fat }}g</span
+            >{{ dietPlan().macroPreference.fat }}g</span
           >
         </div>
       </div>
@@ -123,7 +123,7 @@
   <!-- Generate Button -->
   <div class="form-footer">
     <button class="submit-btn" (click)="createDiet()">
-      ✦ Generate My Diet Plan
+      Generate My Diet Plan
     </button>
   </div>
 </div>

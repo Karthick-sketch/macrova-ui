@@ -2,8 +2,7 @@ import { Gender } from '../enum/gender.enum';
 import { Goal } from '../enum/goal.enum';
 import { Activity } from '../enum/activity.enum';
 import { Plan } from '../enum/plan.enum';
-import { MacrosRequest } from './macros.dto';
-import { CalorieEstimationDTO } from './calories.dto';
+import type { MacroPreference } from './macros.dto';
 
 export interface DietPlanDTO {
   id: string;
@@ -13,16 +12,16 @@ export interface DietPlanDTO {
   gender: Gender;
   height: number;
   weight: number;
-  goal: Goal;
   targetWeight: number;
-  duration: number;
   activity: Activity;
+  goal: Goal;
+  duration: number;
   tdee: number;
-  deficit: number;
-  macronutrientPreference: MacrosRequest;
+  targetCalories: number;
   dietType: string;
   mealType: string;
-  numberOfMeals: number;
+  macroPreference: MacroPreference;
+  mealCount: number;
   eveningSnack: boolean;
 }
 
@@ -38,15 +37,10 @@ export interface BodyMetricsRequest {
 }
 
 export interface BodyMetricsResponse {
-  title: string;
-  plan: Plan;
-  gender: Gender;
-  age: number;
-  height: number;
+  tdee: number;
   weight: number;
   targetWeight: number;
-  activity: Activity;
-  tdee: number;
+  plan: Plan;
 }
 
 export interface GoalSectionRequest {
@@ -55,8 +49,7 @@ export interface GoalSectionRequest {
 }
 
 export interface MealPreferenceRequest {
-  type: string;
-  macroPreference: MacrosRequest;
+  macroPreference: MacroPreference;
   dietType: string;
   mealType: string;
   numberOfMeals: number;

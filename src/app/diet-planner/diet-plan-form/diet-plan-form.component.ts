@@ -13,10 +13,7 @@ import type {
   GoalSectionRequest,
   MealPreferenceRequest,
 } from '../dto/diet-plan.dto';
-import type {
-  CalorieEstimationDTO,
-  CalorieEstimationRequest,
-} from '../dto/calories.dto';
+import type { CalorieEstimationDTO } from '../dto/calories.dto';
 import { DietPlanModel } from '../model/diet-plan.model';
 
 @Component({
@@ -121,7 +118,7 @@ export class DietPlanFormComponent implements OnInit {
     this.dietPlanService.estimateCalories(estimationRequest).subscribe({
       next: (calorieEstimation: CalorieEstimationDTO) => {
         this.calorieEstimation = calorieEstimation;
-        this.dietPlanDTO.deficit = calorieEstimation.deficit;
+        this.dietPlanDTO.deficit = calorieEstimation.targetCalories;
       },
       error: ({ status, error }) => {
         if (status === 404) {

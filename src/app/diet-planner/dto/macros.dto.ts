@@ -6,13 +6,13 @@ export class MacrosDTO {
   carbs!: CaloriesDTO;
 }
 
-export interface MacrosRequest {
+export interface MacroPreference {
   protein: number;
   fat: number;
   carbs: number;
 }
 
-export interface MacrosQuantity {
+export interface MacroQuantity {
   min: number;
   max: number;
 }

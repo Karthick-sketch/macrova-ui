@@ -4,17 +4,16 @@ import { DietPlanModel } from './model/diet-plan.model';
 import { DietPlanTrackModel } from './model/diet-plan-track.model';
 import { MetricsModel } from './model/metrics.model';
 import { DietPlanOverviewModel } from './model/diet-plan-overview.model';
-import {
+import type {
   BodyMetricsRequest,
   BodyMetricsResponse,
   DietPlanDTO,
+  GoalSectionRequest,
+  MealPreferenceRequest,
 } from './dto/diet-plan.dto';
 import { MacrosDTO } from './dto/macros.dto';
 import { DietPlanHistoryDTO } from './dto/diet-plan-history.dto';
-import {
-  CalorieEstimationDTO,
-  CalorieEstimationRequest,
-} from './dto/calories.dto';
+import type { CalorieEstimationResponse } from './dto/calories.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -44,22 +43,29 @@ export class DietPlanService {
     return this.http.get<DietPlanDTO>(`${this.basePath}/${dietPlanId}`);
   }
 
-  calculateTDEE(bodyMetricsDTO: BodyMetricsRequest) {
+  createDietPlanBodyMetrics(bodyMetricsDTO: BodyMetricsRequest) {
     return this.http.post<BodyMetricsResponse>(
-      `${this.basePath}/tdee`,
+      `${this.basePath}/form/body-metrics`,
       bodyMetricsDTO,
     );
   }
 
-  estimateCalories(request: CalorieEstimationRequest) {
-    return this.http.post<CalorieEstimationDTO>(
-      `${this.basePath}/estimate`,
+  createDietPlanGoalSelection(request: GoalSectionRequest) {
+    return this.http.post<CalorieEstimationResponse>(
+      `${this.basePath}/form/goal-selection`,
       request,
     );
   }
 
-  createDietPlan(dietPlanDTO: DietPlanDTO) {
-    return this.http.post<DietPlanModel>(this.basePath, dietPlanDTO);
+  createDietPlanMealPreference(request: MealPreferenceRequest) {
+    return this.http.post<DietPlanDTO>(
+      `${this.basePath}/form/meal-preference`,
+      request,
+    );
+  }
+
+  createDietPlan() {
+    return this.http.post<DietPlanModel>(this.basePath, {});
   }
 
   updateDietPlan(dietPlanDTO: DietPlanDTO) {

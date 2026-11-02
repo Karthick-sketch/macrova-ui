@@ -51,18 +51,20 @@ export class BodyMetricsFormComponent {
 
   constructor(private dietPlanService: DietPlanService) {}
 
-  calculateCalories() {
+  submitBodyMetrics() {
     if (this.validateFields()) {
-      this.dietPlanService.calculateTDEE(this.bodyMetrics).subscribe({
-        next: (res: BodyMetricsResponse) => {
-          this.bmr.emit(res);
-        },
-        error: ({ status, error }) => {
-          if (status === 400) {
-            this.toast.showError(error.error[0]);
-          }
-        },
-      });
+      this.dietPlanService
+        .createDietPlanBodyMetrics(this.bodyMetrics)
+        .subscribe({
+          next: (res: BodyMetricsResponse) => {
+            this.bmr.emit(res);
+          },
+          error: ({ status, error }) => {
+            if (status === 400) {
+              this.toast.showError(error.error[0]);
+            }
+          },
+        });
     }
   }
 

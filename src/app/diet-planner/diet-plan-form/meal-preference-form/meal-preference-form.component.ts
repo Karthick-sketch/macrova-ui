@@ -3,8 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { DecimalPipe } from '@angular/common';
 import { Option } from '../../../shared/model/option.model';
 import type { MealPreferenceRequest } from '../../dto/diet-plan.dto';
-import type { CalorieEstimationDTO } from '../../dto/calories.dto';
-import type { MacrosQuantity, MacrosRequest } from '../../dto/macros.dto';
+import type { CalorieEstimationResponse } from '../../dto/calories.dto';
+import type { MacroPreference, MacroQuantity } from '../../dto/macros.dto';
 
 @Component({
   selector: 'app-meal-preference-form',
@@ -13,7 +13,7 @@ import type { MacrosQuantity, MacrosRequest } from '../../dto/macros.dto';
   imports: [FormsModule, DecimalPipe],
 })
 export class MealPreferenceFormComponent {
-  calorieEstimation = input.required<CalorieEstimationDTO>();
+  calorieEstimation = input.required<CalorieEstimationResponse>();
   tdee = input.required<number>();
 
   mealPreferenceEvent = output<MealPreferenceRequest>();
@@ -42,7 +42,7 @@ export class MealPreferenceFormComponent {
   ];
   mealCounts: number[] = [2, 3, 4, 5];
 
-  macroPreference = computed<MacrosRequest>(() => {
+  macroPreference = computed<MacroPreference>(() => {
     const est = this.calorieEstimation();
     const type = this.macroPreferenceType();
 
@@ -55,7 +55,7 @@ export class MealPreferenceFormComponent {
       };
     }
 
-    const targetMacros = est[type as keyof CalorieEstimationDTO];
+    const targetMacros = est[type as keyof CalorieEstimationResponse];
     if (
       targetMacros &&
       typeof targetMacros === 'object' &&
@@ -108,7 +108,6 @@ export class MealPreferenceFormComponent {
 
   submitMealPreferences() {
     this.mealPreferenceEvent.emit({
-      type: this.macroPreferenceType(),
       macroPreference: this.macroPreference(),
       dietType: this.macroPreferenceType(),
       mealType: this.selectedMealType(),
@@ -129,7 +128,7 @@ export class MealPreferenceFormComponent {
     this.numberOfMeals.set(count);
   }
 
-  private findMiddleValue(qty: MacrosQuantity): number {
+  private findMiddleValue(qty: MacroQuantity): number {
     return Math.round((qty.min + qty.max) / 2);
   }
 }

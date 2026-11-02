@@ -20,8 +20,8 @@ export class GoalSelectionFormComponent {
   Goal = Goal;
   durations = [90, 180, 360];
   selectedGoal: GoalSectionRequest = {
-    goal: Goal.MILD,
-    duration: 90,
+    goal: Goal.MODERATE,
+    duration: 180,
   };
 
   submit() {
