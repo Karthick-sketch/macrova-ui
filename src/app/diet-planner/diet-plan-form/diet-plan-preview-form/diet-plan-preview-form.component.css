@@ -1,9 +1,4 @@
-/* ── Diet Plan Form ─────────────────────────────────── */
-.form-container {
-  max-width: 38rem;
-  margin: 0 auto;
-}
-
+/* ── Diet Plan Preview Form ─────────────────────────── */
 .page-header {
   margin-bottom: var(--space-lg);
 }
@@ -14,6 +9,12 @@
   margin-bottom: var(--space-xs);
 }
 
+.page-subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
 .form-card {
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -21,74 +22,110 @@
   padding: var(--space-xl);
 }
 
-/* ── Field Groups ──────────────────────────────────── */
-.field-group {
-  margin-bottom: var(--space-md);
+/* ── Preview Sections ───────────────────────────────── */
+.preview-section {
+  padding: var(--space-sm) 0;
 }
 
-.field-group > p,
-.field-label {
-  font-size: var(--font-size-sm);
-  font-weight: 500;
-  color: var(--color-text);
-  margin: 0 0 var(--space-xs) 0;
-}
-
-.input-field {
-  width: 100% !important;
-}
-
-/* ── Toggle Button Groups ──────────────────────────── */
-.toggle-group {
+.preview-title-row {
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
   gap: var(--space-sm);
-  margin-top: var(--space-xs);
 }
 
-.toggle-group button {
-  padding: 0.45rem 1rem;
-  font-size: var(--font-size-sm);
-  font-weight: 500;
-  font-family: inherit;
-  color: var(--color-text-muted);
-  background-color: var(--color-input-bg);
-  border: 1px solid var(--color-border);
+.plan-title {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.plan-badge {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 3px var(--space-sm);
   border-radius: var(--radius-pill);
-  cursor: pointer;
-  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
-}
-
-.toggle-group button:hover {
   background-color: var(--color-primary-light);
   color: var(--color-primary);
-  border-color: var(--color-primary-mid);
 }
 
-.toggle-group button.selected {
-  color: #fff;
-  background-color: var(--color-primary);
-  border-color: var(--color-primary);
-}
-
-/* ── Required Star / Info ──────────────────────────── */
-.red-star {
-  color: var(--color-danger);
-  font-size: var(--font-size-xs);
-  margin-left: 2px;
-}
-
-.field-info {
-  font-size: var(--font-size-xs);
-  color: var(--color-text-light);
-  margin-left: var(--space-xs);
-}
-
-/* ── Divider ───────────────────────────────────────── */
-.field-divider {
+.section-divider {
   height: 1px;
   background-color: var(--color-border);
-  margin: var(--space-md) 0;
+  margin: var(--space-sm) 0;
+}
+
+.section-heading {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 var(--space-sm) 0;
+}
+
+/* ── Preview Grid ───────────────────────────────────── */
+.preview-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-sm) var(--space-md);
+}
+
+.preview-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.item-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.item-value {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.item-value.highlight {
+  color: var(--color-primary);
+  font-size: var(--font-size-base);
+}
+
+/* ── Macro Summary Chips ────────────────────────────── */
+.macro-summary {
+  display: flex;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.macro-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: var(--space-xs) var(--space-md);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  min-width: 5rem;
+}
+
+.macro-chip-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.macro-chip-value {
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  color: var(--color-primary);
 }
 
 /* ── Form Submit ───────────────────────────────────── */
@@ -114,12 +151,4 @@
 
 .submit-btn:hover {
   background-color: var(--color-primary-dark);
-}
-
-/* ── Validation Error ──────────────────────────────── */
-.invalid-field {
-  margin-top: var(--space-sm);
-  font-size: var(--font-size-sm);
-  color: var(--color-danger);
-  text-align: center;
 }

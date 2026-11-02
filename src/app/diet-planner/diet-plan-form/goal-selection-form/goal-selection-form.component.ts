@@ -1,8 +1,6 @@
-import { Component, input, OnInit, output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
-import { DietPlanService } from '../../diet-plan-service';
 import { Goal } from '../../enum/goal.enum';
 import type { GoalSectionRequest } from '../../dto/diet-plan.dto';
 
@@ -12,7 +10,7 @@ import type { GoalSectionRequest } from '../../dto/diet-plan.dto';
   styleUrl: './goal-selection-form.component.css',
   imports: [FormsModule, DecimalPipe],
 })
-export class GoalSelectionFormComponent implements OnInit {
+export class GoalSelectionFormComponent {
   tdee = input.required<number>();
   currentWeight = input.required<number>();
   targetWeight = input.required<number>();
@@ -25,19 +23,6 @@ export class GoalSelectionFormComponent implements OnInit {
     goal: Goal.MILD,
     duration: 90,
   };
-
-  constructor(
-    private router: Router,
-    private dietPlanService: DietPlanService,
-  ) {}
-
-  ngOnInit() {
-    this.dietPlanService.isThereAnyActivePlans().subscribe((value) => {
-      if (value) {
-        this.router.navigate(['/']);
-      }
-    });
-  }
 
   submit() {
     this.goalSectionEvent.emit(this.selectedGoal);

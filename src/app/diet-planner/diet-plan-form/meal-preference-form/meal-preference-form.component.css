@@ -1,9 +1,4 @@
-/* ── Diet Plan Form ─────────────────────────────────── */
-.form-container {
-  max-width: 38rem;
-  margin: 0 auto;
-}
-
+/* ── Meal Preference Form ───────────────────────────── */
 .page-header {
   margin-bottom: var(--space-lg);
 }
@@ -14,6 +9,12 @@
   margin-bottom: var(--space-xs);
 }
 
+.page-subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
 .form-card {
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -21,21 +22,127 @@
   padding: var(--space-xl);
 }
 
+/* ── Calorie Summary ─────────────────────────────────── */
+.calorie-summary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-lg);
+}
+
+.calorie-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.calorie-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.calorie-value {
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.calorie-divider {
+  width: 1px;
+  height: 2rem;
+  background-color: var(--color-border);
+  margin: 0 var(--space-xs);
+}
+
 /* ── Field Groups ──────────────────────────────────── */
 .field-group {
   margin-bottom: var(--space-md);
 }
 
-.field-group>p,
-.field-label {
+.field-group > p {
   font-size: var(--font-size-sm);
   font-weight: 500;
   color: var(--color-text);
   margin: 0 0 var(--space-xs) 0;
 }
 
-.input-field {
-  width: 100% !important;
+/* ── Macro Tabs ─────────────────────────────────────── */
+.macro-tab-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+}
+
+.macro-tab {
+  cursor: pointer;
+  padding: 0.4rem 0.85rem;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  font-family: inherit;
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-bottom: none;
+  color: var(--color-text-muted);
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.macro-tab:first-child {
+  border-radius: var(--radius-md) 0 0 0;
+}
+
+.macro-tab:last-child {
+  border-radius: 0 var(--radius-md) 0 0;
+}
+
+.macro-tab-selected {
+  background-color: var(--color-surface);
+  color: var(--color-primary);
+  font-weight: 600;
+  border-color: var(--color-primary);
+  border-bottom: none;
+}
+
+.macro-tab-body {
+  border: 1px solid var(--color-border);
+  border-radius: 0 var(--radius-md) var(--radius-md) var(--radius-md);
+  padding: var(--space-md);
+}
+
+/* ── Macro Sliders ──────────────────────────────────── */
+.macro-slider-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.macro-row {
+  display: grid;
+  grid-template-columns: 5rem 1fr 3rem;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.macro-name {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.macro-row input[type="range"] {
+  width: 100%;
+  accent-color: var(--color-primary);
+}
+
+.macro-value {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-primary);
+  text-align: right;
 }
 
 /* ── Toggle Button Groups ──────────────────────────── */
@@ -71,24 +178,11 @@
   border-color: var(--color-primary);
 }
 
-/* ── Required Star / Info ──────────────────────────── */
+/* ── Required Star ──────────────────────────────────── */
 .red-star {
   color: var(--color-danger);
   font-size: var(--font-size-xs);
   margin-left: 2px;
-}
-
-.field-info {
-  font-size: var(--font-size-xs);
-  color: var(--color-text-light);
-  margin-left: var(--space-xs);
-}
-
-/* ── Divider ───────────────────────────────────────── */
-.field-divider {
-  height: 1px;
-  background-color: var(--color-border);
-  margin: var(--space-md) 0;
 }
 
 /* ── Form Submit ───────────────────────────────────── */
@@ -114,57 +208,4 @@
 
 .submit-btn:hover {
   background-color: var(--color-primary-dark);
-}
-
-/* ── Validation Error ──────────────────────────────── */
-.invalid-field {
-  margin-top: var(--space-sm);
-  font-size: var(--font-size-sm);
-  color: var(--color-danger);
-  text-align: center;
-}
-
-.macro-tab-container {
-  display: flex;
-}
-
-.macro-tab-body {
-  border: 1px solid var(--color-border);
-  border-top: none;
-  padding: var(--space-md);
-}
-
-.macro-tab {
-  cursor: pointer;
-  padding: var(--space-xs) 1.1305rem;
-  background-color: var(--color-bg);
-  border: 1px solid var(--color-border);
-}
-
-.macro-tab-selected {
-  background-color: var(--color-surface);
-  border-bottom: none;
-}
-
-.macro-calories-info {
-  display: flex;
-  justify-content: space-between;
-}
-
-.macro-calories-info>div>p:last-child {
-  font-weight: bold;
-}
-
-.macro-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.macro-info p {
-  width: 120px;
-}
-
-.macro-info input {
-  width: 300px;
 }

@@ -1,6 +1,5 @@
-import { Component, OnInit, output, ViewChild } from '@angular/core';
+import { Component, output, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 import { ToastComponent } from '../../../toast/toast.component';
 import { DietPlanService } from '../../diet-plan-service';
 import { Plan } from '../../enum/plan.enum';
@@ -18,7 +17,7 @@ import type {
   styleUrl: './body-metrics-form.component.css',
   imports: [FormsModule, ToastComponent],
 })
-export class BodyMetricsFormComponent implements OnInit {
+export class BodyMetricsFormComponent {
   @ViewChild(ToastComponent) toast!: ToastComponent;
 
   bmr = output<BodyMetricsResponse>();
@@ -50,18 +49,7 @@ export class BodyMetricsFormComponent implements OnInit {
     activity: Activity.SEDENTARY,
   };
 
-  constructor(
-    private router: Router,
-    private dietPlanService: DietPlanService,
-  ) {}
-
-  ngOnInit() {
-    this.dietPlanService.isThereAnyActivePlans().subscribe((value) => {
-      if (value) {
-        this.router.navigate(['/']);
-      }
-    });
-  }
+  constructor(private dietPlanService: DietPlanService) {}
 
   calculateCalories() {
     if (this.validateFields()) {
@@ -80,22 +68,22 @@ export class BodyMetricsFormComponent implements OnInit {
 
   private validateFields() {
     if (!this.bodyMetrics.title) {
-      this.toast.showError('Title is empty');
+      this.toast.showError('Title is required');
       return false;
     }
     const age = this.bodyMetrics.age;
     if (!age || age < 18 || age > 65) {
-      this.toast.showError('Age requirement: 18-65');
+      this.toast.showError('Age must be between 18 and 65');
       return false;
     }
     const height = this.bodyMetrics.height;
     if (!height || height < 140 || height > 210) {
-      this.toast.showError('Height requirement: 140-210cm');
+      this.toast.showError('Height must be between 140 and 210 cm');
       return false;
     }
     const weight = this.bodyMetrics.weight;
     if (!weight || weight < 40 || weight > 180) {
-      this.toast.showError('Weight requirement: 40-180kg');
+      this.toast.showError('Weight must be between 40 and 180 kg');
       return false;
     }
     if (!this.validateTargetWeight(this.bodyMetrics.targetWeight)) {
@@ -106,16 +94,14 @@ export class BodyMetricsFormComponent implements OnInit {
 
   private validateTargetWeight(targetWeight: number) {
     if (!targetWeight) {
-      this.toast.showError('Target Weight is empty');
+      this.toast.showError('Target weight is required');
       return false;
     } else if (this.bodyMetrics.plan === Plan.WEIGHT_LOSS) {
       if (targetWeight >= this.bodyMetrics.weight) {
         this.toast.showError('Target weight must be less than current weight');
         return false;
       } else if (targetWeight < 40) {
-        this.toast.showError(
-          'Target weight must be greater than or equal to 40kg',
-        );
+        this.toast.showError('Target weight must be at least 40 kg');
         return false;
       }
     } else if (this.bodyMetrics.plan === Plan.WEIGHT_GAIN) {
@@ -125,9 +111,7 @@ export class BodyMetricsFormComponent implements OnInit {
         );
         return false;
       } else if (targetWeight > 110) {
-        this.toast.showError(
-          'Target weight must be less than or equal to 110kg',
-        );
+        this.toast.showError('Target weight must not exceed 110 kg');
         return false;
       }
     }

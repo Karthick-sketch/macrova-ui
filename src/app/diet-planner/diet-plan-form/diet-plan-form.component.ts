@@ -42,6 +42,18 @@ export class DietPlanFormComponent implements OnInit {
 
   calorieEstimation = {} as CalorieEstimationDTO;
 
+  steps = ['Body Metrics', 'Goal & Duration', 'Meal Preferences', 'Preview'];
+
+  get stepIndex(): number {
+    const order = [
+      PlanStatus.BODY_METRICS,
+      PlanStatus.PLAN_SELECTION,
+      PlanStatus.MEAL_PREFERENCE,
+      PlanStatus.PREVIEW,
+    ];
+    return order.indexOf(this.currentPlanStatus);
+  }
+
   constructor(
     private router: Router,
     private dietPlanService: DietPlanService,
@@ -60,7 +72,6 @@ export class DietPlanFormComponent implements OnInit {
         this.dietPlanService.getDietPlanById(this.dietPlanId).subscribe({
           next: (dietPlanDTO: DietPlanDTO) => {
             this.dietPlanDTO = dietPlanDTO;
-            // TODO: update current stage based on which form is not submitted
           },
           error: ({ status, error }) => {
             if (status === 404) {
@@ -70,6 +81,19 @@ export class DietPlanFormComponent implements OnInit {
         });
       }
     });
+  }
+
+  goBack() {
+    const order = [
+      PlanStatus.BODY_METRICS,
+      PlanStatus.PLAN_SELECTION,
+      PlanStatus.MEAL_PREFERENCE,
+      PlanStatus.PREVIEW,
+    ];
+    const idx = order.indexOf(this.currentPlanStatus);
+    if (idx > 0) {
+      this.currentPlanStatus = order[idx - 1];
+    }
   }
 
   onBmrReceived($event: BodyMetricsResponse) {

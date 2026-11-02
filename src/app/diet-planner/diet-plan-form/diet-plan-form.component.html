@@ -1,5 +1,28 @@
 <app-toast></app-toast>
-<div class="form-container">
+<div class="form-wrapper">
+  <!-- Step Indicator -->
+  <div class="step-indicator">
+    @for (step of steps; track $index) {
+      <div
+        class="step-item"
+        [class.active]="stepIndex >= $index"
+        [class.current]="stepIndex === $index"
+      >
+        <div class="step-circle">{{ $index + 1 }}</div>
+        <span class="step-label">{{ step }}</span>
+      </div>
+      @if ($index < steps.length - 1) {
+        <div class="step-line" [class.active]="stepIndex > $index"></div>
+      }
+    }
+  </div>
+
+  <!-- Back Button (not shown on first step) -->
+  @if (stepIndex > 0) {
+    <button class="back-btn" (click)="goBack()">← Back</button>
+  }
+
+  <!-- Step Content -->
   @if (currentPlanStatus === planStatus.BODY_METRICS) {
     <app-body-metrics-form
       (bmr)="onBmrReceived($event)"

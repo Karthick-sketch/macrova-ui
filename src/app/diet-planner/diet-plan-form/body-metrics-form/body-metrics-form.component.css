@@ -1,9 +1,4 @@
-/* ── Diet Plan Form ─────────────────────────────────── */
-.form-container {
-  max-width: 38rem;
-  margin: 0 auto;
-}
-
+/* ── Body Metrics Form ──────────────────────────────── */
 .page-header {
   margin-bottom: var(--space-lg);
 }
@@ -12,6 +7,12 @@
   font-size: var(--font-size-2xl);
   font-weight: 700;
   margin-bottom: var(--space-xs);
+}
+
+.page-subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin: 0;
 }
 
 .form-card {
@@ -32,6 +33,12 @@
   font-weight: 500;
   color: var(--color-text);
   margin: 0 0 var(--space-xs) 0;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
 }
 
 .input-field {
@@ -84,13 +91,6 @@
   margin-left: var(--space-xs);
 }
 
-/* ── Divider ───────────────────────────────────────── */
-.field-divider {
-  height: 1px;
-  background-color: var(--color-border);
-  margin: var(--space-md) 0;
-}
-
 /* ── Form Submit ───────────────────────────────────── */
 .form-footer {
   margin-top: var(--space-lg);
@@ -114,12 +114,4 @@
 
 .submit-btn:hover {
   background-color: var(--color-primary-dark);
-}
-
-/* ── Validation Error ──────────────────────────────── */
-.invalid-field {
-  margin-top: var(--space-sm);
-  font-size: var(--font-size-sm);
-  color: var(--color-danger);
-  text-align: center;
 }

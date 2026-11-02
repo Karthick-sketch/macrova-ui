@@ -1,76 +1,4 @@
-/* ── Diet Plan Form ─────────────────────────────────── */
-.form-container {
-  max-width: 38rem;
-  margin: 0 auto;
-}
-
-.tdee-wrapper {
-  margin-bottom: var(--space-lg);
-  font-size: var(--font-size-sm);
-  font-weight: 500;
-}
-
-.weight-details-arrow {
-  font-size: var(--font-size-xl);
-  font-weight: 700;
-  color: var(--color-text);
-}
-
-
-.tdee-container>p:last-child {
-  font-size: var(--font-size-xl);
-  font-weight: 700;
-  color: var(--color-primary);
-}
-
-.weight-details {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: var(--space-xs);
-}
-
-.goal-card {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-xs) var(--space-sm);
-  margin-bottom: var(--space-sm);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.goal-title {
-  display: flex;
-  justify-content: space-between;
-}
-
-.goal-title>span:last-child {
-  font-size: var(--font-size-sm);
-  border: 1px solid transparent;
-  border-radius: var(--radius-pill);
-  padding: 0 var(--space-sm);
-}
-
-.goal-mild>span:last-child {
-  color: var(--color-goal-mild-text);
-  background-color: var(--color-goal-mild-bg);
-}
-
-.goal-moderate>span:last-child {
-  color: var(--color-goal-moderate-text);
-  background-color: var(--color-goal-moderate-bg);
-}
-
-.goal-aggressive>span:last-child {
-  color: var(--color-goal-aggressive-text);
-  background-color: var(--color-goal-aggressive-bg);
-}
-
-.selected-goal {
-  border-color: var(--color-primary);
-  background-color: var(--color-primary-light);
-}
-
+/* ── Goal Selection Form ────────────────────────────── */
 .page-header {
   margin-bottom: var(--space-lg);
 }
@@ -81,6 +9,12 @@
   margin-bottom: var(--space-xs);
 }
 
+.page-subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
 .form-card {
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -88,21 +22,125 @@
   padding: var(--space-xl);
 }
 
+/* ── Summary Bar ────────────────────────────────────── */
+.summary-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-lg);
+  font-size: var(--font-size-sm);
+}
+
+.summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.summary-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.summary-value {
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.summary-divider {
+  width: 1px;
+  height: 2rem;
+  background-color: var(--color-border);
+  margin: 0 var(--space-xs);
+}
+
+.summary-arrow {
+  font-size: var(--font-size-xl);
+  color: var(--color-text-muted);
+}
+
 /* ── Field Groups ──────────────────────────────────── */
 .field-group {
   margin-bottom: var(--space-md);
 }
 
-.field-group>p,
-.field-label {
+.field-group > p {
   font-size: var(--font-size-sm);
   font-weight: 500;
   color: var(--color-text);
   margin: 0 0 var(--space-xs) 0;
 }
 
-.input-field {
-  width: 100% !important;
+/* ── Goal Cards ─────────────────────────────────────── */
+.goal-card {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-sm) var(--space-md);
+  margin-bottom: var(--space-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.goal-card:hover {
+  border-color: var(--color-primary-mid);
+  background-color: var(--color-primary-light);
+}
+
+.selected-goal {
+  border-color: var(--color-primary) !important;
+  background-color: var(--color-primary-light) !important;
+}
+
+.goal-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-xs);
+}
+
+.goal-name {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.goal-badge {
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  border-radius: var(--radius-pill);
+  padding: 2px var(--space-sm);
+}
+
+.goal-mild-badge {
+  color: var(--color-goal-mild-text);
+  background-color: var(--color-goal-mild-bg);
+}
+
+.goal-moderate-badge {
+  color: var(--color-goal-moderate-text);
+  background-color: var(--color-goal-moderate-bg);
+}
+
+.goal-aggressive-badge {
+  color: var(--color-goal-aggressive-text);
+  background-color: var(--color-goal-aggressive-bg);
+}
+
+.goal-desc {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin: 0 0 var(--space-xs) 0;
+}
+
+.goal-deficit {
+  font-size: var(--font-size-sm);
+  margin: 0;
 }
 
 /* ── Toggle Button Groups ──────────────────────────── */
@@ -138,24 +176,11 @@
   border-color: var(--color-primary);
 }
 
-/* ── Required Star / Info ──────────────────────────── */
+/* ── Required Star ──────────────────────────────────── */
 .red-star {
   color: var(--color-danger);
   font-size: var(--font-size-xs);
   margin-left: 2px;
-}
-
-.field-info {
-  font-size: var(--font-size-xs);
-  color: var(--color-text-light);
-  margin-left: var(--space-xs);
-}
-
-/* ── Divider ───────────────────────────────────────── */
-.field-divider {
-  height: 1px;
-  background-color: var(--color-border);
-  margin: var(--space-md) 0;
 }
 
 /* ── Form Submit ───────────────────────────────────── */
@@ -181,12 +206,4 @@
 
 .submit-btn:hover {
   background-color: var(--color-primary-dark);
-}
-
-/* ── Validation Error ──────────────────────────────── */
-.invalid-field {
-  margin-top: var(--space-sm);
-  font-size: var(--font-size-sm);
-  color: var(--color-danger);
-  text-align: center;
 }

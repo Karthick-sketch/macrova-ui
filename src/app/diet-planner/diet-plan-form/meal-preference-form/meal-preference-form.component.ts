@@ -1,15 +1,6 @@
-import {
-  Component,
-  computed,
-  input,
-  OnInit,
-  output,
-  signal,
-} from '@angular/core';
+import { Component, computed, input, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
-import { DietPlanService } from '../../diet-plan-service';
 import { Option } from '../../../shared/model/option.model';
 import type { MealPreferenceRequest } from '../../dto/diet-plan.dto';
 import type { CalorieEstimationDTO } from '../../dto/calories.dto';
@@ -21,13 +12,20 @@ import type { MacrosQuantity, MacrosRequest } from '../../dto/macros.dto';
   styleUrl: './meal-preference-form.component.css',
   imports: [FormsModule, DecimalPipe],
 })
-export class MealPreferenceFormComponent implements OnInit {
+export class MealPreferenceFormComponent {
   calorieEstimation = input.required<CalorieEstimationDTO>();
   tdee = input.required<number>();
 
   mealPreferenceEvent = output<MealPreferenceRequest>();
 
+  // Signals for all mutable state
   macroPreferenceType = signal<string>('balanced');
+  selectedMealType = signal<string>('non-vegetarian');
+  numberOfMeals = signal<number>(3);
+  eveningSnack = signal<boolean>(true);
+  customProtein = signal<number | null>(null);
+  customCarbs = signal<number | null>(null);
+  customFat = signal<number | null>(null);
 
   macroPreferenceTypes: Option[] = [
     new Option('balanced', 'Balanced'),
@@ -44,18 +42,20 @@ export class MealPreferenceFormComponent implements OnInit {
   ];
   mealCounts: number[] = [2, 3, 4, 5];
 
-  constructor(
-    private router: Router,
-    private dietPlanService: DietPlanService,
-  ) {}
-
   macroPreference = computed<MacrosRequest>(() => {
     const est = this.calorieEstimation();
     const type = this.macroPreferenceType();
 
-    const targetMacros = est[type as keyof CalorieEstimationDTO];
+    if (type === 'custom') {
+      return {
+        protein:
+          this.customProtein() ?? this.findMiddleValue(est.proteinQuantity),
+        carbs: this.customCarbs() ?? this.findMiddleValue(est.carbsQuantity),
+        fat: this.customFat() ?? this.findMiddleValue(est.fatQuantity),
+      };
+    }
 
-    // Check if targetMacros exists AND is an object (not a primitive number)
+    const targetMacros = est[type as keyof CalorieEstimationDTO];
     if (
       targetMacros &&
       typeof targetMacros === 'object' &&
@@ -68,65 +68,68 @@ export class MealPreferenceFormComponent implements OnInit {
       };
     }
 
-    // Fallback if 'type' points to a primitive property or doesn't exist
     return {
-      protein: this.findMiddleValue(this.calorieEstimation().proteinQuantity),
-      carbs: this.findMiddleValue(this.calorieEstimation().carbsQuantity),
-      fat: this.findMiddleValue(this.calorieEstimation().fatQuantity),
+      protein: this.findMiddleValue(est.proteinQuantity),
+      carbs: this.findMiddleValue(est.carbsQuantity),
+      fat: this.findMiddleValue(est.fatQuantity),
     };
   });
 
-  mealPreference = computed<MealPreferenceRequest>(() => ({
-    type: this.macroPreferenceType(),
-    macroPreference: this.macroPreference(),
-    dietType: this.macroPreferenceType(),
-    mealType: 'non-vegetarian',
-    numberOfMeals: 3,
-    eveningSnack: true,
-  }));
-
-  ngOnInit() {
-    this.dietPlanService.isThereAnyActivePlans().subscribe((value) => {
-      if (value) {
-        this.router.navigate(['/']);
-      }
-    });
-  }
-
   changeType(key: string) {
-    this.mealPreference().type = key;
     this.macroPreferenceType.set(key);
+    // Reset custom overrides when switching away from custom
+    if (key !== 'custom') {
+      this.customProtein.set(null);
+      this.customCarbs.set(null);
+      this.customFat.set(null);
+    }
   }
 
   setProteinPreference(value: string) {
-    this.mealPreference().macroPreference.protein = Number(value);
+    this.customProtein.set(Number(value));
+    if (this.macroPreferenceType() !== 'custom') {
+      this.macroPreferenceType.set('custom');
+    }
   }
 
   setCarbsPreference(value: string) {
-    this.mealPreference().macroPreference.carbs = Number(value);
+    this.customCarbs.set(Number(value));
+    if (this.macroPreferenceType() !== 'custom') {
+      this.macroPreferenceType.set('custom');
+    }
   }
 
   setFatPreference(value: string) {
-    this.mealPreference().macroPreference.fat = Number(value);
+    this.customFat.set(Number(value));
+    if (this.macroPreferenceType() !== 'custom') {
+      this.macroPreferenceType.set('custom');
+    }
   }
 
   submitMealPreferences() {
-    this.mealPreferenceEvent.emit(this.mealPreference());
+    this.mealPreferenceEvent.emit({
+      type: this.macroPreferenceType(),
+      macroPreference: this.macroPreference(),
+      dietType: this.macroPreferenceType(),
+      mealType: this.selectedMealType(),
+      numberOfMeals: this.numberOfMeals(),
+      eveningSnack: this.eveningSnack(),
+    });
   }
 
   selectSnack(snack: boolean) {
-    this.mealPreference().eveningSnack = snack;
+    this.eveningSnack.set(snack);
   }
 
   selectMealType(mealType: string) {
-    this.mealPreference().mealType = mealType;
+    this.selectedMealType.set(mealType);
   }
 
-  selectNumberOfMeals(numberOfMeals: number) {
-    this.mealPreference().numberOfMeals = numberOfMeals;
+  selectNumberOfMeals(count: number) {
+    this.numberOfMeals.set(count);
   }
 
   private findMiddleValue(qty: MacrosQuantity): number {
-    return (qty.min + qty.max) / 2;
+    return Math.round((qty.min + qty.max) / 2);
   }
 }

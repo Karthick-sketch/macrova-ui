@@ -1,29 +1,129 @@
-<div class="form-container">
-  <div class="page-header">
-    <h2>Create Diet Plan</h2>
+<div class="page-header">
+  <h2>Review Your Plan</h2>
+  <p class="page-subtitle">
+    Everything looks good? Generate your personalised diet plan.
+  </p>
+</div>
+
+<div class="form-card">
+  <!-- Plan Identity -->
+  <div class="preview-section">
+    <div class="preview-title-row">
+      <span class="plan-title">{{ dietPlan().title }}</span>
+      <span class="plan-badge">{{ dietPlan().plan }}</span>
+    </div>
   </div>
 
-  <div class="form-card">
-    <div class="field-group">
-      <p>Daily Calories {{ dietPlan().deficit | number }} kcal</p>
-    </div>
-    <div class="field-group">
-      <p>Diet Type {{ dietPlan().mealType }}</p>
-    </div>
-    <div class="field-group">
-      <p>Meals {{ dietPlan().numberOfMeals }} per day</p>
-    </div>
-    <div class="field-group">
-      <p>Evening Snack {{ dietPlan().eveningSnack ? "Yes" : "No" }}</p>
-    </div>
-    <div class="field-group">
-      <p>Duration {{ dietPlan().duration }} days</p>
-    </div>
+  <div class="section-divider"></div>
 
-    <div class="form-footer">
-      <button class="submit-btn" (click)="createDiet()">
-        Generate My Diet Plan
-      </button>
+  <!-- Body Details -->
+  <div class="preview-section">
+    <p class="section-heading">Body Metrics</p>
+    <div class="preview-grid">
+      <div class="preview-item">
+        <span class="item-label">Age</span>
+        <span class="item-value">{{ dietPlan().age }} yrs</span>
+      </div>
+      <div class="preview-item">
+        <span class="item-label">Gender</span>
+        <span class="item-value">{{ dietPlan().gender }}</span>
+      </div>
+      <div class="preview-item">
+        <span class="item-label">Height</span>
+        <span class="item-value">{{ dietPlan().height }} cm</span>
+      </div>
+      <div class="preview-item">
+        <span class="item-label">Current Weight</span>
+        <span class="item-value">{{ dietPlan().weight }} kg</span>
+      </div>
+      <div class="preview-item">
+        <span class="item-label">Target Weight</span>
+        <span class="item-value">{{ dietPlan().targetWeight }} kg</span>
+      </div>
+      <div class="preview-item">
+        <span class="item-label">Activity Level</span>
+        <span class="item-value">{{ dietPlan().activity }}</span>
+      </div>
     </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- Goal & Calories -->
+  <div class="preview-section">
+    <p class="section-heading">Goal & Calories</p>
+    <div class="preview-grid">
+      <div class="preview-item">
+        <span class="item-label">Goal</span>
+        <span class="item-value">{{ dietPlan().goal }}</span>
+      </div>
+      <div class="preview-item">
+        <span class="item-label">Duration</span>
+        <span class="item-value">{{ dietPlan().duration }} days</span>
+      </div>
+      <div class="preview-item">
+        <span class="item-label">Daily Calories (TDEE)</span>
+        <span class="item-value">{{ dietPlan().tdee | number }} kcal</span>
+      </div>
+      <div class="preview-item">
+        <span class="item-label">Target Calories</span>
+        <span class="item-value highlight"
+          >{{ dietPlan().deficit | number }} kcal/day</span
+        >
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- Meal Preferences -->
+  <div class="preview-section">
+    <p class="section-heading">Meal Preferences</p>
+    <div class="preview-grid">
+      <div class="preview-item">
+        <span class="item-label">Diet Type</span>
+        <span class="item-value">{{ dietPlan().mealType }}</span>
+      </div>
+      <div class="preview-item">
+        <span class="item-label">Meals per Day</span>
+        <span class="item-value">{{ dietPlan().numberOfMeals }}</span>
+      </div>
+      <div class="preview-item">
+        <span class="item-label">Evening Snack</span>
+        <span class="item-value">{{
+          dietPlan().eveningSnack ? "Yes" : "No"
+        }}</span>
+      </div>
+    </div>
+    <!-- Macros -->
+    @if (dietPlan().macronutrientPreference) {
+      <div class="macro-summary">
+        <div class="macro-chip">
+          <span class="macro-chip-label">Protein</span>
+          <span class="macro-chip-value"
+            >{{ dietPlan().macronutrientPreference.protein }}g</span
+          >
+        </div>
+        <div class="macro-chip">
+          <span class="macro-chip-label">Carbs</span>
+          <span class="macro-chip-value"
+            >{{ dietPlan().macronutrientPreference.carbs }}g</span
+          >
+        </div>
+        <div class="macro-chip">
+          <span class="macro-chip-label">Fats</span>
+          <span class="macro-chip-value"
+            >{{ dietPlan().macronutrientPreference.fat }}g</span
+          >
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Generate Button -->
+  <div class="form-footer">
+    <button class="submit-btn" (click)="createDiet()">
+      ✦ Generate My Diet Plan
+    </button>
   </div>
 </div>
