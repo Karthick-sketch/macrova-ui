@@ -9,41 +9,62 @@
       <p>Macronutrients Preference <span class="red-star">*</span></p>
       <div class="macro-tab-container">
         @for (type of macroPreferenceTypes; track $index) {
-        <button class="macro-tab" [class.macro-tab-selected]="mealPreference().type === type.label"
-          (click)="changeType(type.label)">{{type.value}}</button>
+          <button
+            class="macro-tab"
+            [class.macro-tab-selected]="mealPreference().type === type.label"
+            (click)="changeType(type.label)"
+          >
+            {{ type.value }}
+          </button>
         }
       </div>
       <div class="macro-tab-body">
         <div class="macro-calories-info">
           <div>
             <p>Calorie Deficit</p>
-            <p>~{{ calorieEstimation().calorieDeficit | number }}kcal</p>
+            <p>~{{ calorieEstimation().deficit | number }}kcal</p>
           </div>
           <div>
             <p>Maintenance Calories</p>
-            <p>~{{ calorieEstimation().tdee | number }}kcal</p>
+            <p>~{{ tdee() | number }}kcal</p>
           </div>
         </div>
         <div>
           <div class="macro-info">
             <p>Protein</p>
-            <input type="range" #proteinInput [min]="macrosPreference().protein.minimum"
-              [max]="macrosPreference().protein.maximum" [value]="macrosPreference().protein.recommended"
-              (input)="setProteinPreference(proteinInput.value)" />
-            <p>{{macrosPreference().protein.recommended}}g</p>
+            <input
+              type="range"
+              #proteinInput
+              [min]="calorieEstimation().proteinQuantity.min"
+              [max]="calorieEstimation().proteinQuantity.max"
+              [value]="macroPreference().protein"
+              (input)="setProteinPreference(proteinInput.value)"
+            />
+            <p>{{ macroPreference().protein }}g</p>
           </div>
           <div class="macro-info">
             <p>Carbohydrates</p>
-            <input type="range" #carbsInput [min]="macrosPreference().carbs.minimum"
-              [max]="macrosPreference().carbs.maximum" [value]="macrosPreference().carbs.recommended"
-              (input)="setCarbsPreference(carbsInput.value)" />
-            <p>{{macrosPreference().carbs.recommended}}g</p>
+            <input
+              type="range"
+              #carbsInput
+              [min]="calorieEstimation().carbsQuantity.min"
+              [max]="calorieEstimation().carbsQuantity.max"
+              [value]="macroPreference().carbs"
+              (input)="setCarbsPreference(carbsInput.value)"
+            />
+            <p>{{ macroPreference().carbs }}g</p>
           </div>
           <div class="macro-info">
             <p>Fats</p>
-            <input type="range" #fatInput [min]="macrosPreference().fat.minimum" [max]="macrosPreference().fat.maximum"
-              [value]="macrosPreference().fat.recommended" (input)="setFatPreference(fatInput.value)" />
-            <p>{{macrosPreference().fat.recommended}}g</p>
+            <input
+              type="range"
+              #fatInput
+              [min]="calorieEstimation().fatQuantity.min"
+              [max]="calorieEstimation().fatQuantity.max"
+              [value]="macroPreference().fat"
+              (input)="setFatPreference(fatInput.value)"
+            />
+            <p>{{ macroPreference().fat }}g</p>
           </div>
         </div>
       </div>
@@ -53,9 +74,12 @@
       <p>Meal Preference <span class="red-star">*</span></p>
       <div class="toggle-group">
         @for (mealType of mealTypes; track $index) {
-        <button [class.selected]="mealType.label === mealPreference().mealType"
-          (click)="selectMealType(mealType.label)">{{
-          mealType.value }}</button>
+          <button
+            [class.selected]="mealType.label === mealPreference().mealType"
+            (click)="selectMealType(mealType.label)"
+          >
+            {{ mealType.value }}
+          </button>
         }
       </div>
     </div>
@@ -65,8 +89,12 @@
       <p>How many meals per day? <span class="red-star">*</span></p>
       <div class="toggle-group">
         @for (mealCount of mealCounts; track $index) {
-        <button [class.selected]="mealCount === mealPreference().numberOfMeals"
-          (click)="selectNumberOfMeals(mealCount)">{{ mealCount }}</button>
+          <button
+            [class.selected]="mealCount === mealPreference().numberOfMeals"
+            (click)="selectNumberOfMeals(mealCount)"
+          >
+            {{ mealCount }}
+          </button>
         }
       </div>
     </div>
@@ -75,8 +103,18 @@
     <div class="field-group">
       <p>Do you prefer an evening snack? <span class="red-star">*</span></p>
       <div class="toggle-group">
-        <button [class.selected]="mealPreference().eveningSnack" (click)="selectSnack(true)">Yes</button>
-        <button [class.selected]="!mealPreference().eveningSnack" (click)="selectSnack(false)">No</button>
+        <button
+          [class.selected]="mealPreference().eveningSnack"
+          (click)="selectSnack(true)"
+        >
+          Yes
+        </button>
+        <button
+          [class.selected]="!mealPreference().eveningSnack"
+          (click)="selectSnack(false)"
+        >
+          No
+        </button>
       </div>
     </div>
 

@@ -14,6 +14,8 @@ import type { GoalSectionRequest } from '../../dto/diet-plan.dto';
 })
 export class GoalSelectionFormComponent implements OnInit {
   tdee = input.required<number>();
+  currentWeight = input.required<number>();
+  targetWeight = input.required<number>();
 
   goalSectionEvent = output<GoalSectionRequest>();
 

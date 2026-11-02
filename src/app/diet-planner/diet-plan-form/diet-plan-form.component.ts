@@ -17,6 +17,7 @@ import type {
   CalorieEstimationDTO,
   CalorieEstimationRequest,
 } from '../dto/calories.dto';
+import { DietPlanModel } from '../model/diet-plan.model';
 
 @Component({
   selector: 'app-diet-plan-form',
@@ -79,7 +80,7 @@ export class DietPlanFormComponent implements OnInit {
     this.dietPlanDTO.weight = $event.weight;
     this.dietPlanDTO.targetWeight = $event.targetWeight;
     this.dietPlanDTO.activity = $event.activity;
-    this.calorieEstimation.tdee = $event.tdee;
+    this.dietPlanDTO.tdee = $event.tdee;
     this.currentPlanStatus = PlanStatus.PLAN_SELECTION;
   }
 
@@ -89,13 +90,14 @@ export class DietPlanFormComponent implements OnInit {
     this.currentPlanStatus = PlanStatus.MEAL_PREFERENCE;
 
     const estimationRequest: CalorieEstimationRequest = {
-      tdee: this.calorieEstimation.tdee,
+      tdee: this.dietPlanDTO.tdee,
       goal: $event.goal,
       duration: $event.duration,
     };
     this.dietPlanService.estimateCalories(estimationRequest).subscribe({
       next: (calorieEstimation: CalorieEstimationDTO) => {
         this.calorieEstimation = calorieEstimation;
+        this.dietPlanDTO.deficit = calorieEstimation.deficit;
       },
       error: ({ status, error }) => {
         if (status === 404) {
@@ -107,13 +109,27 @@ export class DietPlanFormComponent implements OnInit {
 
   onMealPreference($event: MealPreferenceRequest) {
     this.dietPlanDTO.macronutrientPreference = {
-      protein: $event.calorieEstimation.custom.protein.recommended,
-      carbs: $event.calorieEstimation.custom.carbs.recommended,
-      fat: $event.calorieEstimation.custom.fat.recommended,
+      protein: $event.macroPreference.protein,
+      carbs: $event.macroPreference.carbs,
+      fat: $event.macroPreference.fat,
     };
+    this.dietPlanDTO.dietType = $event.dietType;
     this.dietPlanDTO.mealType = $event.mealType;
     this.dietPlanDTO.numberOfMeals = $event.numberOfMeals;
     this.dietPlanDTO.eveningSnack = $event.eveningSnack;
     this.currentPlanStatus = PlanStatus.PREVIEW;
+  }
+
+  createDietPlan() {
+    this.dietPlanService.createDietPlan(this.dietPlanDTO).subscribe({
+      next: (value: DietPlanModel) => {
+        this.router.navigate(['/diet-plan', value.id]);
+      },
+      error: ({ status, error }) => {
+        if (status === 404) {
+          this.toast.showError(error.error[0]);
+        }
+      },
+    });
   }
 }

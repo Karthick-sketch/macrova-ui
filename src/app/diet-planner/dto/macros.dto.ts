@@ -12,14 +12,7 @@ export interface MacrosRequest {
   carbs: number;
 }
 
-export interface MacrosPreference {
-  protein: MacrosQuantity;
-  fat: MacrosQuantity;
-  carbs: MacrosQuantity;
-}
-
 export interface MacrosQuantity {
-  minimum: number;
-  maximum: number;
-  recommended: number;
+  min: number;
+  max: number;
 }

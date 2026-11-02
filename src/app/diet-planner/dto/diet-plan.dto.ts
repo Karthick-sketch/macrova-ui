@@ -17,7 +17,10 @@ export interface DietPlanDTO {
   targetWeight: number;
   duration: number;
   activity: Activity;
+  tdee: number;
+  deficit: number;
   macronutrientPreference: MacrosRequest;
+  dietType: string;
   mealType: string;
   numberOfMeals: number;
   eveningSnack: boolean;
@@ -53,7 +56,8 @@ export interface GoalSectionRequest {
 
 export interface MealPreferenceRequest {
   type: string;
-  calorieEstimation: CalorieEstimationDTO;
+  macroPreference: MacrosRequest;
+  dietType: string;
   mealType: string;
   numberOfMeals: number;
   eveningSnack: boolean;
