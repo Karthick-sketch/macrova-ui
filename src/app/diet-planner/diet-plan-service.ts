@@ -7,12 +7,14 @@ import type {
   BodyMetricsRequest,
   BodyMetricsResponse,
   DietPlanDTO,
+  DietPlanFormStatus,
   GoalSectionRequest,
   MealPreferenceRequest,
 } from './dto/diet-plan.dto';
 import type { MacrosDTO } from './dto/macros.dto';
 import type { DietPlanHistoryDTO } from './dto/diet-plan-history.dto';
 import type { CalorieEstimationResponse } from './dto/calories.dto';
+import { FormStatus } from './enum/form-status.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -101,8 +103,8 @@ export class DietPlanService {
     return this.http.get<MetricsDTO>(`${this.basePath}/metrics`);
   }
 
-  isThereAnyActivePlans() {
-    return this.http.get<boolean>(`${this.basePath}/active-plans`);
+  getDietPlanFormStatus() {
+    return this.http.get<DietPlanFormStatus>(`${this.basePath}/form/status`);
   }
 
   getDietPlanOverview(id: string) {

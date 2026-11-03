@@ -6,7 +6,8 @@ import { DietPlanPreviewFormComponent } from './diet-plan-preview-form/diet-plan
 import { GoalSelectionFormComponent } from './goal-selection-form/goal-selection-form.component';
 import { MealPreferenceFormComponent } from './meal-preference-form/meal-preference-form.component';
 import { ToastComponent } from '../../toast/toast.component';
-import { PlanStatus } from '../enum/plan-status';
+import { FormStatus } from '../enum/form-status.enum';
+import { PlanStatus } from '../enum/plan-status.enum';
 import type { BodyMetricsResponse, DietPlanDTO } from '../dto/diet-plan.dto';
 import type { CalorieEstimationResponse } from '../dto/calories.dto';
 
@@ -30,19 +31,19 @@ export class DietPlanFormComponent implements OnInit {
   bodyMetricsResponse = {} as BodyMetricsResponse;
   calorieEstimationResponse = {} as CalorieEstimationResponse;
 
-  planStatus = PlanStatus;
-  currentPlanStatus: PlanStatus = PlanStatus.BODY_METRICS;
+  formStatus = FormStatus;
+  currentFormStatus: FormStatus = FormStatus.BODY_METRICS;
 
   steps = ['Body Metrics', 'Goal & Duration', 'Meal Preferences', 'Preview'];
 
   get stepIndex(): number {
     const order = [
-      PlanStatus.BODY_METRICS,
-      PlanStatus.PLAN_SELECTION,
-      PlanStatus.MEAL_PREFERENCE,
-      PlanStatus.PREVIEW,
+      FormStatus.BODY_METRICS,
+      FormStatus.GOAL_SELECTION,
+      FormStatus.MEAL_PREFERENCE,
+      FormStatus.PREVIEW,
     ];
-    return order.indexOf(this.currentPlanStatus);
+    return order.indexOf(this.currentFormStatus);
   }
 
   constructor(
@@ -56,50 +57,54 @@ export class DietPlanFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.dietPlanService.isThereAnyActivePlans().subscribe((value) => {
-      if (value) {
+    this.dietPlanService.getDietPlanFormStatus().subscribe((value) => {
+      if (value.planStatus === PlanStatus.ACTIVE) {
         this.router.navigate(['/']);
-      } else if (this.dietPlanId) {
-        this.dietPlanService.getDietPlanById(this.dietPlanId).subscribe({
-          next: (dietPlanDTO: DietPlanDTO) => {
-            this.dietPlanDTO = dietPlanDTO;
-          },
-          error: ({ status, error }) => {
-            if (status === 404) {
-              this.toast.showError(error.error[0]);
-            }
-          },
-        });
+      } else if (value.formStatus === FormStatus.GOAL_SELECTION) {
+        if (value.bodyMetrics) {
+          this.bodyMetricsResponse = value.bodyMetrics;
+        }
+        this.currentFormStatus = FormStatus.GOAL_SELECTION;
+      } else if (value.formStatus === FormStatus.MEAL_PREFERENCE) {
+        if (value.caloriesEstimation) {
+          this.calorieEstimationResponse = value.caloriesEstimation;
+        }
+        this.currentFormStatus = FormStatus.MEAL_PREFERENCE;
+      } else if (value.formStatus === FormStatus.PREVIEW) {
+        if (value.dietPlan) {
+          this.dietPlanDTO = value.dietPlan;
+        }
+        this.currentFormStatus = FormStatus.PREVIEW;
       }
     });
   }
 
   goBack() {
     const order = [
-      PlanStatus.BODY_METRICS,
-      PlanStatus.PLAN_SELECTION,
-      PlanStatus.MEAL_PREFERENCE,
-      PlanStatus.PREVIEW,
+      FormStatus.BODY_METRICS,
+      FormStatus.GOAL_SELECTION,
+      FormStatus.MEAL_PREFERENCE,
+      FormStatus.PREVIEW,
     ];
-    const idx = order.indexOf(this.currentPlanStatus);
+    const idx = order.indexOf(this.currentFormStatus);
     if (idx > 0) {
-      this.currentPlanStatus = order[idx - 1];
+      this.currentFormStatus = order[idx - 1];
     }
   }
 
   onBodyMetricsReceived($event: BodyMetricsResponse) {
     this.bodyMetricsResponse = $event;
-    this.currentPlanStatus = PlanStatus.PLAN_SELECTION;
+    this.currentFormStatus = FormStatus.GOAL_SELECTION;
   }
 
   onGoalSelected($event: CalorieEstimationResponse) {
     this.calorieEstimationResponse = $event;
-    this.currentPlanStatus = PlanStatus.MEAL_PREFERENCE;
+    this.currentFormStatus = FormStatus.MEAL_PREFERENCE;
   }
 
   onMealPreference($event: DietPlanDTO) {
     this.dietPlanDTO = $event;
-    this.currentPlanStatus = PlanStatus.PREVIEW;
+    this.currentFormStatus = FormStatus.PREVIEW;
   }
 
   createDietPlan($event: DietPlanDTO) {

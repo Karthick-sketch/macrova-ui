@@ -23,17 +23,13 @@ export class MealPreferenceFormComponent {
 
   mealPreferenceEvent = output<DietPlanDTO>();
 
-  // Signals for all mutable state
   mealPreference = signal<MealPreferenceRequest>({
-    macros: { protein: 100, carbs: 100, fat: 100 },
+    macros: { protein: 0, carbs: 0, fat: 0 },
     dietType: DietTypes.BALANCED,
     mealType: MealTypes.NON_VEGETARIAN,
     mealCount: 3,
     eveningSnack: true,
   });
-  customProtein = signal<number | null>(null);
-  customCarbs = signal<number | null>(null);
-  customFat = signal<number | null>(null);
 
   dietTypes: Option<DietTypes>[] = [
     new Option('Balanced', DietTypes.BALANCED),
@@ -68,9 +64,14 @@ export class MealPreferenceFormComponent {
       default:
         return {
           protein:
-            this.customProtein() ?? this.findMiddleValue(est.proteinQuantity),
-          carbs: this.customCarbs() ?? this.findMiddleValue(est.carbsQuantity),
-          fat: this.customFat() ?? this.findMiddleValue(est.fatQuantity),
+            this.mealPreference().macros.protein ??
+            this.findMiddleValue(est.proteinQuantity),
+          carbs:
+            this.mealPreference().macros.carbs ??
+            this.findMiddleValue(est.carbsQuantity),
+          fat:
+            this.mealPreference().macros.fat ??
+            this.findMiddleValue(est.fatQuantity),
         };
     }
   });
@@ -81,24 +82,24 @@ export class MealPreferenceFormComponent {
     this.mealPreference().dietType = type;
     // Reset custom overrides when switching away from custom
     if (type !== DietTypes.CUSTOM) {
-      this.customProtein.set(null);
-      this.customCarbs.set(null);
-      this.customFat.set(null);
+      this.mealPreference().macros.protein = 0;
+      this.mealPreference().macros.carbs = 0;
+      this.mealPreference().macros.fat = 0;
     }
   }
 
   setProteinPreference(value: string) {
-    this.customProtein.set(Number(value));
+    this.mealPreference().macros.protein = Number(value);
     this.setDietTypeCustom();
   }
 
   setCarbsPreference(value: string) {
-    this.customCarbs.set(Number(value));
+    this.mealPreference().macros.carbs = Number(value);
     this.setDietTypeCustom();
   }
 
   setFatPreference(value: string) {
-    this.customFat.set(Number(value));
+    this.mealPreference().macros.fat = Number(value);
     this.setDietTypeCustom();
   }
 

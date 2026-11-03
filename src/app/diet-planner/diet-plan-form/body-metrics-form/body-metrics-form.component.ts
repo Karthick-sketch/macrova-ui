@@ -41,11 +41,11 @@ export class BodyMetricsFormComponent {
   bodyMetrics: BodyMetricsRequest = {
     title: '',
     plan: Plan.WEIGHT_LOSS,
-    age: 0,
+    age: 25,
     gender: Gender.MALE,
-    height: 0,
-    weight: 0,
-    targetWeight: 0,
+    height: 175,
+    weight: 100,
+    targetWeight: 75,
     activity: Activity.SEDENTARY,
   };
 

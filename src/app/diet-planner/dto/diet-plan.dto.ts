@@ -3,8 +3,11 @@ import type { DietTypes } from '../enum/diet-types.enum';
 import type { Gender } from '../enum/gender.enum';
 import type { Goal } from '../enum/goal.enum';
 import type { MealTypes } from '../enum/meal-types.enum';
+import type { FormStatus } from '../enum/form-status.enum';
 import type { Plan } from '../enum/plan.enum';
+import type { PlanStatus } from '../enum/plan-status.enum';
 import type { Macros } from './macros.dto';
+import type { CalorieEstimationResponse } from './calories.dto';
 
 export interface DietPlanDTO {
   id: string;
@@ -25,6 +28,14 @@ export interface DietPlanDTO {
   macros: Macros;
   mealCount: number;
   eveningSnack: boolean;
+}
+
+export interface DietPlanFormStatus {
+  planStatus: PlanStatus;
+  formStatus: FormStatus;
+  dietPlan?: DietPlanDTO;
+  bodyMetrics?: BodyMetricsResponse;
+  caloriesEstimation?: CalorieEstimationResponse;
 }
 
 export interface BodyMetricsRequest {
