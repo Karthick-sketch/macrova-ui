@@ -1,8 +1,10 @@
-import { Gender } from '../enum/gender.enum';
-import { Goal } from '../enum/goal.enum';
-import { Activity } from '../enum/activity.enum';
-import { Plan } from '../enum/plan.enum';
-import type { MacroPreference } from './macros.dto';
+import type { Activity } from '../enum/activity.enum';
+import type { DietTypes } from '../enum/diet-types.enum';
+import type { Gender } from '../enum/gender.enum';
+import type { Goal } from '../enum/goal.enum';
+import type { MealTypes } from '../enum/meal-types.enum';
+import type { Plan } from '../enum/plan.enum';
+import type { Macros } from './macros.dto';
 
 export interface DietPlanDTO {
   id: string;
@@ -20,7 +22,7 @@ export interface DietPlanDTO {
   targetCalories: number;
   dietType: string;
   mealType: string;
-  macroPreference: MacroPreference;
+  macros: Macros;
   mealCount: number;
   eveningSnack: boolean;
 }
@@ -49,9 +51,9 @@ export interface GoalSectionRequest {
 }
 
 export interface MealPreferenceRequest {
-  macroPreference: MacroPreference;
-  dietType: string;
-  mealType: string;
-  numberOfMeals: number;
+  macros: Macros;
+  dietType: DietTypes;
+  mealType: MealTypes;
+  mealCount: number;
   eveningSnack: boolean;
 }

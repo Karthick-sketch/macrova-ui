@@ -1,6 +1,7 @@
 import { Component, input, output } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
-import { DietPlanDTO } from '../../dto/diet-plan.dto';
+import { DietPlanService } from '../../diet-plan-service';
+import type { DietPlanDTO } from '../../dto/diet-plan.dto';
 
 @Component({
   selector: 'app-diet-plan-preview-form',
@@ -11,9 +12,15 @@ import { DietPlanDTO } from '../../dto/diet-plan.dto';
 export class DietPlanPreviewFormComponent {
   dietPlan = input.required<DietPlanDTO>();
 
-  createDietEvent = output<void>();
+  createDietEvent = output<DietPlanDTO>();
+
+  constructor(private dietPlanService: DietPlanService) {}
 
   createDiet() {
-    this.createDietEvent.emit();
+    this.dietPlanService
+      .createDietPlan()
+      .subscribe((dietPlanDTO: DietPlanDTO) =>
+        this.createDietEvent.emit(dietPlanDTO),
+      );
   }
 }

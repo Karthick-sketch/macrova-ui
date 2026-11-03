@@ -1,8 +1,13 @@
 import { Component, input, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DecimalPipe } from '@angular/common';
+import { DietPlanService } from '../../diet-plan-service';
 import { Goal } from '../../enum/goal.enum';
-import type { GoalSectionRequest } from '../../dto/diet-plan.dto';
+import type {
+  BodyMetricsResponse,
+  GoalSectionRequest,
+} from '../../dto/diet-plan.dto';
+import type { CalorieEstimationResponse } from '../../dto/calories.dto';
 
 @Component({
   selector: 'app-goal-selection-form',
@@ -11,11 +16,9 @@ import type { GoalSectionRequest } from '../../dto/diet-plan.dto';
   imports: [FormsModule, DecimalPipe],
 })
 export class GoalSelectionFormComponent {
-  tdee = input.required<number>();
-  currentWeight = input.required<number>();
-  targetWeight = input.required<number>();
+  bodyMetrics = input.required<BodyMetricsResponse>();
 
-  goalSectionEvent = output<GoalSectionRequest>();
+  goalSectionEvent = output<CalorieEstimationResponse>();
 
   Goal = Goal;
   durations = [90, 180, 360];
@@ -24,8 +27,14 @@ export class GoalSelectionFormComponent {
     duration: 180,
   };
 
+  constructor(private dietPlanService: DietPlanService) {}
+
   submit() {
-    this.goalSectionEvent.emit(this.selectedGoal);
+    this.dietPlanService
+      .createDietPlanGoalSelection(this.selectedGoal)
+      .subscribe((response: CalorieEstimationResponse) =>
+        this.goalSectionEvent.emit(response),
+      );
   }
 
   selectGoal(goal: Goal) {

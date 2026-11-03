@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { WeightTrackComponent } from './weight-track/weight-track.component';
-import { DietPlanService } from '../diet-planner/diet-plan-service';
-import { MetricsModel } from '../diet-planner/model/metrics.model';
 import { Router } from '@angular/router';
 import { LimitReachPipe } from './pipe/limitreach.pipe';
+import { DietPlanService } from '../diet-planner/diet-plan-service';
+import { WeightTrackComponent } from './weight-track/weight-track.component';
+import type { MetricsDTO } from '../diet-planner/dto/metrics.dto';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,7 +12,7 @@ import { LimitReachPipe } from './pipe/limitreach.pipe';
   imports: [WeightTrackComponent, LimitReachPipe],
 })
 export class DashboardComponent implements OnInit {
-  metrics!: MetricsModel;
+  metrics!: MetricsDTO;
 
   constructor(
     private dietPlanService: DietPlanService,
@@ -25,8 +25,8 @@ export class DashboardComponent implements OnInit {
         this.router.navigate(['/no-active-plan']);
       } else {
         this.dietPlanService.getMetrics().subscribe({
-          next: (metricsModel: MetricsModel) => {
-            this.metrics = metricsModel;
+          next: (metricsDTO: MetricsDTO) => {
+            this.metrics = metricsDTO;
           },
           error: (err: any) => {
             if (err.status === 404) {

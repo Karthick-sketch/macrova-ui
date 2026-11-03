@@ -3,8 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe, NgTemplateOutlet } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DietPlanService } from '../diet-plan-service';
-import { DietPlanTrackModel } from '../model/diet-plan-track.model';
-import { MealKcalDTO } from '../dto/meal-kcal.dto';
+import type { DietPlanTrackDTO } from '../dto/diet-plan-track.dto';
+import type { MealKcalDTO } from '../dto/meal-kcal.dto';
 
 @Component({
   selector: 'app-diet-plan',
@@ -13,7 +13,7 @@ import { MealKcalDTO } from '../dto/meal-kcal.dto';
   imports: [NgTemplateOutlet, FormsModule, DatePipe],
 })
 export class DietPlanTrackOverviewComponent implements OnInit {
-  dietPlanTrack!: DietPlanTrackModel;
+  dietPlanTrack!: DietPlanTrackDTO;
   meals!: MealKcalDTO;
   kcalPercentage!: number;
 
@@ -27,9 +27,9 @@ export class DietPlanTrackOverviewComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.dietPlanService.getDietPlanTrackById(id).subscribe({
-        next: (dietPlanTrackModel: DietPlanTrackModel) => {
-          this.dietPlanTrack = dietPlanTrackModel;
-          this.meals = dietPlanTrackModel.mealKcal;
+        next: (dietPlanTrackDTO: DietPlanTrackDTO) => {
+          this.dietPlanTrack = dietPlanTrackDTO;
+          this.meals = dietPlanTrackDTO.mealKcal;
           this.setKcalPercentage();
         },
         error: (err) => {

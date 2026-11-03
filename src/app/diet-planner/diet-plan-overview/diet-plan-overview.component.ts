@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { DietPlanOverviewModel } from '../model/diet-plan-overview.model';
 import { DietPlanService } from '../diet-plan-service';
+import type { DietPlanOverviewDTO } from '../dto/diet-plan-overview.dto';
 
 @Component({
   selector: 'app-diet-plan-overview',
@@ -11,7 +11,7 @@ import { DietPlanService } from '../diet-plan-service';
   imports: [DatePipe, RouterLink],
 })
 export class DietPlanOverviewComponent implements OnInit {
-  plans!: DietPlanOverviewModel[];
+  plans!: DietPlanOverviewDTO[];
 
   constructor(
     private route: ActivatedRoute,

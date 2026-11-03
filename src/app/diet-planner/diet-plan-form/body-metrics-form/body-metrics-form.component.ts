@@ -20,17 +20,17 @@ import type {
 export class BodyMetricsFormComponent {
   @ViewChild(ToastComponent) toast!: ToastComponent;
 
-  bmr = output<BodyMetricsResponse>();
+  bodyMetricsEvent = output<BodyMetricsResponse>();
 
-  plans = [
+  plans: Option<Plan>[] = [
     new Option('Weight Loss', Plan.WEIGHT_LOSS),
     new Option('Weight Gain', Plan.WEIGHT_GAIN),
   ];
-  genders = [
+  genders: Option<Gender>[] = [
     new Option('Male', Gender.MALE),
     new Option('Female', Gender.FEMALE),
   ];
-  activities = [
+  activities: Option<Activity>[] = [
     new Option('Sedentary', Activity.SEDENTARY),
     new Option('Light', Activity.LIGHT),
     new Option('Moderate', Activity.MODERATE),
@@ -57,7 +57,7 @@ export class BodyMetricsFormComponent {
         .createDietPlanBodyMetrics(this.bodyMetrics)
         .subscribe({
           next: (res: BodyMetricsResponse) => {
-            this.bmr.emit(res);
+            this.bodyMetricsEvent.emit(res);
           },
           error: ({ status, error }) => {
             if (status === 400) {

@@ -7,14 +7,8 @@ import { GoalSelectionFormComponent } from './goal-selection-form/goal-selection
 import { MealPreferenceFormComponent } from './meal-preference-form/meal-preference-form.component';
 import { ToastComponent } from '../../toast/toast.component';
 import { PlanStatus } from '../enum/plan-status';
-import type {
-  BodyMetricsResponse,
-  DietPlanDTO,
-  GoalSectionRequest,
-  MealPreferenceRequest,
-} from '../dto/diet-plan.dto';
-import type { CalorieEstimationDTO } from '../dto/calories.dto';
-import { DietPlanModel } from '../model/diet-plan.model';
+import type { BodyMetricsResponse, DietPlanDTO } from '../dto/diet-plan.dto';
+import type { CalorieEstimationResponse } from '../dto/calories.dto';
 
 @Component({
   selector: 'app-diet-plan-form',
@@ -31,13 +25,13 @@ import { DietPlanModel } from '../model/diet-plan.model';
 export class DietPlanFormComponent implements OnInit {
   @ViewChild(ToastComponent) toast!: ToastComponent;
 
-  dietPlanDTO = {} as DietPlanDTO;
   dietPlanId: string | null = null;
+  dietPlanDTO = {} as DietPlanDTO;
+  bodyMetricsResponse = {} as BodyMetricsResponse;
+  calorieEstimationResponse = {} as CalorieEstimationResponse;
 
   planStatus = PlanStatus;
   currentPlanStatus: PlanStatus = PlanStatus.BODY_METRICS;
-
-  calorieEstimation = {} as CalorieEstimationDTO;
 
   steps = ['Body Metrics', 'Goal & Duration', 'Meal Preferences', 'Preview'];
 
@@ -93,64 +87,22 @@ export class DietPlanFormComponent implements OnInit {
     }
   }
 
-  onBmrReceived($event: BodyMetricsResponse) {
-    this.dietPlanDTO.title = $event.title;
-    this.dietPlanDTO.age = $event.age;
-    this.dietPlanDTO.gender = $event.gender;
-    this.dietPlanDTO.height = $event.height;
-    this.dietPlanDTO.weight = $event.weight;
-    this.dietPlanDTO.targetWeight = $event.targetWeight;
-    this.dietPlanDTO.activity = $event.activity;
-    this.dietPlanDTO.tdee = $event.tdee;
+  onBodyMetricsReceived($event: BodyMetricsResponse) {
+    this.bodyMetricsResponse = $event;
     this.currentPlanStatus = PlanStatus.PLAN_SELECTION;
   }
 
-  onGoalSelected($event: GoalSectionRequest) {
-    this.dietPlanDTO.goal = $event.goal;
-    this.dietPlanDTO.duration = $event.duration;
+  onGoalSelected($event: CalorieEstimationResponse) {
+    this.calorieEstimationResponse = $event;
     this.currentPlanStatus = PlanStatus.MEAL_PREFERENCE;
-
-    const estimationRequest: CalorieEstimationRequest = {
-      tdee: this.dietPlanDTO.tdee,
-      goal: $event.goal,
-      duration: $event.duration,
-    };
-    this.dietPlanService.estimateCalories(estimationRequest).subscribe({
-      next: (calorieEstimation: CalorieEstimationDTO) => {
-        this.calorieEstimation = calorieEstimation;
-        this.dietPlanDTO.deficit = calorieEstimation.targetCalories;
-      },
-      error: ({ status, error }) => {
-        if (status === 404) {
-          this.toast.showError(error.error[0]);
-        }
-      },
-    });
   }
 
-  onMealPreference($event: MealPreferenceRequest) {
-    this.dietPlanDTO.macronutrientPreference = {
-      protein: $event.macroPreference.protein,
-      carbs: $event.macroPreference.carbs,
-      fat: $event.macroPreference.fat,
-    };
-    this.dietPlanDTO.dietType = $event.dietType;
-    this.dietPlanDTO.mealType = $event.mealType;
-    this.dietPlanDTO.numberOfMeals = $event.numberOfMeals;
-    this.dietPlanDTO.eveningSnack = $event.eveningSnack;
+  onMealPreference($event: DietPlanDTO) {
+    this.dietPlanDTO = $event;
     this.currentPlanStatus = PlanStatus.PREVIEW;
   }
 
-  createDietPlan() {
-    this.dietPlanService.createDietPlan(this.dietPlanDTO).subscribe({
-      next: (value: DietPlanModel) => {
-        this.router.navigate(['/diet-plan', value.id]);
-      },
-      error: ({ status, error }) => {
-        if (status === 404) {
-          this.toast.showError(error.error[0]);
-        }
-      },
-    });
+  createDietPlan($event: DietPlanDTO) {
+    this.router.navigate(['/diet-plan', $event.id]);
   }
 }

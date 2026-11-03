@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { DietPlanModel } from './model/diet-plan.model';
-import { DietPlanTrackModel } from './model/diet-plan-track.model';
-import { MetricsModel } from './model/metrics.model';
-import { DietPlanOverviewModel } from './model/diet-plan-overview.model';
+import type { DietPlanTrackDTO } from './dto/diet-plan-track.dto';
+import type { MetricsDTO } from './dto/metrics.dto';
+import type { DietPlanOverviewDTO } from './dto/diet-plan-overview.dto';
 import type {
   BodyMetricsRequest,
   BodyMetricsResponse,
@@ -11,8 +10,8 @@ import type {
   GoalSectionRequest,
   MealPreferenceRequest,
 } from './dto/diet-plan.dto';
-import { MacrosDTO } from './dto/macros.dto';
-import { DietPlanHistoryDTO } from './dto/diet-plan-history.dto';
+import type { MacrosDTO } from './dto/macros.dto';
+import type { DietPlanHistoryDTO } from './dto/diet-plan-history.dto';
 import type { CalorieEstimationResponse } from './dto/calories.dto';
 
 @Injectable({
@@ -36,7 +35,7 @@ export class DietPlanService {
   }
 
   getDietPlan() {
-    return this.http.get<DietPlanModel>(this.basePath);
+    return this.http.get<DietPlanDTO>(this.basePath);
   }
 
   getDietPlanById(dietPlanId: string) {
@@ -65,41 +64,41 @@ export class DietPlanService {
   }
 
   createDietPlan() {
-    return this.http.post<DietPlanModel>(this.basePath, {});
+    return this.http.post<DietPlanDTO>(this.basePath, {});
   }
 
   updateDietPlan(dietPlanDTO: DietPlanDTO) {
-    return this.http.put<DietPlanModel>(`${this.basePath}/update`, dietPlanDTO);
+    return this.http.put<DietPlanDTO>(`${this.basePath}/update`, dietPlanDTO);
   }
 
   addWeight(dietPlanId: string, weight: number) {
-    return this.http.post<DietPlanTrackModel>(
+    return this.http.post<DietPlanTrackDTO>(
       `${this.basePath}/add-weight/${dietPlanId}`,
       weight,
     );
   }
 
   getDietPlanTrackById(dietPlanTrackId: string) {
-    return this.http.get<DietPlanTrackModel>(
+    return this.http.get<DietPlanTrackDTO>(
       `${this.basePath}/track/${dietPlanTrackId}`,
     );
   }
 
   getDietPlanTrack(dietPlanId: string) {
-    return this.http.get<DietPlanTrackModel>(
+    return this.http.get<DietPlanTrackDTO>(
       `${this.basePath}/track/plan/${dietPlanId}`,
     );
   }
 
   updateMacros(dietPlanId: string, category: string, macros: MacrosDTO) {
-    return this.http.post<DietPlanTrackModel>(
+    return this.http.post<DietPlanTrackDTO>(
       `${this.basePath}/${category}/${dietPlanId}`,
       macros,
     );
   }
 
   getMetrics() {
-    return this.http.get<MetricsModel>(`${this.basePath}/metrics`);
+    return this.http.get<MetricsDTO>(`${this.basePath}/metrics`);
   }
 
   isThereAnyActivePlans() {
@@ -107,7 +106,7 @@ export class DietPlanService {
   }
 
   getDietPlanOverview(id: string) {
-    return this.http.get<DietPlanOverviewModel[]>(
+    return this.http.get<DietPlanOverviewDTO[]>(
       `${this.basePath}/overview/${id}`,
     );
   }

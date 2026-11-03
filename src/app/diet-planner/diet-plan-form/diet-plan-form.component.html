@@ -25,25 +25,22 @@
   <!-- Step Content -->
   @if (currentPlanStatus === planStatus.BODY_METRICS) {
     <app-body-metrics-form
-      (bmr)="onBmrReceived($event)"
+      (bodyMetricsEvent)="onBodyMetricsReceived($event)"
     ></app-body-metrics-form>
   } @else if (currentPlanStatus === planStatus.PLAN_SELECTION) {
     <app-goal-selection-form
-      [tdee]="dietPlanDTO.tdee"
-      [currentWeight]="dietPlanDTO.weight"
-      [targetWeight]="dietPlanDTO.targetWeight"
+      [bodyMetrics]="bodyMetricsResponse"
       (goalSectionEvent)="onGoalSelected($event)"
     ></app-goal-selection-form>
   } @else if (currentPlanStatus === planStatus.MEAL_PREFERENCE) {
     <app-meal-preference-form
-      [calorieEstimation]="calorieEstimation"
-      [tdee]="dietPlanDTO.tdee"
+      [calorieEstimation]="calorieEstimationResponse"
       (mealPreferenceEvent)="onMealPreference($event)"
     ></app-meal-preference-form>
   } @else if (currentPlanStatus === planStatus.PREVIEW) {
     <app-diet-plan-preview-form
       [dietPlan]="dietPlanDTO"
-      (createDietEvent)="createDietPlan()"
+      (createDietEvent)="createDietPlan($event)"
     ></app-diet-plan-preview-form>
   }
 </div>
