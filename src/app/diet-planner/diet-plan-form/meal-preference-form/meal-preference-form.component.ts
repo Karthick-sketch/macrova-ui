@@ -79,57 +79,64 @@ export class MealPreferenceFormComponent {
   constructor(private dietPlanService: DietPlanService) {}
 
   changeType(type: DietTypes) {
-    this.mealPreference().dietType = type;
-    // Reset custom overrides when switching away from custom
-    if (type !== DietTypes.CUSTOM) {
-      this.mealPreference().macros.protein = 0;
-      this.mealPreference().macros.carbs = 0;
-      this.mealPreference().macros.fat = 0;
-    }
+    this.mealPreference.update((prev) => ({
+      ...prev,
+      dietType: type,
+      // Reset custom macros when switching away from custom
+      macros: this.macros(),
+    }));
   }
 
-  setProteinPreference(value: string) {
-    this.mealPreference().macros.protein = Number(value);
-    this.setDietTypeCustom();
+  setProteinPreference(value: number | string) {
+    this.mealPreference.update((prev) => ({
+      ...prev,
+      dietType: DietTypes.CUSTOM,
+      macros: { ...prev.macros, protein: Number(value) },
+    }));
   }
 
-  setCarbsPreference(value: string) {
-    this.mealPreference().macros.carbs = Number(value);
-    this.setDietTypeCustom();
+  setCarbsPreference(value: number | string) {
+    this.mealPreference.update((prev) => ({
+      ...prev,
+      dietType: DietTypes.CUSTOM,
+      macros: { ...prev.macros, carbs: Number(value) },
+    }));
   }
 
-  setFatPreference(value: string) {
-    this.mealPreference().macros.fat = Number(value);
-    this.setDietTypeCustom();
+  setFatPreference(value: number | string) {
+    this.mealPreference.update((prev) => ({
+      ...prev,
+      dietType: DietTypes.CUSTOM,
+      macros: { ...prev.macros, fat: Number(value) },
+    }));
   }
 
   submitMealPreferences() {
-    this.dietPlanService
-      .createDietPlanMealPreference(this.mealPreference())
-      .subscribe((dietPlanDTO: DietPlanDTO) =>
-        this.mealPreferenceEvent.emit(dietPlanDTO),
-      );
+    console.log(this.mealPreference());
+
+    // this.dietPlanService
+    //   .createDietPlanMealPreference({
+    //     ...this.mealPreference(),
+    //     macros: this.macros(),
+    //   })
+    //   .subscribe((dietPlanDTO: DietPlanDTO) =>
+    //     this.mealPreferenceEvent.emit(dietPlanDTO),
+    //   );
   }
 
   selectSnack(snack: boolean) {
-    this.mealPreference().eveningSnack = snack;
+    this.mealPreference.update((prev) => ({ ...prev, eveningSnack: snack }));
   }
 
   selectMealType(mealType: MealTypes) {
-    this.mealPreference().mealType = mealType;
+    this.mealPreference.update((prev) => ({ ...prev, mealType }));
   }
 
   selectMealCount(count: number) {
-    this.mealPreference().mealCount = count;
+    this.mealPreference.update((prev) => ({ ...prev, mealCount: count }));
   }
 
   private findMiddleValue(qty: MacrosQuantity): number {
     return Math.round((qty.min + qty.max) / 2);
-  }
-
-  private setDietTypeCustom() {
-    if (this.mealPreference().dietType !== DietTypes.CUSTOM) {
-      this.mealPreference().dietType = DietTypes.CUSTOM;
-    }
   }
 }

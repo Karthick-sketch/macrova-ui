@@ -27,13 +27,13 @@
   <div class="field-group">
     <p>Macronutrient Split <span class="red-star">*</span></p>
     <div class="macro-tab-container">
-      @for (dietType of dietTypes; track $index) {
+      @for (type of dietTypes; track $index) {
         <button
           class="macro-tab"
-          [class.macro-tab-selected]="mealPreference().dietType"
-          (click)="changeType(dietType.value)"
+          [class.macro-tab-selected]="mealPreference().dietType === type.value"
+          (click)="changeType(type.value)"
         >
-          {{ dietType.label }}
+          {{ type.label }}
         </button>
       }
     </div>
@@ -43,11 +43,10 @@
           <span class="macro-name">Protein</span>
           <input
             type="range"
-            #proteinInput
             [min]="calorieEstimation().proteinQuantity.min"
             [max]="calorieEstimation().proteinQuantity.max"
-            [value]="macros().protein"
-            (input)="setProteinPreference(proteinInput.value)"
+            [ngModel]="macros().protein"
+            (ngModelChange)="setProteinPreference($event)"
           />
           <span class="macro-value">{{ macros().protein }}g</span>
         </div>
@@ -55,11 +54,10 @@
           <span class="macro-name">Carbs</span>
           <input
             type="range"
-            #carbsInput
             [min]="calorieEstimation().carbsQuantity.min"
             [max]="calorieEstimation().carbsQuantity.max"
-            [value]="macros().carbs"
-            (input)="setCarbsPreference(carbsInput.value)"
+            [ngModel]="macros().carbs"
+            (ngModelChange)="setCarbsPreference($event)"
           />
           <span class="macro-value">{{ macros().carbs }}g</span>
         </div>
@@ -67,11 +65,10 @@
           <span class="macro-name">Fats</span>
           <input
             type="range"
-            #fatInput
             [min]="calorieEstimation().fatQuantity.min"
             [max]="calorieEstimation().fatQuantity.max"
-            [value]="macros().fat"
-            (input)="setFatPreference(fatInput.value)"
+            [ngModel]="macros().fat"
+            (ngModelChange)="setFatPreference($event)"
           />
           <span class="macro-value">{{ macros().fat }}g</span>
         </div>
