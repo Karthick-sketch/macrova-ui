@@ -1,11 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DietPlanService } from '../diet-plan-service';
 import { BodyMetricsFormComponent } from './body-metrics-form/body-metrics-form.component';
 import { DietPlanPreviewFormComponent } from './diet-plan-preview-form/diet-plan-preview-form.component';
 import { GoalSelectionFormComponent } from './goal-selection-form/goal-selection-form.component';
 import { MealPreferenceFormComponent } from './meal-preference-form/meal-preference-form.component';
-import { ToastComponent } from '../../toast/toast.component';
 import { Activity } from '../enum/activity.enum';
 import { FormStatus } from '../enum/form-status.enum';
 import { Gender } from '../enum/gender.enum';
@@ -24,7 +23,6 @@ import type { CalorieEstimationResponse } from '../dto/calories.dto';
   templateUrl: './diet-plan-form.component.html',
   styleUrl: './diet-plan-form.component.css',
   imports: [
-    ToastComponent,
     BodyMetricsFormComponent,
     DietPlanPreviewFormComponent,
     GoalSelectionFormComponent,
@@ -32,9 +30,6 @@ import type { CalorieEstimationResponse } from '../dto/calories.dto';
   ],
 })
 export class DietPlanFormComponent implements OnInit {
-  @ViewChild(ToastComponent) toast!: ToastComponent;
-
-  dietPlanId: string | null = null;
   dietPlanDTO = {} as DietPlanDTO;
   bodyMetricsResponse = {} as BodyMetricsResponse;
   calorieEstimationResponse = {} as CalorieEstimationResponse;
@@ -68,12 +63,7 @@ export class DietPlanFormComponent implements OnInit {
   constructor(
     private router: Router,
     private dietPlanService: DietPlanService,
-  ) {
-    const navigation = this.router.getCurrentNavigation();
-    if (navigation?.extras.state) {
-      this.dietPlanId = navigation.extras.state['pastPlanId'];
-    }
-  }
+  ) {}
 
   ngOnInit() {
     this.dietPlanService.getDietPlanFormStatus().subscribe((response) => {

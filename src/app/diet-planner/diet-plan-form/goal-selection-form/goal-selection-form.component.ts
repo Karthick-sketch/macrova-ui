@@ -1,5 +1,4 @@
 import { Component, input, output } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { DecimalPipe } from '@angular/common';
 import { DietPlanService } from '../../diet-plan-service';
 import { Goal } from '../../enum/goal.enum';
@@ -13,7 +12,7 @@ import type { CalorieEstimationResponse } from '../../dto/calories.dto';
   selector: 'app-goal-selection-form',
   templateUrl: './goal-selection-form.component.html',
   styleUrl: './goal-selection-form.component.css',
-  imports: [FormsModule, DecimalPipe],
+  imports: [DecimalPipe],
 })
 export class GoalSelectionFormComponent {
   bodyMetrics = input.required<BodyMetricsResponse>();

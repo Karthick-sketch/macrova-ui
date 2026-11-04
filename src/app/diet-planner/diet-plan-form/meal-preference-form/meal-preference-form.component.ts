@@ -136,13 +136,13 @@ export class MealPreferenceFormComponent implements OnInit {
       default:
         return {
           protein:
-            this.mealPreference().macros.protein ??
+            this.mealPreference().macros.protein ||
             this.findMiddleValue(est.proteinQuantity),
           carbs:
-            this.mealPreference().macros.carbs ??
+            this.mealPreference().macros.carbs ||
             this.findMiddleValue(est.carbsQuantity),
           fat:
-            this.mealPreference().macros.fat ??
+            this.mealPreference().macros.fat ||
             this.findMiddleValue(est.fatQuantity),
         };
     }
