@@ -1,4 +1,4 @@
-export enum MealTypes {
+export enum MealType {
   NON_VEGETARIAN = 'NON_VEGETARIAN',
   VEGETARIAN = 'VEGETARIAN',
   VEGAN = 'VEGAN',

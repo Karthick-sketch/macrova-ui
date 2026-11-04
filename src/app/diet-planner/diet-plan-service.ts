@@ -44,6 +44,16 @@ export class DietPlanService {
     return this.http.get<DietPlanDTO>(`${this.basePath}/${dietPlanId}`);
   }
 
+  getDietPlanFormStatus() {
+    return this.http.get<DietPlanFormStatus>(`${this.basePath}/form/status`);
+  }
+
+  fetchDietPlanFormDetails(status: FormStatus) {
+    return this.http.post<DietPlanFormStatus>(`${this.basePath}/form/status`, {
+      formStatus: status,
+    });
+  }
+
   createDietPlanBodyMetrics(bodyMetricsDTO: BodyMetricsRequest) {
     return this.http.post<BodyMetricsResponse>(
       `${this.basePath}/form/body-metrics`,
@@ -66,7 +76,7 @@ export class DietPlanService {
   }
 
   createDietPlan() {
-    return this.http.post<DietPlanDTO>(this.basePath, {});
+    return this.http.post<DietPlanDTO>(`${this.basePath}/form/create`, {});
   }
 
   updateDietPlan(dietPlanDTO: DietPlanDTO) {
@@ -101,10 +111,6 @@ export class DietPlanService {
 
   getMetrics() {
     return this.http.get<MetricsDTO>(`${this.basePath}/metrics`);
-  }
-
-  getDietPlanFormStatus() {
-    return this.http.get<DietPlanFormStatus>(`${this.basePath}/form/status`);
   }
 
   getDietPlanOverview(id: string) {

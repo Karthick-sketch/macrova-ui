@@ -1,4 +1,4 @@
-import { Component, output, ViewChild } from '@angular/core';
+import { Component, input, output, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ToastComponent } from '../../../toast/toast.component';
 import { DietPlanService } from '../../diet-plan-service';
@@ -20,6 +20,8 @@ import type {
 export class BodyMetricsFormComponent {
   @ViewChild(ToastComponent) toast!: ToastComponent;
 
+  bodyMetrics = input.required<BodyMetricsRequest>();
+
   bodyMetricsEvent = output<BodyMetricsResponse>();
 
   plans: Option<Plan>[] = [
@@ -38,23 +40,12 @@ export class BodyMetricsFormComponent {
     new Option('Athlete', Activity.ATHLETE),
   ];
 
-  bodyMetrics: BodyMetricsRequest = {
-    title: '',
-    plan: Plan.WEIGHT_LOSS,
-    age: 25,
-    gender: Gender.MALE,
-    height: 175,
-    weight: 100,
-    targetWeight: 75,
-    activity: Activity.SEDENTARY,
-  };
-
   constructor(private dietPlanService: DietPlanService) {}
 
   submitBodyMetrics() {
     if (this.validateFields()) {
       this.dietPlanService
-        .createDietPlanBodyMetrics(this.bodyMetrics)
+        .createDietPlanBodyMetrics(this.bodyMetrics())
         .subscribe({
           next: (res: BodyMetricsResponse) => {
             this.bodyMetricsEvent.emit(res);
@@ -69,26 +60,26 @@ export class BodyMetricsFormComponent {
   }
 
   private validateFields() {
-    if (!this.bodyMetrics.title) {
+    if (!this.bodyMetrics().title) {
       this.toast.showError('Title is required');
       return false;
     }
-    const age = this.bodyMetrics.age;
+    const age = this.bodyMetrics().age;
     if (!age || age < 18 || age > 65) {
       this.toast.showError('Age must be between 18 and 65');
       return false;
     }
-    const height = this.bodyMetrics.height;
+    const height = this.bodyMetrics().height;
     if (!height || height < 140 || height > 210) {
       this.toast.showError('Height must be between 140 and 210 cm');
       return false;
     }
-    const weight = this.bodyMetrics.weight;
+    const weight = this.bodyMetrics().weight;
     if (!weight || weight < 40 || weight > 180) {
       this.toast.showError('Weight must be between 40 and 180 kg');
       return false;
     }
-    if (!this.validateTargetWeight(this.bodyMetrics.targetWeight)) {
+    if (!this.validateTargetWeight(this.bodyMetrics().targetWeight)) {
       return false;
     }
     return true;
@@ -98,16 +89,16 @@ export class BodyMetricsFormComponent {
     if (!targetWeight) {
       this.toast.showError('Target weight is required');
       return false;
-    } else if (this.bodyMetrics.plan === Plan.WEIGHT_LOSS) {
-      if (targetWeight >= this.bodyMetrics.weight) {
+    } else if (this.bodyMetrics().plan === Plan.WEIGHT_LOSS) {
+      if (targetWeight >= this.bodyMetrics().weight) {
         this.toast.showError('Target weight must be less than current weight');
         return false;
       } else if (targetWeight < 40) {
         this.toast.showError('Target weight must be at least 40 kg');
         return false;
       }
-    } else if (this.bodyMetrics.plan === Plan.WEIGHT_GAIN) {
-      if (targetWeight <= this.bodyMetrics.weight) {
+    } else if (this.bodyMetrics().plan === Plan.WEIGHT_GAIN) {
+      if (targetWeight <= this.bodyMetrics().weight) {
         this.toast.showError(
           'Target weight must be greater than current weight',
         );
@@ -121,14 +112,14 @@ export class BodyMetricsFormComponent {
   }
 
   selectDietPlan(plan: Plan) {
-    this.bodyMetrics.plan = plan;
+    this.bodyMetrics().plan = plan;
   }
 
   selectGender(gender: Gender) {
-    this.bodyMetrics.gender = gender;
+    this.bodyMetrics().gender = gender;
   }
 
   selectActivity(activity: Activity) {
-    this.bodyMetrics.activity = activity;
+    this.bodyMetrics().activity = activity;
   }
 }

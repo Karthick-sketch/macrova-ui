@@ -1,4 +1,4 @@
-export enum DietTypes {
+export enum DietType {
   BALANCED = 'BALANCED',
   HIGH_PROTEIN = 'HIGH_PROTEIN',
   LOW_CARB = 'LOW_CARB',

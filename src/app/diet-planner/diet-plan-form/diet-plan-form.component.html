@@ -25,6 +25,7 @@
   <!-- Step Content -->
   @if (currentFormStatus === formStatus.BODY_METRICS) {
     <app-body-metrics-form
+      [bodyMetrics]="bodyMetricsRequest"
       (bodyMetricsEvent)="onBodyMetricsReceived($event)"
     ></app-body-metrics-form>
   } @else if (currentFormStatus === formStatus.GOAL_SELECTION) {

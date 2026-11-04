@@ -15,7 +15,7 @@
       type="text"
       class="input-field"
       placeholder="e.g. Summer cut, Lean bulk 2026"
-      [(ngModel)]="bodyMetrics.title"
+      [(ngModel)]="bodyMetrics().title"
     />
   </div>
 
@@ -25,7 +25,7 @@
     <div class="toggle-group">
       @for (plan of plans; track $index) {
         <button
-          [class.selected]="plan.value === bodyMetrics.plan"
+          [class.selected]="plan.value === bodyMetrics().plan"
           (click)="selectDietPlan(plan.value)"
         >
           {{ plan.label }}
@@ -45,7 +45,7 @@
         type="number"
         class="input-field"
         placeholder="Age"
-        [(ngModel)]="bodyMetrics.age"
+        [(ngModel)]="bodyMetrics().age"
       />
     </div>
 
@@ -55,7 +55,7 @@
       <div class="toggle-group">
         @for (gender of genders; track $index) {
           <button
-            [class.selected]="gender.value === bodyMetrics.gender"
+            [class.selected]="gender.value === bodyMetrics().gender"
             (click)="selectGender(gender.value)"
           >
             {{ gender.label }}
@@ -76,7 +76,7 @@
         type="number"
         class="input-field"
         placeholder="cm"
-        [(ngModel)]="bodyMetrics.height"
+        [(ngModel)]="bodyMetrics().height"
       />
     </div>
 
@@ -90,7 +90,7 @@
         type="number"
         class="input-field"
         placeholder="kg"
-        [(ngModel)]="bodyMetrics.weight"
+        [(ngModel)]="bodyMetrics().weight"
       />
     </div>
   </div>
@@ -102,7 +102,7 @@
       type="number"
       class="input-field"
       placeholder="Target weight in kilograms"
-      [(ngModel)]="bodyMetrics.targetWeight"
+      [(ngModel)]="bodyMetrics().targetWeight"
     />
   </div>
 
@@ -112,7 +112,7 @@
     <div class="toggle-group">
       @for (activity of activities; track $index) {
         <button
-          [class.selected]="activity.value === bodyMetrics.activity"
+          [class.selected]="activity.value === bodyMetrics().activity"
           (click)="selectActivity(activity.value)"
         >
           {{ activity.label }}

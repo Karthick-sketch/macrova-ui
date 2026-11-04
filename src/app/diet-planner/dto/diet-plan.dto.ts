@@ -1,8 +1,8 @@
 import type { Activity } from '../enum/activity.enum';
-import type { DietTypes } from '../enum/diet-types.enum';
+import type { DietType } from '../enum/diet-type.enum';
 import type { Gender } from '../enum/gender.enum';
 import type { Goal } from '../enum/goal.enum';
-import type { MealTypes } from '../enum/meal-types.enum';
+import type { MealType } from '../enum/meal-type.enum';
 import type { FormStatus } from '../enum/form-status.enum';
 import type { Plan } from '../enum/plan.enum';
 import type { PlanStatus } from '../enum/plan-status.enum';
@@ -23,8 +23,9 @@ export interface DietPlanDTO {
   duration: number;
   tdee: number;
   targetCalories: number;
-  dietType: string;
-  mealType: string;
+  currentCalories: number;
+  dietType: DietType;
+  mealType: MealType;
   macros: Macros;
   mealCount: number;
   eveningSnack: boolean;
@@ -34,7 +35,8 @@ export interface DietPlanFormStatus {
   planStatus: PlanStatus;
   formStatus: FormStatus;
   dietPlan?: DietPlanDTO;
-  bodyMetrics?: BodyMetricsResponse;
+  bodyMetricsRequest?: BodyMetricsRequest;
+  bodyMetricsResponse?: BodyMetricsResponse;
   caloriesEstimation?: CalorieEstimationResponse;
 }
 
@@ -62,9 +64,10 @@ export interface GoalSectionRequest {
 }
 
 export interface MealPreferenceRequest {
+  currentCalories: number;
   macros: Macros;
-  dietType: DietTypes;
-  mealType: MealTypes;
+  dietType: DietType;
+  mealType: MealType;
   mealCount: number;
   eveningSnack: boolean;
 }

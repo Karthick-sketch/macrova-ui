@@ -10,7 +10,7 @@
   <div class="preview-section">
     <div class="preview-title-row">
       <span class="plan-title">{{ dietPlan().title }}</span>
-      <span class="plan-badge">{{ dietPlan().plan }}</span>
+      <span class="plan-badge">{{ getEnumString(dietPlan().plan) }}</span>
     </div>
   </div>
 
@@ -26,7 +26,7 @@
       </div>
       <div class="preview-item">
         <span class="item-label">Gender</span>
-        <span class="item-value">{{ dietPlan().gender }}</span>
+        <span class="item-value">{{ getEnumString(dietPlan().gender) }}</span>
       </div>
       <div class="preview-item">
         <span class="item-label">Height</span>
@@ -42,7 +42,7 @@
       </div>
       <div class="preview-item">
         <span class="item-label">Activity Level</span>
-        <span class="item-value">{{ dietPlan().activity }}</span>
+        <span class="item-value">{{ getEnumString(dietPlan().activity) }}</span>
       </div>
     </div>
   </div>
@@ -55,7 +55,7 @@
     <div class="preview-grid">
       <div class="preview-item">
         <span class="item-label">Goal</span>
-        <span class="item-value">{{ dietPlan().goal }}</span>
+        <span class="item-value">{{ getEnumString(dietPlan().goal) }}</span>
       </div>
       <div class="preview-item">
         <span class="item-label">Duration</span>
@@ -68,7 +68,7 @@
       <div class="preview-item">
         <span class="item-label">Target Calories</span>
         <span class="item-value highlight"
-          >{{ dietPlan().targetCalories | number }} kcal/day</span
+          >{{ dietPlan().currentCalories | number }} kcal/day</span
         >
       </div>
     </div>
@@ -82,7 +82,11 @@
     <div class="preview-grid">
       <div class="preview-item">
         <span class="item-label">Diet Type</span>
-        <span class="item-value">{{ dietPlan().mealType }}</span>
+        <span class="item-value">{{ getEnumString(dietPlan().dietType) }}</span>
+      </div>
+      <div class="preview-item">
+        <span class="item-label">Meal Type</span>
+        <span class="item-value">{{ getEnumString(dietPlan().mealType) }}</span>
       </div>
       <div class="preview-item">
         <span class="item-label">Meals per Day</span>

@@ -6,9 +6,17 @@ import { DietPlanPreviewFormComponent } from './diet-plan-preview-form/diet-plan
 import { GoalSelectionFormComponent } from './goal-selection-form/goal-selection-form.component';
 import { MealPreferenceFormComponent } from './meal-preference-form/meal-preference-form.component';
 import { ToastComponent } from '../../toast/toast.component';
+import { Activity } from '../enum/activity.enum';
 import { FormStatus } from '../enum/form-status.enum';
+import { Gender } from '../enum/gender.enum';
+import { Plan } from '../enum/plan.enum';
 import { PlanStatus } from '../enum/plan-status.enum';
-import type { BodyMetricsResponse, DietPlanDTO } from '../dto/diet-plan.dto';
+import type {
+  BodyMetricsRequest,
+  BodyMetricsResponse,
+  DietPlanDTO,
+  DietPlanFormStatus,
+} from '../dto/diet-plan.dto';
 import type { CalorieEstimationResponse } from '../dto/calories.dto';
 
 @Component({
@@ -34,6 +42,17 @@ export class DietPlanFormComponent implements OnInit {
   formStatus = FormStatus;
   currentFormStatus: FormStatus = FormStatus.BODY_METRICS;
 
+  bodyMetricsRequest: BodyMetricsRequest = {
+    title: '',
+    plan: Plan.WEIGHT_LOSS,
+    age: 25,
+    gender: Gender.MALE,
+    height: 175,
+    weight: 100,
+    targetWeight: 75,
+    activity: Activity.SEDENTARY,
+  };
+
   steps = ['Body Metrics', 'Goal & Duration', 'Meal Preferences', 'Preview'];
 
   get stepIndex(): number {
@@ -57,25 +76,8 @@ export class DietPlanFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.dietPlanService.getDietPlanFormStatus().subscribe((value) => {
-      if (value.planStatus === PlanStatus.ACTIVE) {
-        this.router.navigate(['/']);
-      } else if (value.formStatus === FormStatus.GOAL_SELECTION) {
-        if (value.bodyMetrics) {
-          this.bodyMetricsResponse = value.bodyMetrics;
-        }
-        this.currentFormStatus = FormStatus.GOAL_SELECTION;
-      } else if (value.formStatus === FormStatus.MEAL_PREFERENCE) {
-        if (value.caloriesEstimation) {
-          this.calorieEstimationResponse = value.caloriesEstimation;
-        }
-        this.currentFormStatus = FormStatus.MEAL_PREFERENCE;
-      } else if (value.formStatus === FormStatus.PREVIEW) {
-        if (value.dietPlan) {
-          this.dietPlanDTO = value.dietPlan;
-        }
-        this.currentFormStatus = FormStatus.PREVIEW;
-      }
+    this.dietPlanService.getDietPlanFormStatus().subscribe((response) => {
+      this.getDietPlanForm(response.formStatus, response);
     });
   }
 
@@ -88,7 +90,39 @@ export class DietPlanFormComponent implements OnInit {
     ];
     const idx = order.indexOf(this.currentFormStatus);
     if (idx > 0) {
-      this.currentFormStatus = order[idx - 1];
+      const status = order[idx - 1];
+      this.dietPlanService
+        .fetchDietPlanFormDetails(status)
+        .subscribe((response) => {
+          this.currentFormStatus = status;
+          this.getDietPlanForm(this.currentFormStatus, response);
+        });
+    }
+  }
+
+  private getDietPlanForm(status: FormStatus, response: DietPlanFormStatus) {
+    if (response.planStatus === PlanStatus.ACTIVE) {
+      this.router.navigate(['/']);
+    } else if (status === FormStatus.BODY_METRICS) {
+      if (response.bodyMetricsRequest) {
+        this.bodyMetricsRequest = response.bodyMetricsRequest;
+      }
+      this.currentFormStatus = FormStatus.BODY_METRICS;
+    } else if (status === FormStatus.GOAL_SELECTION) {
+      if (response.bodyMetricsResponse) {
+        this.bodyMetricsResponse = response.bodyMetricsResponse;
+      }
+      this.currentFormStatus = FormStatus.GOAL_SELECTION;
+    } else if (status === FormStatus.MEAL_PREFERENCE) {
+      if (response.caloriesEstimation) {
+        this.calorieEstimationResponse = response.caloriesEstimation;
+      }
+      this.currentFormStatus = FormStatus.MEAL_PREFERENCE;
+    } else if (status === FormStatus.PREVIEW) {
+      if (response.dietPlan) {
+        this.dietPlanDTO = response.dietPlan;
+      }
+      this.currentFormStatus = FormStatus.PREVIEW;
     }
   }
 
@@ -108,6 +142,6 @@ export class DietPlanFormComponent implements OnInit {
   }
 
   createDietPlan($event: DietPlanDTO) {
-    this.router.navigate(['/diet-plan', $event.id]);
+    this.router.navigate(['/']);
   }
 }

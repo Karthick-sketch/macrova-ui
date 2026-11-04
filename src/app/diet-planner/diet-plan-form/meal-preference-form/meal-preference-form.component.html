@@ -9,6 +9,13 @@
   <!-- Calorie Summary -->
   <div class="calorie-summary">
     <div class="calorie-item">
+      <span class="calorie-label">Current Calories</span>
+      <span class="calorie-value"
+        >~{{ mealPreference().currentCalories | number }} kcal/day</span
+      >
+    </div>
+    <div class="calorie-divider"></div>
+    <div class="calorie-item">
       <span class="calorie-label">Target Calories</span>
       <span class="calorie-value"
         >~{{ calorieEstimation().targetCalories | number }} kcal/day</span
@@ -45,10 +52,12 @@
             type="range"
             [min]="calorieEstimation().proteinQuantity.min"
             [max]="calorieEstimation().proteinQuantity.max"
-            [ngModel]="macros().protein"
+            [ngModel]="mealPreference().macros.protein"
             (ngModelChange)="setProteinPreference($event)"
           />
-          <span class="macro-value">{{ macros().protein }}g</span>
+          <span class="macro-value"
+            >{{ mealPreference().macros.protein }}g</span
+          >
         </div>
         <div class="macro-row">
           <span class="macro-name">Carbs</span>
@@ -56,10 +65,10 @@
             type="range"
             [min]="calorieEstimation().carbsQuantity.min"
             [max]="calorieEstimation().carbsQuantity.max"
-            [ngModel]="macros().carbs"
+            [ngModel]="mealPreference().macros.carbs"
             (ngModelChange)="setCarbsPreference($event)"
           />
-          <span class="macro-value">{{ macros().carbs }}g</span>
+          <span class="macro-value">{{ mealPreference().macros.carbs }}g</span>
         </div>
         <div class="macro-row">
           <span class="macro-name">Fats</span>
@@ -67,10 +76,10 @@
             type="range"
             [min]="calorieEstimation().fatQuantity.min"
             [max]="calorieEstimation().fatQuantity.max"
-            [ngModel]="macros().fat"
+            [ngModel]="mealPreference().macros.fat"
             (ngModelChange)="setFatPreference($event)"
           />
-          <span class="macro-value">{{ macros().fat }}g</span>
+          <span class="macro-value">{{ mealPreference().macros.fat }}g</span>
         </div>
       </div>
     </div>
