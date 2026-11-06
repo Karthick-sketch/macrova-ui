@@ -11,12 +11,14 @@ import { FilterDto } from './dto/filter.dto';
 export class AIFoodSuggestComponent {
   filters = {
     mealFilters: ['Breakfast', 'Lunch', 'Snack', 'Dinner'],
-    foodFilters: ['Vegetarian', 'Non-vegetarian', 'Low-carb'],
+    mealTypeFilters: ['Non-vegetarian', 'Vegetarian', 'Eggetarian', 'Vegan'],
+    dietTypeFilters: ['Balanced', 'High Protein', 'Low-carb', 'Low-fat'],
     cuisineFilters: ['Indian', 'Chinese', 'Japanese', 'Thai'],
   };
   selected: FilterDto = {
     mealFilter: 'Breakfast',
-    foodFilter: 'Vegetarian',
+    mealTypeFilter: 'Non-vegetarian',
+    dietTypeFilter: 'Balanced',
     cuisineFilter: 'Indian',
   };
   isLoading = false;
@@ -30,8 +32,12 @@ export class AIFoodSuggestComponent {
     this.selected.mealFilter = filter;
   }
 
-  addFoodFilter(filter: string) {
-    this.selected.foodFilter = filter;
+  addMealTypeFilter(filter: string) {
+    this.selected.mealTypeFilter = filter;
+  }
+
+  addDietTypeFilter(filter: string) {
+    this.selected.dietTypeFilter = filter;
   }
 
   addCuisineFilter(filter: string) {
@@ -46,11 +52,9 @@ export class AIFoodSuggestComponent {
         this.aiFoodSuggests = aiFoodSuggestModel;
         this.isLoading = false;
       },
-      error: (err) => {
-        if (err.status === 410) {
-          this.isLoading = false;
-          this.isError = true;
-        }
+      error: () => {
+        this.isLoading = false;
+        this.isError = true;
       },
     });
   }

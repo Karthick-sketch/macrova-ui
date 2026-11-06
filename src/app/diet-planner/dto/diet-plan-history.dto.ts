@@ -1,4 +1,5 @@
 import type { Plan } from '../enum/plan.enum';
+import type { PlanStatus } from '../enum/plan-status.enum';
 
 export interface DietPlanHistoryDTO {
   id: string;
@@ -7,5 +8,5 @@ export interface DietPlanHistoryDTO {
   weight: number;
   targetWeight: number;
   duration: number;
-  active: boolean;
+  planStatus: PlanStatus;
 }

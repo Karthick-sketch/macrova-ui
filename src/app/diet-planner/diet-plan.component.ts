@@ -32,9 +32,9 @@ export class DietPlanComponent implements OnInit {
         this.router.navigate(['/no-active-plan']);
       } else {
         this.dietPlanService.getDietPlan().subscribe({
-          next: (dietPlan: DietPlanDTO) => {
-            this.dietPlan = dietPlan;
-            this.dietPlanService.getDietPlanTrack(dietPlan.id).subscribe({
+          next: (dietPlanDTO: DietPlanDTO) => {
+            this.dietPlan = dietPlanDTO;
+            this.dietPlanService.getDietPlanTrack(dietPlanDTO.id).subscribe({
               next: (dietPlanTrackDTO: DietPlanTrackDTO) => {
                 this.dietPlanTrack = dietPlanTrackDTO;
                 this.meals = dietPlanTrackDTO.mealKcal;

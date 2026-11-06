@@ -7,7 +7,7 @@ import type { DietPlanTrackDTO } from '../dto/diet-plan-track.dto';
 import type { MealKcalDTO } from '../dto/meal-kcal.dto';
 
 @Component({
-  selector: 'app-diet-plan',
+  selector: 'app-diet-plan-track-overview',
   templateUrl: './diet-plan-track-overview.component.html',
   styleUrl: './diet-plan-track-overview.component.css',
   imports: [NgTemplateOutlet, FormsModule, DatePipe],
