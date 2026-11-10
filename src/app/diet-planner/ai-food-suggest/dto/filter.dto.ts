@@ -1,5 +1,6 @@
-export class FilterDto {
-  mealFilter!: string;
-  foodFilter!: string;
-  cuisineFilter!: string;
+export interface FilterDto {
+  mealFilter: string;
+  mealTypeFilter: string;
+  dietTypeFilter: string;
+  cuisineFilter: string;
 }

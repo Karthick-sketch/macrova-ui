@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { DietPlanService } from '../diet-plan-service';
 import { Plan } from '../enum/plan.enum';
 import { DietPlanHistoryDTO } from '../dto/diet-plan-history.dto';
+import { PlanStatus } from '../enum/plan-status.enum';
 
 @Component({
   selector: 'app-diet-plans-list',
@@ -31,5 +32,9 @@ export class DietPlansListComponent implements OnInit {
 
   getStatus(status: boolean) {
     return status ? 'Active' : 'Inactive';
+  }
+
+  isActive(planStatus: PlanStatus) {
+    return planStatus === PlanStatus.ACTIVE;
   }
 }

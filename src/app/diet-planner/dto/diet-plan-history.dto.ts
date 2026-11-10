@@ -1,11 +1,12 @@
-import { Plan } from '../enum/plan.enum';
+import type { Plan } from '../enum/plan.enum';
+import type { PlanStatus } from '../enum/plan-status.enum';
 
-export class DietPlanHistoryDTO {
-  id!: string;
-  title!: string;
-  plan!: Plan;
-  weight!: number;
-  targetWeight!: number;
-  duration!: number;
-  active!: boolean;
+export interface DietPlanHistoryDTO {
+  id: string;
+  title: string;
+  plan: Plan;
+  weight: number;
+  targetWeight: number;
+  duration: number;
+  planStatus: PlanStatus;
 }

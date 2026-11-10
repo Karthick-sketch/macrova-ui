@@ -1,0 +1,211 @@
+/* ── Meal Preference Form ───────────────────────────── */
+.page-header {
+  margin-bottom: var(--space-lg);
+}
+
+.page-header h2 {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  margin-bottom: var(--space-xs);
+}
+
+.page-subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.form-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+}
+
+/* ── Calorie Summary ─────────────────────────────────── */
+.calorie-summary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-lg);
+}
+
+.calorie-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.calorie-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.calorie-value {
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.calorie-divider {
+  width: 1px;
+  height: 2rem;
+  background-color: var(--color-border);
+  margin: 0 var(--space-xs);
+}
+
+/* ── Field Groups ──────────────────────────────────── */
+.field-group {
+  margin-bottom: var(--space-md);
+}
+
+.field-group > p {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text);
+  margin: 0 0 var(--space-xs) 0;
+}
+
+/* ── Macro Tabs ─────────────────────────────────────── */
+.macro-tab-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+}
+
+.macro-tab {
+  cursor: pointer;
+  padding: 0.4rem 0.85rem;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  font-family: inherit;
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-bottom: none;
+  color: var(--color-text-muted);
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.macro-tab:first-child {
+  border-radius: var(--radius-md) 0 0 0;
+}
+
+.macro-tab:last-child {
+  border-radius: 0 var(--radius-md) 0 0;
+}
+
+.macro-tab-selected {
+  background-color: var(--color-surface);
+  color: var(--color-primary);
+  font-weight: 600;
+  border-color: var(--color-primary);
+  border-bottom: none;
+}
+
+.macro-tab-body {
+  border: 1px solid var(--color-border);
+  border-radius: 0 var(--radius-md) var(--radius-md) var(--radius-md);
+  padding: var(--space-md);
+}
+
+/* ── Macro Sliders ──────────────────────────────────── */
+.macro-slider-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.macro-row {
+  display: grid;
+  grid-template-columns: 5rem 1fr 3rem;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.macro-name {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.macro-row input[type="range"] {
+  width: 100%;
+  accent-color: var(--color-primary);
+}
+
+.macro-value {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-primary);
+  text-align: right;
+}
+
+/* ── Toggle Button Groups ──────────────────────────── */
+.toggle-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-top: var(--space-xs);
+}
+
+.toggle-group button {
+  padding: 0.45rem 1rem;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  font-family: inherit;
+  color: var(--color-text-muted);
+  background-color: var(--color-input-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.toggle-group button:hover {
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+  border-color: var(--color-primary-mid);
+}
+
+.toggle-group button.selected {
+  color: #fff;
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+/* ── Required Star ──────────────────────────────────── */
+.red-star {
+  color: var(--color-danger);
+  font-size: var(--font-size-xs);
+  margin-left: 2px;
+}
+
+/* ── Form Submit ───────────────────────────────────── */
+.form-footer {
+  margin-top: var(--space-lg);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-border);
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 0.7rem;
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  font-family: inherit;
+  color: #fff;
+  background-color: var(--color-primary);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.submit-btn:hover {
+  background-color: var(--color-primary-dark);
+}

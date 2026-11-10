@@ -1,0 +1,143 @@
+<div class="page-header">
+  <h2>Meal Preferences</h2>
+  <p class="page-subtitle">
+    Customize your macros and meal structure for the plan.
+  </p>
+</div>
+
+<div class="form-card">
+  <!-- Calorie Summary -->
+  <div class="calorie-summary">
+    <div class="calorie-item">
+      <span class="calorie-label">Current Calories</span>
+      <span class="calorie-value"
+        >~{{ mealPreference().currentCalories | number }} kcal/day</span
+      >
+    </div>
+    <div class="calorie-divider"></div>
+    <div class="calorie-item">
+      <span class="calorie-label">Target Calories</span>
+      <span class="calorie-value"
+        >~{{ calorieEstimation().targetCalories | number }} kcal/day</span
+      >
+    </div>
+    <div class="calorie-divider"></div>
+    <div class="calorie-item">
+      <span class="calorie-label">Maintenance</span>
+      <span class="calorie-value"
+        >~{{ calorieEstimation().tdee | number }} kcal/day</span
+      >
+    </div>
+  </div>
+
+  <!-- Macronutrient Preference -->
+  <div class="field-group">
+    <p>Macronutrient Split <span class="red-star">*</span></p>
+    <div class="macro-tab-container">
+      @for (type of dietTypes; track $index) {
+        <button
+          class="macro-tab"
+          [class.macro-tab-selected]="mealPreference().dietType === type.value"
+          (click)="changeType(type.value)"
+        >
+          {{ type.label }}
+        </button>
+      }
+    </div>
+    <div class="macro-tab-body">
+      <div class="macro-slider-group">
+        <div class="macro-row">
+          <span class="macro-name">Protein</span>
+          <input
+            type="range"
+            [min]="calorieEstimation().proteinQuantity.min"
+            [max]="calorieEstimation().proteinQuantity.max"
+            [ngModel]="mealPreference().macros.protein"
+            (ngModelChange)="setProteinPreference($event)"
+          />
+          <span class="macro-value"
+            >{{ mealPreference().macros.protein }}g</span
+          >
+        </div>
+        <div class="macro-row">
+          <span class="macro-name">Carbs</span>
+          <input
+            type="range"
+            [min]="calorieEstimation().carbsQuantity.min"
+            [max]="calorieEstimation().carbsQuantity.max"
+            [ngModel]="mealPreference().macros.carbs"
+            (ngModelChange)="setCarbsPreference($event)"
+          />
+          <span class="macro-value">{{ mealPreference().macros.carbs }}g</span>
+        </div>
+        <div class="macro-row">
+          <span class="macro-name">Fats</span>
+          <input
+            type="range"
+            [min]="calorieEstimation().fatQuantity.min"
+            [max]="calorieEstimation().fatQuantity.max"
+            [ngModel]="mealPreference().macros.fat"
+            (ngModelChange)="setFatPreference($event)"
+          />
+          <span class="macro-value">{{ mealPreference().macros.fat }}g</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Diet Type -->
+  <div class="field-group">
+    <p>Diet Type <span class="red-star">*</span></p>
+    <div class="toggle-group">
+      @for (mealType of mealTypes; track $index) {
+        <button
+          [class.selected]="mealPreference().mealType === mealType.value"
+          (click)="selectMealType(mealType.value)"
+        >
+          {{ mealType.label }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- Number of Meals -->
+  <div class="field-group">
+    <p>Meals per Day <span class="red-star">*</span></p>
+    <div class="toggle-group">
+      @for (mealCount of mealCounts; track $index) {
+        <button
+          [class.selected]="mealCount === mealPreference().mealCount"
+          (click)="selectMealCount(mealCount)"
+        >
+          {{ mealCount }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- Evening Snack -->
+  <div class="field-group">
+    <p>Include Evening Snack?</p>
+    <div class="toggle-group">
+      <button
+        [class.selected]="mealPreference().eveningSnack"
+        (click)="selectSnack(true)"
+      >
+        Yes
+      </button>
+      <button
+        [class.selected]="!mealPreference().eveningSnack"
+        (click)="selectSnack(false)"
+      >
+        No
+      </button>
+    </div>
+  </div>
+
+  <!-- Submit -->
+  <div class="form-footer">
+    <button class="submit-btn" (click)="submitMealPreferences()">
+      Preview My Plan &rarr;
+    </button>
+  </div>
+</div>

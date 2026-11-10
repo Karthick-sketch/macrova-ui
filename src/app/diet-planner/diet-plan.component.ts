@@ -3,10 +3,10 @@ import { Router } from '@angular/router';
 import { NgTemplateOutlet } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DietPlanService } from './diet-plan-service';
-import { DietPlanModel } from './model/diet-plan.model';
-import { DietPlanTrackModel } from './model/diet-plan-track.model';
-import { MealKcalDTO } from './dto/meal-kcal.dto';
-import { MacrosDTO } from './dto/macros.dto';
+import type { DietPlanTrackDTO } from './dto/diet-plan-track.dto';
+import type { MealKcalDTO } from './dto/meal-kcal.dto';
+import type { MacrosDTO } from './dto/macros.dto';
+import type { DietPlanDTO } from './dto/diet-plan.dto';
 
 @Component({
   selector: 'app-diet-plan',
@@ -15,8 +15,8 @@ import { MacrosDTO } from './dto/macros.dto';
   imports: [NgTemplateOutlet, FormsModule],
 })
 export class DietPlanComponent implements OnInit {
-  dietPlan!: DietPlanModel;
-  dietPlanTrack!: DietPlanTrackModel;
+  dietPlan!: DietPlanDTO;
+  dietPlanTrack!: DietPlanTrackDTO;
   meals!: MealKcalDTO;
   kcalPercentage!: number;
 
@@ -32,12 +32,12 @@ export class DietPlanComponent implements OnInit {
         this.router.navigate(['/no-active-plan']);
       } else {
         this.dietPlanService.getDietPlan().subscribe({
-          next: (dietPlanModel: DietPlanModel) => {
-            this.dietPlan = dietPlanModel;
-            this.dietPlanService.getDietPlanTrack(dietPlanModel.id).subscribe({
-              next: (dietPlanTrackModel: DietPlanTrackModel) => {
-                this.dietPlanTrack = dietPlanTrackModel;
-                this.meals = dietPlanTrackModel.mealKcal;
+          next: (dietPlanDTO: DietPlanDTO) => {
+            this.dietPlan = dietPlanDTO;
+            this.dietPlanService.getDietPlanTrack(dietPlanDTO.id).subscribe({
+              next: (dietPlanTrackDTO: DietPlanTrackDTO) => {
+                this.dietPlanTrack = dietPlanTrackDTO;
+                this.meals = dietPlanTrackDTO.mealKcal;
                 this.setKcalPercentage();
               },
               error: (err) => {
@@ -64,9 +64,9 @@ export class DietPlanComponent implements OnInit {
   updateKcal(category: string, macros: MacrosDTO) {
     this.dietPlanService
       .updateMacros(this.dietPlan.id, category.toLowerCase(), macros)
-      .subscribe((dietPlanTrackModel: DietPlanTrackModel) => {
-        this.dietPlanTrack = dietPlanTrackModel;
-        this.meals = dietPlanTrackModel.mealKcal;
+      .subscribe((dietPlanTrackDTO: DietPlanTrackDTO) => {
+        this.dietPlanTrack = dietPlanTrackDTO;
+        this.meals = dietPlanTrackDTO.mealKcal;
         this.setKcalPercentage();
       });
     this.closeAddKcalWindow();
@@ -75,9 +75,9 @@ export class DietPlanComponent implements OnInit {
   addWeight() {
     this.dietPlanService
       .addWeight(this.dietPlan.id, this.dietPlanTrack.weight)
-      .subscribe((dietPlanTrackModel: DietPlanTrackModel) => {
-        this.dietPlanTrack = dietPlanTrackModel;
-        this.meals = dietPlanTrackModel.mealKcal;
+      .subscribe((dietPlanTrackDTO: DietPlanTrackDTO) => {
+        this.dietPlanTrack = dietPlanTrackDTO;
+        this.meals = dietPlanTrackDTO.mealKcal;
         this.setKcalPercentage();
       });
   }

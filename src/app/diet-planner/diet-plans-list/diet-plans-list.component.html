@@ -10,8 +10,14 @@
         <div class="plan-info">
           <div class="plan-title">
             {{ dietPlan.title }}
-            <span [class]="dietPlan.active ? 'status-badge active' : 'status-badge inactive'">
-              {{ dietPlan.active ? 'Active' : 'Inactive' }}
+            <span
+              [class]="
+                isActive(dietPlan.planStatus)
+                  ? 'status-badge active'
+                  : 'status-badge inactive'
+              "
+            >
+              {{ isActive(dietPlan.planStatus) ? "Active" : "Inactive" }}
             </span>
           </div>
           <ng-container
@@ -22,7 +28,7 @@
                 weight: dietPlan.weight,
                 targetWeight: dietPlan.targetWeight,
                 duration: dietPlan.duration,
-                status: dietPlan.active ? 'Active' : 'Inactive',
+                status: isActive(dietPlan.planStatus) ? 'Active' : 'Inactive',
               }
             "
           ></ng-container>
@@ -46,6 +52,7 @@
   let-status="status"
 >
   <p class="plan-meta">
-    {{ getPlan(plan) }} &nbsp;·&nbsp; {{ weight }}kg → {{ targetWeight }}kg &nbsp;·&nbsp; {{ duration }} days
+    {{ getPlan(plan) }} &nbsp;·&nbsp; {{ weight }}kg → {{ targetWeight }}kg
+    &nbsp;·&nbsp; {{ duration }} days
   </p>
 </ng-template>
