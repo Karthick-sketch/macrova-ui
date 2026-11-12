@@ -66,12 +66,16 @@
     </div>
   </div>
 
-  <button class="suggest-btn" (click)="suggest()">Get Suggestions</button>
+  @if (isError) {
+    <button class="suggest-btn" (click)="retry()">Retry</button>
+  } @else {
+    <button class="suggest-btn" (click)="suggest()">Get Suggestions</button>
+  }
 
   @if (isLoading) {
     <div class="loader"></div>
   } @else if (isError) {
-    <div class="err-msg">Something went wrong. Please try again later.</div>
+    <div class="err-msg">Something went wrong. Please try again.</div>
   } @else {
     <div class="results-list">
       @for (suggestFood of aiFoodSuggests; track $index) {

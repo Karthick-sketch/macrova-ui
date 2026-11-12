@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
-import { AIFoodSuggestModel } from './model/ai-food-suggest.model';
 import { AIFoodSuggestService } from './ai-food-suggest.service';
-import { FilterDto } from './dto/filter.dto';
+import type { FilterDto } from './dto/filter.dto';
+import type {
+  AIFoodSuggest,
+  AIFoodSuggestErrorResponse,
+  AIFoodSuggestData,
+} from './dto/ai-food-suggest.dto';
 
 @Component({
   selector: 'app-ai-food-suggest',
@@ -21,10 +25,12 @@ export class AIFoodSuggestComponent {
     dietTypeFilter: 'Balanced',
     cuisineFilter: 'Indian',
   };
+
   isLoading = false;
   isError = false;
 
-  aiFoodSuggests!: AIFoodSuggestModel[];
+  aiResponseId: string | null = null;
+  aiFoodSuggests: AIFoodSuggest[] = [];
 
   constructor(private aiFoodSuggestService: AIFoodSuggestService) {}
 
@@ -48,11 +54,34 @@ export class AIFoodSuggestComponent {
     this.isLoading = true;
     this.isError = false;
     this.aiFoodSuggestService.suggestFoods(this.selected).subscribe({
-      next: (aiFoodSuggestModel: AIFoodSuggestModel[]) => {
-        this.aiFoodSuggests = aiFoodSuggestModel;
+      next: (response: AIFoodSuggestData) => {
+        this.aiResponseId = response.aiResponseId;
+        this.aiFoodSuggests = response.aiFoodSuggests;
         this.isLoading = false;
       },
-      error: () => {
+      error: (error: AIFoodSuggestErrorResponse) => {
+        this.aiResponseId = error.aiResponseId;
+        this.isLoading = false;
+        this.isError = true;
+      },
+    });
+  }
+
+  retry() {
+    if (!this.aiResponseId) {
+      return;
+    }
+
+    this.isLoading = true;
+    this.isError = false;
+    this.aiFoodSuggestService.retrySuggestFoods(this.aiResponseId).subscribe({
+      next: (response: AIFoodSuggestData) => {
+        this.aiResponseId = response.aiResponseId;
+        this.aiFoodSuggests = response.aiFoodSuggests;
+        this.isLoading = false;
+      },
+      error: (error: AIFoodSuggestErrorResponse) => {
+        this.aiResponseId = error.aiResponseId;
         this.isLoading = false;
         this.isError = true;
       },
