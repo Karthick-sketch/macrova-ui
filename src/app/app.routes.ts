@@ -7,7 +7,7 @@ import { DietPlanFormComponent } from './diet-planner/diet-plan-form/diet-plan-f
 import { DietPlansListComponent } from './diet-planner/diet-plans-list/diet-plans-list.component';
 import { DietPlanComponent } from './diet-planner/diet-plan.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { AIFoodSuggestComponent } from './diet-planner/ai-food-suggest/ai-food-suggest.component';
+import { FoodSuggestComponent } from './diet-planner/food-suggest/food-suggest.component';
 import { NoActiveDietPlanComponent } from './diet-planner/no-active-diet-plan/no-active-diet-plan.component';
 import { DietPlanOverviewComponent } from './diet-planner/diet-plan-overview/diet-plan-overview.component';
 import { DietPlanTrackOverviewComponent } from './diet-planner/diet-plan-track-overview/diet-plan-track-overview.component';
@@ -38,7 +38,7 @@ export const routes: Routes = [
   },
   {
     path: 'meals',
-    component: AIFoodSuggestComponent,
+    component: FoodSuggestComponent,
     canActivate: [AuthGuard],
   },
   {

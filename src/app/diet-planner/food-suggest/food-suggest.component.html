@@ -1,9 +1,8 @@
 <div class="ai-section">
   <div class="page-header">
-    <h2>AI Food Suggestions</h2>
+    <h2>Food Suggestions</h2>
     <p class="sub-text">
-      AI-powered food suggestions tailored by meal type, dietary preference, and
-      global cuisine.
+      Food suggestions tailored by meal type, and dietary preference.
     </p>
   </div>
 
@@ -50,20 +49,6 @@
         }
       </div>
     </div>
-
-    <div class="filter-group">
-      <div class="filter-label">Cuisine</div>
-      <div class="btn-group">
-        @for (filter of filters.cuisineFilters; track $index) {
-          <button
-            [class.selected]="filter === selected.cuisineFilter"
-            (click)="addCuisineFilter(filter)"
-          >
-            {{ filter }}
-          </button>
-        }
-      </div>
-    </div>
   </div>
 
   <button class="suggest-btn" (click)="suggest()">Get Suggestions</button>
@@ -74,7 +59,7 @@
     <div class="err-msg">Something went wrong. Please try again later.</div>
   } @else {
     <div class="results-list">
-      @for (suggestFood of aiFoodSuggests; track $index) {
+      @for (suggestFood of foodSuggests; track $index) {
         <div class="food-card">
           <p class="food-name">{{ $index + 1 }}. {{ suggestFood.name }}</p>
           <p class="food-desc">{{ suggestFood.description }}</p>

@@ -1,32 +1,30 @@
 import { Component } from '@angular/core';
-import { AIFoodSuggestModel } from './model/ai-food-suggest.model';
-import { AIFoodSuggestService } from './ai-food-suggest.service';
+import { FoodSuggestModel } from './model/food-suggest.model';
+import { FoodSuggestService } from './food-suggest.service';
 import { FilterDto } from './dto/filter.dto';
 
 @Component({
-  selector: 'app-ai-food-suggest',
-  templateUrl: './ai-food-suggest.component.html',
-  styleUrl: './ai-food-suggest.component.css',
+  selector: 'app-food-suggest',
+  templateUrl: './food-suggest.component.html',
+  styleUrl: './food-suggest.component.css',
 })
-export class AIFoodSuggestComponent {
+export class FoodSuggestComponent {
   filters = {
     mealFilters: ['Breakfast', 'Lunch', 'Snack', 'Dinner'],
     mealTypeFilters: ['Non-vegetarian', 'Vegetarian', 'Eggetarian', 'Vegan'],
     dietTypeFilters: ['Balanced', 'High Protein', 'Low-carb', 'Low-fat'],
-    cuisineFilters: ['Indian', 'Chinese', 'Japanese', 'Thai'],
   };
   selected: FilterDto = {
     mealFilter: 'Breakfast',
     mealTypeFilter: 'Non-vegetarian',
     dietTypeFilter: 'Balanced',
-    cuisineFilter: 'Indian',
   };
   isLoading = false;
   isError = false;
 
-  aiFoodSuggests!: AIFoodSuggestModel[];
+  foodSuggests!: FoodSuggestModel[];
 
-  constructor(private aiFoodSuggestService: AIFoodSuggestService) {}
+  constructor(private foodSuggestService: FoodSuggestService) {}
 
   addMealFilter(filter: string) {
     this.selected.mealFilter = filter;
@@ -40,16 +38,12 @@ export class AIFoodSuggestComponent {
     this.selected.dietTypeFilter = filter;
   }
 
-  addCuisineFilter(filter: string) {
-    this.selected.cuisineFilter = filter;
-  }
-
   suggest() {
     this.isLoading = true;
     this.isError = false;
-    this.aiFoodSuggestService.suggestFoods(this.selected).subscribe({
-      next: (aiFoodSuggestModel: AIFoodSuggestModel[]) => {
-        this.aiFoodSuggests = aiFoodSuggestModel;
+    this.foodSuggestService.suggestFoods(this.selected).subscribe({
+      next: (foodSuggestModel: FoodSuggestModel[]) => {
+        this.foodSuggests = foodSuggestModel;
         this.isLoading = false;
       },
       error: () => {
